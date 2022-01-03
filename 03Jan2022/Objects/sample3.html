@@ -10,18 +10,34 @@
 
 <body>
     <script>
-        var person = {
-            fname: "Hitesh",
-            email: "hitesh@email.com",
-            mobile: 9753102468,
+        // var person = {
+        //     fname: "Hitesh",
+        //     email: "hitesh@email.com",
+        //     mobile: 9753102468,
 
-        };
+        // };
 
-        console.log(person);
-        var person2 = person;
+        // console.log(person);
+        // var person2 = person;
 
-        person2.fname = "Hacker"
-        console.log(person2);
+        // person2.fname = "Hacker"
+        // console.log(person2);
+
+        function Student(fname, lname, email) {
+            this.fname = fname;
+            this.lname = lname;
+            this.email = email;
+            this.city = "Bangalore";
+            this.state = "Karnataka";
+            this.zip = 560065;
+            this.company = "Swiggy"
+        }
+
+        var std1 = new Student("Hitesh", "Kumar", "hitesh@email.com");
+        var std2 = new Student("Hacker", "Hacks", "hacks@hacker.com");
+
+        console.log(std1);
+        console.log(std2);
     </script>
 </body>
 

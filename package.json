@@ -1,0 +1,23 @@
+{
+  "name": "qa-platform-api",
+  "version": "0.0.1",
+  "description": "QA Platform API",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Debdyut/qa-platform-api.git"
+  },
+  "author": "Debdyut Hajra",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Debdyut/qa-platform-api/issues"
+  },
+  "homepage": "https://github.com/Debdyut/qa-platform-api#readme",
+  "dependencies": {
+    "express": "^4.17.2"
+  }
+}

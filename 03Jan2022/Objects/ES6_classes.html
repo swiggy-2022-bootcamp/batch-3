@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        class Employee {
+            constructor(fname, lname, email) {
+                this.city = "Bangalore";
+                this.state = "karnataka";
+                this.zip = 560065;
+                this.company = "Swiggy";
+
+                this.fname = fname;
+                this.lname = lname;
+                this.email = email;
+            }
+        }
+
+        var EMP1 = new Employee("Hitesh", "Kumar", "hitesh@email.com");
+
+        var EMP2 = new Employee("Hacker", "Hacks", "hacks@hacker.com");
+
+        console.log(EMP1);
+        console.log(EMP2);
+    </script>
+</body>
+
+</html>

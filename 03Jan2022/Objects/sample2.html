@@ -11,8 +11,18 @@
 <body>
     <script>
         // 2. OOP (Object Oriented Programming)
-        var person = new Object({ fname: "Hitesh", lname: "Kumar" }); // Creating An Object with Built-in Method
+        var person = new Object({ fname: "Hitesh", lname: "Kumar" }); // Creating an Object using Built-in Method
         console.log(person);
+
+        // Creating an Object using user-defined function
+        function Student(fname, lname, email) {
+            this.fname = fname;
+            this.lname = lname;
+            this.email = email;
+        }
+
+        var std = new Student("Sam", "Kumar", "sam@gmail.com");
+        console.log(std);
     </script>
 </body>
 

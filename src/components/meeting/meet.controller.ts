@@ -51,7 +51,18 @@ class MeetController {
         }
     };
 
-
+    public fetchByCondition = async (req: Request, res: Response, next: NextFunction) => {
+        const responseHandler = new ResponseHandler();
+        try {
+            let data = await meetModel.fetchMeetingsByCondition(req.query, req.userId);
+            responseHandler
+                .reqRes(req, res)
+                .onCreate('Droped Off from the meeting', data)
+                .send();
+        } catch (e) {
+            next(responseHandler.sendError(e));
+        }
+    };
 
 }
 

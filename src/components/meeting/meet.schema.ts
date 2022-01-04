@@ -4,11 +4,12 @@ import { IMeet, IMeetModel } from "./meet.interface";
 export const MeetSchema: Schema = new Schema(
     {
         title: { type: String, required: true },
-        startDate: { type: Date, required: true },
-        endDate: { type: Date, required: true },
+        date: { type: Date, required: true },
+        startTime: { type: String, required: true },
+        endTime: { type: String, required: true },
         attendees: [String],
         creator: String,
-        teamId:{type:Schema.Types.ObjectId,ref:'Teams'}
+        teamId: { type: Schema.Types.ObjectId, ref: 'Teams' }
     },
     {
         timestamps: true

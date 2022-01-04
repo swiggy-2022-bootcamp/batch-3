@@ -43,7 +43,11 @@ class TeamModel {
     public async createMeeting(body: any, id: string, email: string) {
         if (isValidMongoId(id)) {
             let team = await Team.findById(id);
-            return await meetModel.create({ ...body, teamId: id, attendees: team.members }, email);
+            if (team) {
+                return await meetModel.create({ ...body, teamId: id, attendees: team.members }, email);
+            } else {
+                throw new HTTP401Error('No Such Team Exists')
+            }
         } else {
             throw new HTTP401Error('Invalid MongoDb Id')
         }

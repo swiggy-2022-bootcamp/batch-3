@@ -7,9 +7,17 @@ class MeetModel {
 
     private default = "startDate endDate createdAt attendees title"
 
+    private checkValidTime(time: string) {
+        let hours = Number(time.slice(0, 2));
+        let minute = Number(time.slice(3));
+        return hours >= 0 && hours <= 24 && minute >= 0 && minute <= 60;
+    }
     public async create(body: any, email: string) {
-        if (!body.startDate || !body.endDate || !body.title || !body.attendees || !Array.isArray(body.attendees)) {
+        if (!body.date || !body.startTime || !body.endTime || !body.title || !body.attendees || !Array.isArray(body.attendees)) {
             throw new HTTP401Error('Fields Missing')
+        }
+        if(!this.checkValidTime(body.startTime) || !this.checkValidTime(body.endTime)){
+            throw new HTTP401Error('Invalid Time Format')
         }
         body.attendees.push(email);
         body.creator = email;
@@ -42,6 +50,17 @@ class MeetModel {
         } else {
             throw new HTTP401Error('Not a Valid Mongodb Id')
         }
+    }
+
+    public async fetchMeetingsByCondition(body: any, email: string) {
+        let condition: any = { members: email };
+        const title = {
+            title: {
+                $regex: body.title,
+                $options: "$i"
+            }
+        }
+        return await Meet.find(title).lean();
     }
 
 }

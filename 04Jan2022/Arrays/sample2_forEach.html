@@ -12,6 +12,51 @@
     <div id="demo"></div>
     <script>
         var students = ["Ram", "Ravi", "Sam", "Sundar"]
+        console.log(students)
+
+        // Array methods
+        students.push("Prateek") // will add the value to the last index
+        console.log(students)
+
+        students.unshift("Raghuram") // will add the value to the first index
+        console.log(students)
+
+        students.splice(2, 0, "RaviKishan") // Will add the value to given index
+        console.log(students)
+
+        students.pop() // will remove the last index value
+        console.log(students)
+
+        students.shift() // will remove the first index value
+        console.log(students)
+
+        students.splice(1, 1) // will remove specified index value
+        console.log(students)
+
+        // will return first value satisfying the given condition
+        let value = students.find((std) => {
+            return std.length == 3
+        })
+        console.log(value)
+
+        // will return an array of all values satisfying the given condition
+        let values = students.filter((std) => {
+            return std.length !== 3
+        })
+        console.log(values)
+
+        // will return false immediately after the condition becomes false, behaves like &&
+        let checkAnd = students.every((std) => {
+            return std.length >= 6
+        })
+        console.log(checkAnd)
+
+        // will return true immediately after the condition becomes true, behaves like ||
+        let checkOr = students.some((std) => {
+            return std.length === 6
+        })
+        console.log(checkOr)
+
         var studentInfo = ""
 
         // // forEach statement is used to iterate over the array
@@ -31,6 +76,13 @@
             return std + "-SLK"
         })
         console.log(students)
+
+        // Sorts the given array
+        console.log(students.sort())
+
+        // Reverses the given array
+        console.log(students.reverse())
+
         console.log(newStudents)
     </script>
 </body>

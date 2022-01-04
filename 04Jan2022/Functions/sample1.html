@@ -16,7 +16,7 @@
         // 2. Invoking or calling a function
 
         // Types of functions
-        // 1. anonymous funtion
+        // 1. Anonymous funtion
         // function () {}
         var myFunction = function () {
             console.log("Hello from anonymous function expression assigned to myFunction variable")
@@ -38,7 +38,13 @@
         // 3. Self-Invoked function
         // (function () {})()
         var getInfo = (function () {
-            console.log("hello FROM SIF")
+            // console.log("Hello from SIF")
+            // return "Hello from SIF"
+            // return {}
+            // return [ "Hitesh" ]
+            return function () {
+                console.log("I am function returned from SIF")
+            }
         })()
         console.log(getInfo)
 

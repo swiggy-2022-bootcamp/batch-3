@@ -14,17 +14,24 @@
         var students = ["Ram", "Ravi", "Sam", "Sundar"]
         var studentInfo = ""
 
-        // forEach statement is used to iterate over the array
-        students.forEach((std) => {
-            studentInfo = studentInfo + std + "<br>"
-        })
+        // // forEach statement is used to iterate over the array
+        // students.forEach((std) => {
+        //     studentInfo = studentInfo + std + "<br>"
+        // })
 
-        // map statement is also used to iterate over the array
-        students.map((std) => {
-            studentInfo = studentInfo + std + "<br/>"
-        })
+        // // map statement is also used to iterate over the array
+        // students.map((std) => {
+        //     studentInfo = studentInfo + std + "<br/>"
+        // })
 
-        document.getElementById("demo").innerHTML = studentInfo
+        // document.getElementById("demo").innerHTML = studentInfo
+
+        // map statement returns a new array without disturbing the existing array
+        var newStudents = students.map((std) => {
+            return std + "-SLK"
+        })
+        console.log(students)
+        console.log(newStudents)
     </script>
 </body>
 

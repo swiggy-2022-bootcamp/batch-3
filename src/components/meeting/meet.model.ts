@@ -16,7 +16,7 @@ class MeetModel {
         if (!body.date || !body.startTime || !body.endTime || !body.title || !body.attendees || !Array.isArray(body.attendees)) {
             throw new HTTP401Error('Fields Missing')
         }
-        if(!this.checkValidTime(body.startTime) || !this.checkValidTime(body.endTime)){
+        if (!this.checkValidTime(body.startTime) || !this.checkValidTime(body.endTime)) {
             throw new HTTP401Error('Invalid Time Format')
         }
         body.attendees.push(email);
@@ -60,7 +60,17 @@ class MeetModel {
                 $options: "$i"
             }
         }
-        return await Meet.find(title).lean();
+        let today = new Date();
+        if (body.mode === 'past') {
+            condition.date = { $lt: today };
+        }
+        if (body.mode === 'present') {
+            condition.date = { $eq: today };
+        }
+        if (body.mode === 'future') {
+            condition.date = { $gt: today };
+        }
+        return await Meet.find({ $and: [title, condition] }).lean();
     }
 
 }

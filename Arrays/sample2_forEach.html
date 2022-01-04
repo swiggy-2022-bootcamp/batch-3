@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="demo"></div>
+    <script>
+        //var students = [];
+        var students = ["Ram","Ravi","Sam","Sundar"];
+        var studentsInfo = "";
+
+        //For each statement is used to iterate over array
+
+        students.forEach((name)=>{console.log(`Hello ${name}`)});
+
+        students.forEach(callback);
+        function callback(name) {
+            console.log(`Bye ${name}`);
+        }
+
+        //Map will able to create to create a new Array
+        var newStudents  = students.map((std)=>{
+            return std+"-SLK"
+        });
+
+        students.push("Prateek"); // End of array
+        students.unshift("Raghu");// start of array
+        students.splice(2,0,"Kishan"); // index,delete no of elements,new value
+        // add value at given index
+
+        students.pop() // end of array
+        students.shift() // start of the array
+        students.splice(1,1)
+
+        //find method stops once condition is met
+        var values3 = students.find((name) => name.length == 3);
+
+        //filter method will iterate over all the elements
+        var values33 = students.filter((name) => name.length == 3);
+
+        let check  = students.every((name)=> name.length >= 3); //return boolean
+
+        let check1 = students.some((name)=> name.length === 6); // return boolean 
+        //atleast one is true
+
+        console.log(students.sort().reverse())
+
+        // Named Function 
+        // function sayHello() {
+        //     console.log("Hello named Function ");
+        // }
+        
+        // sayHello();
+
+        // //Anonmyous function - DOM Manipulation
+
+        // var myFunction = function() {
+        //     console.log("Hello from function expression");
+        // }
+
+        // myFunction();
+
+        // //self invoked function 
+
+        // (function () {
+        //     console.log("Hello from SIF");
+        // })();
+
+        // //arrow function or Fat arrow function 
+
+        // var newFunc = ()=> {
+        //     console.log("Hello world");
+        // }
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        <div id="demo"></div>
+        var person = {
+            "fname":"Andrew",
+            "lname":"Devine",
+            "zip"  : 20193,
+            "state": "OH"
+        };
+
+        //document.getElementById("demo").innerHTML = person.fname + "<br>" + person.lanme;
+
+        var personInfo = "";
+
+        for(a in person) {
+            personInfo = personInfo+person[a]+"<br>"
+        }
+
+        document.getElementById("demo").innerHTML = personInfo
+
+        
+    </script>
+</body>
+</html>

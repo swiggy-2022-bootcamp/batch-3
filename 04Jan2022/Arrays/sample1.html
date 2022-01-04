@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="demo"></div>
+    <script>
+        // var students = [] // [] represents an Empty Array 
+        var students = ["Ram", "Ravi", "Sam", "Sundar"]
+
+        var arrayInfo = ""
+
+        for (
+            i = 0; // Initialization .. and this will execute one time only
+            i < students.length; // Condition .. and this will execute until it becomes false
+            i++ // Increment ... It will execute until line no 19 will become false
+        ) {
+            arrayInfo = arrayInfo + students[i] + "<br/>" // Execution
+        }
+
+        document.getElementById("demo").innerHTML = arrayInfo
+    </script>
+</body>
+
+</html>

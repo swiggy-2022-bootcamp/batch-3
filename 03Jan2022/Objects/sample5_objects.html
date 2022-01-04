@@ -21,13 +21,23 @@
             "zip": 20193
         }
 
-        document.getElementById("demo").innerHTML = person.fname
-            + "<br>" + person.lname
-            + "<br>" + person.tel
-            + "<br>" + person.address
-            + "<br>" + person.city
-            + "<br>" + person.state
-            + "<br>" + person.zip
+        // document.getElementById("demo").innerHTML = person.fname
+        //     + "<br>" + person.lname
+        //     + "<br>" + person.tel
+        //     + "<br>" + person.address
+        //     + "<br>" + person.city
+        //     + "<br>" + person.state
+        //     + "<br>" + person.zip
+
+        var personInfo = "";
+
+        // for-in loop will go through each property in an Object 
+        // a will represent the Property Name
+        for (a in person) {
+            personInfo = personInfo + person[a] + "<br>"
+        }
+
+        document.getElementById("demo").innerHTML = personInfo
     </script>
 </body>
 

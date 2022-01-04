@@ -33,16 +33,6 @@ dbConnection.mongoConnection();
 // Different router required to initialize different apis call.
 const r1 = express.Router();
 
-// for recurrent jobs
-// schedule('* * * * *', async () => {
-//   console.log("Running job......");
-//   await quizModel.updateQuiz();
-// });
-
-// schedule('* * * * *', async () => {
-//   console.log("Running job 2......");
-//   await quizModel.distributePriceMoney();
-// });
 
 app.use("/", applyRoutes(routes, r1)); // default api
 

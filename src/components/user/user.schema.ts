@@ -1,5 +1,4 @@
 import { Document, Model, model, Schema } from "mongoose";
-import { NextFunction } from "express";
 import { IUser } from "./user.interface";
 import bcrypt from 'bcrypt'
 
@@ -10,48 +9,21 @@ export interface IUserModel extends IUser,Document {
 
 export const UserSchema: Schema = new Schema(
   {
-    firstName: {
-      type: String,
-      minlength: 2,
-      required: true
-    },
-    lastName: {
-      type: String,
-      minlength: 2,
-      required: true
-    },
     username: {
       type: String,
-      unique: true,
-      sparse:true
-      //required: true,
+      sparse:true,
+      required: true
     },
     password: {
       type: String,
       select: false,
-      unique: true,
       sparse:true
     },
     email: {
       type: String,
       minlength: 3,
-    },
-    dateOfBirth: Date,
-    role: {
-      type: String,
-      enum: ["user", "admin"],
+      unique: true,
       required: true
-    },
-    facebookId: {
-      type:String
-    },
-    phone: {
-      type:String
-    },
-    otp: Number,
-    isVerified: {
-      type: Boolean,
-      default:false
     }
   },
   {

@@ -46,18 +46,3 @@ export const reqConsoleLogger = (router: Router) => {
 export const handleCompression = (router: Router) => {
   router.use(compression());
 };
-
-// export const requestLimiter = (router: Router) => {
-//   const limiter = new rateLimit({
-//     windowMs: +rateLimitConfig.inTime, // 1 minutes
-//     max: +rateLimitConfig.maxRequest, // limit each IP to 12 requests per windowMs,
-//     message: {
-//       status: 0,
-//       error: "Too Many Requests",
-//       statusCode: 429,
-//       message: "Oh boy! You look in hurry, take it easy",
-//       description: "You have crossed maximum number of requests. please wait and try again."
-//     }
-//   });
-//   router.use(limiter);
-// };

@@ -1,5 +1,5 @@
 import {NextFunction, Request, Response, Router} from "express";
-import {AdminAuthorization, Authorization, RoleAuthorization} from "../middleware/auth.middleware";
+import {Authorization} from "../middleware/auth.middleware";
 
 type Wrapper = ((router: Router) => void);
 
@@ -34,13 +34,9 @@ export interface IRoute {
 // loading all routes and initialize to use them.
 export const applyRoutes = (routes: IRoute[], router: Router) => {
   for (const route of routes) {
-    const {method, path, escapeAuth, handler, adminOnly, role} = route;
+    const {method, path, escapeAuth, handler} = route;
     if (escapeAuth) {
       (router as any)[method](path, handler);
-    } else if (role) {
-      (router as any)[method](path, [Authorization, RoleAuthorization(role), ...handler]);
-    } else if (adminOnly) {
-      (router as any)[method](path, [Authorization, AdminAuthorization, ...handler]);
     } else {
       (router as any)[method](path, [Authorization, ...handler]);
     }

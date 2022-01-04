@@ -15,6 +15,36 @@
         // 1. Defining a function
         // 2. Invoking or calling a function
 
+        // Types of functions
+        // 1. anonymous funtion
+        // function () {}
+        var myFunction = function () {
+            console.log("Hello from anonymous function expression assigned to myFunction variable")
+        }
+        myFunction()
+
+        // 2. Named funtion
+        // function functionName () {}
+        function sayHello() {
+            console.log("Hello from named function expression")
+        }
+        sayHello()
+
+        var sayHelloToMe = function helloWorld() {
+            console.log("Hello from named function expression assigned to sayHelloToMe variable")
+        }
+        sayHelloToMe()
+
+        // 3. Self-Invoked function
+        // (function () {})()
+        var getInfo = (function () {
+            console.log("hello FROM SIF")
+        })()
+        console.log(getInfo)
+
+        // 4. Arrow / Fat-arrow function
+        // () => {}
+        var getInfo = () => { }
     </script>
 </body>
 

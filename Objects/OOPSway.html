@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      var person = new Object({ fname: "SOHAM", lname: "TUPE" }); // Creating An Object with Built in Method
+      console.log(person);
+
+      function Student(fname, lname, email) {
+        this.fname = fname;
+        this.lname = lname;
+        this.email = email;
+      }
+
+      var std = new Student("RAJ", "RAO", "raj@gmail.com");
+      console.log(std);
+    </script>
+  </body>
+</html>

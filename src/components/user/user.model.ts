@@ -55,7 +55,7 @@ export class UserModel {
         let u: IUserModel = await User.findOne({ email: body.email }).select('+password');
         let isCorrect = await u.correctPassword(body.password, u.password);
         if (isCorrect) {
-          return { success: true };
+          return { success: true , id:u._id };
         } else {
           throw new HTTP401Error('Password Incorrect')
         }

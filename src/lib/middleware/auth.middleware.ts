@@ -8,12 +8,14 @@ export const Authorization = async (req: Request, res: Response, next: NextFunct
       let verify = await userModel.login(req.body['user-details']);
       if (verify.success) {
         req.userId = req.body['user-details']['email'];
+        req._userId=verify.id
         next();
       }
     } else if (req.query.email) {
       let verify = await userModel.login(req.query);
       if (verify.success) {
         req.userId = req.query.email;
+        req._userId=verify.id
         next();
       }
     }

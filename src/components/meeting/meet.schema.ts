@@ -7,7 +7,8 @@ export const MeetSchema: Schema = new Schema(
         startDate: { type: Date, required: true },
         endDate: { type: Date, required: true },
         attendees: [String],
-        creator: String
+        creator: String,
+        teamId:{type:Schema.Types.ObjectId,ref:'Teams'}
     },
     {
         timestamps: true

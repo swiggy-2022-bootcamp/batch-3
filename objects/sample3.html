@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+    //   var person = {
+    //     fname: "Murali", // The pair is called Property . fname is Property Name or Key , Murali is Value
+    //     email: "murali@gmail.com",
+    //     mobile: 9663856625,
+    
+    //   };
+
+    //   console.log(person);
+
+       function Student(fname, lname, email) {
+        this.fname = fname;
+        this.lname = lname;
+        this.email = email;
+        this.city = "Bangalore";
+        this.state="karnataka";
+        this.zip=560066;
+        this.company="Swiggy"
+      }
+
+      var std1 = new Student("Murali","krishna","murali@gmail.com");
+      var std2 = new Student("Paras","KK","parasKK@gmail.com")
+
+      console.log(std1);
+      console.log(std2);
+    //   var person2 = person;
+
+    //   person2.fname="Paras"
+    //   console.log(person2);
+
+
+    </script>
+  </body>
+</html>

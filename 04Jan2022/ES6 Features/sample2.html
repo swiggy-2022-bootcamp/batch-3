@@ -27,15 +27,25 @@
             lname: "Kumar  fr",
         };
 
-        let { fname, lname } = person;
+        // let { fname, lname } = person;
         // let { fa } = person;  // Non-existent property name can't be used
         // let { fname, lname } = person3;  // Syntax Error: fname, lname already declared
         // { fname, lname } = person3;  // Syntax Error, declaration required for destructuring
 
         // fname = "Ram Kumar"  // Can be used to assign new values
 
-        console.log(fname);
-        console.log(lname);
+        // console.log(fname);
+        // console.log(lname);
+
+        function showInfo(person) {
+            console.log(person.fname);
+            console.log(person.lname);
+        }
+        function showInfo({ fname, lname }) {
+            console.log(fname);
+            console.log(lname);
+        }
+        showInfo(person)
     </script>
 </body>
 

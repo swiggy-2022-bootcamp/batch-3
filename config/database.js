@@ -25,7 +25,7 @@ async function checkConnection() {
 // Synchronize all modals
 async function synchronizeModels () {
     try {
-        await sequelize.sync({ force: true });
+        await sequelize.sync({ alter: true });
         console.log('SQLite: ✔ All Models were synchronized!');
     }
     catch(error) {

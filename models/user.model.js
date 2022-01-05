@@ -1,14 +1,23 @@
 /* Model Definition for Users table */
 
-// Import Dependencies
-const { DataTypes, Model, UniqueConstraintError } = require('sequelize');
+/* Import Dependencies */
+const { DataTypes, Model } = require('sequelize');
 const { sequelize } = require('../config/database');
 const bcrypt = require('bcryptjs');
 
-// Define the User class
+/* Define the User class */
 class User extends Model {
 
-    /* Need to add more instance level and class level members. */
+    // Static Method to find User by Username
+    static async getByUsername (username) {
+        const user = await User.findOne({ where: { username: username }});
+        console.log(user)
+        return user && user.dataValues;
+    }
+
+    checkPassword (password) {
+        return bcrypt.compareSync(password, this.password);
+    }
 
     // Offcial Representation of User Entries
     getUser () {
@@ -16,13 +25,14 @@ class User extends Model {
     }
 };
 
-// Initialize User Model
+/* Initialize User Model */
 User.init(
     {
         id: {
-            type: DataTypes.NUMBER,
+            type: DataTypes.INTEGER,
             autoIncrement: true,
-            field: 'id'
+            primaryKey: true,
+            field: 'user-id'
         },
         name: {
             type: DataTypes.STRING,
@@ -38,7 +48,6 @@ User.init(
         },
         email: {
             type: DataTypes.STRING,
-            primaryKey: true,
             unique: true,
             field: 'email',
             validate: {
@@ -47,7 +56,6 @@ User.init(
         },
         password: {
             type: DataTypes.STRING,
-            // Need to add validation
             field: 'password',
             set(value) {
                 // Generate salt

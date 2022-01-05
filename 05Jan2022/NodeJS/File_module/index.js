@@ -1,5 +1,5 @@
 var fs = require("fs");
 
-fs.readFile("./hello.txt", (err, data) => {
+fs.readFile("./hello.txt", "utf-8", (err, data) => {
     console.log(data);
 });

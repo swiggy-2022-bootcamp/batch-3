@@ -73,7 +73,7 @@ User.init(
         modelName: 'User',
         tableName: 'Users',
         createdAt: 'createdTimeStamp',
-        updatedAt: 'updateTimeStamp'
+        updatedAt: 'updatedTimeStamp'
     }
 )
 

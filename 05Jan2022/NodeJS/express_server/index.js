@@ -20,6 +20,18 @@ app.post("/addUser", (req, res) => {
     res.send({ users });
 });
 
+app.get('/deleteUser/:user', (req, res) => {
+    console.log(req.params.user)
+    let delUser = req.params.user
+    let checkUser = users.find((u) => u == delUser)
+    if (checkUser) {
+        users = users.filter((u) => u != delUser)
+        res.json({ users })
+    } else {
+        res.json({ msg: "User is not available in List" })
+    }
+})
+
 app.post("/check", (req, res) => {
     var userName = req.body.name;
     let checkUser = users.find((u) => u == userName);

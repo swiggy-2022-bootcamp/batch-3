@@ -30,6 +30,17 @@ app.post("/check", (req, res) => {
     }
 });
 
+app.delete("/deleteUser", (req, res) => {
+    let delUser = req.body.name
+    let checkUser = users.find((u) => u == delUser)
+    if (checkUser) {
+        users = users.filter((u) => u != delUser)
+        res.json({ users })
+    } else {
+        res.json({ msg: "User is not available in List" })
+    }
+})
+
 app.listen(port, () => {
     console.log("Hello.. Our Express Server is Up And Running");
 });

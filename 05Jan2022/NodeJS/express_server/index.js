@@ -20,6 +20,16 @@ app.post("/addUser", (req, res) => {
     res.send({ users });
 });
 
+app.post("/check", (req, res) => {
+    var userName = req.body.name;
+    let checkUser = users.find((u) => u == userName);
+    if (checkUser) {
+        res.json({ msg: "User is Avaiable.. Allow Him to Login" });
+    } else {
+        res.json({ msg: "User Is not available .. ask him to Register" });
+    }
+});
+
 app.listen(port, () => {
     console.log("Hello.. Our Express Server is Up And Running");
 });

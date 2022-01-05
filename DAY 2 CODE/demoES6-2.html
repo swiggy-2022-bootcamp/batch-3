@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      //   var defaultVal = 25;
+      //   function calculate(a = defaultVal) {
+      //     console.log(a);
+      //   }
+
+      //   calculate("100");
+
+      var person = {
+        fname: "Murali",
+        lname: "Krishna",
+      };
+
+      var person3 = {
+        fname: "Murali VML",
+        lname: "Krishna MMM",
+      };
+
+      //   let { fa } = person;
+      // //    { fname, lname } = person3;
+
+      // fname="Ram Kumar"
+
+      //   console.log(fname);
+      //   console.log(lname);
+
+      function showInfo(person) {
+        console.log(person.fname);
+        console.log(person.lname);
+      }
+      function showInfo({ fname, lname }) {
+        console.log(fname);
+        console.log(lname);
+      }
+      showInfo(person);
+    </script>
+  </body>
+</html>

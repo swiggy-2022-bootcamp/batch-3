@@ -1,3 +1,5 @@
 var fs = require("fs");
 
-console.log(fs);
+fs.readFile("./hello.txt", (err, data) => {
+    console.log(data);
+});

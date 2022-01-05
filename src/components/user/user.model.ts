@@ -2,6 +2,8 @@ import { User } from "./user.schema";
 import { IUserModel } from "./user.schema";
 import bcrypt from 'bcrypt';
 import { HTTP401Error } from "../../lib/utils/httpErrors";
+import jwt from 'jsonwebtoken';
+import { commonConfig } from "../../config";
 
 export class UserModel {
 
@@ -13,10 +15,15 @@ export class UserModel {
     return data;
   }
 
+  private signToken = (id: string) => {
+    return jwt.sign({ id }, commonConfig.jwtSecretKey, {
+      expiresIn: process.env.JWT_EXPIRES_IN,
+    });
+  };
 
   public async isUserExist(body: any) {
     if (body.email && body.password) {
-      const user = await User.findOne({ email : body.email});
+      const user = await User.findOne({ email: body.email });
       if (user) {
         return {
           user,
@@ -33,7 +40,7 @@ export class UserModel {
       if (body.password && body.email) {
         const IsUser = await this.isUserExist(body);
         if (IsUser && IsUser.alreadyExisted) {
-          return {username :IsUser.user.username , alreadyExisted : IsUser.alreadyExisted};
+          return { username: IsUser.user.username, alreadyExisted: IsUser.alreadyExisted };
         }
       }
 
@@ -42,7 +49,7 @@ export class UserModel {
       }
       const q: IUserModel = new User(body);
       const data: IUserModel = await q.addNewUser();
-      return { username : data.username, alreadyExisted: false };
+      return { username: data.username, alreadyExisted: false };
     } catch (e) {
       throw new HTTP401Error(e.errmsg);
     }
@@ -54,8 +61,9 @@ export class UserModel {
       if (IsUser && IsUser.alreadyExisted) {
         let u: IUserModel = await User.findOne({ email: body.email }).select('+password');
         let isCorrect = await u.correctPassword(body.password, u.password);
+        const token = this.signToken(u._id);
         if (isCorrect) {
-          return { success: true , id:u._id };
+          return { success: true, id: u._id, token };
         } else {
           throw new HTTP401Error('Password Incorrect')
         }

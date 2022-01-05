@@ -42,7 +42,7 @@ class TeamModel {
 
     public async createMeeting(body: any, id: string, email: string) {
         if (isValidMongoId(id)) {
-            let team = await Team.findById(id);
+            let team = await Team.findOne({ $and: [{ _id: new ObjectID(id) }, { members: email }] });       
             if (team) {
                 return await meetModel.create({ ...body, teamId: id, attendees: team.members }, email);
             } else {

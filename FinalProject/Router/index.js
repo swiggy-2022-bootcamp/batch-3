@@ -4,7 +4,7 @@ const app=Router();
 
 
 app.use("/api",require("./api.js"))
-app.get("/",function(req,res)
+app.use("/",function(req,res)
 {
     return res.send(404);
 })

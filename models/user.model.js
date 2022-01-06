@@ -12,9 +12,14 @@ class User extends Model {
     static async checkPassword (username, password) {
         const user = await User.findOne({ where: { username: username }});
         if(user) {
-            return bcrypt.compareSync(password, user.password);
+            return user.isMatched(password);
         }
         return false;
+    }
+
+    // Instance Method for matching password
+    async isMatched (password) {
+        return bcrypt.compareSync(password, this.password);
     }
 };
 

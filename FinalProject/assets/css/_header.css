@@ -1,0 +1,21 @@
+#header_nav li{
+    display: inline-block;
+    margin-right: 25px ;
+}
+#header_nav{
+    box-sizing: border-box;
+    padding: 20px;
+    padding-top: 30px;
+    background-color: rgb(255, 255, 250);
+    display:flex;
+    flex-direction:row;
+    align-items: center;
+    justify-content: space-between;
+    height: 10vh;
+}
+#header_nav ul{
+    display: inline-block;
+}
+#left_nav_header{    
+    align-content: center;
+}

@@ -1,0 +1,59 @@
+<link rel='stylesheet' type='text/css' href='/css/home.css'>
+
+<div id='home_screen'>
+
+    <div id='left_home_screen'>
+        <img src='/images/food.jpg'>
+        <p id='image_text'>Order Online</p>
+    </div>
+    <div id='right_home_screen'>
+
+
+        <div>
+            <p>
+                Order Food Delivery<br>
+                You will love it !!
+            </p>
+            <a class="btn btn-danger btn-lg" href="/users/restaurants" role="button">Order Now !!</a>
+
+
+        </div>
+
+
+      
+
+
+    </div>
+
+</div>
+ 
+    <button class="open-button" onclick="openForm()">Chat with our CEO</button>
+
+    <div class="chat-popup" id="myForm">
+      <form action="/action_page.php" class="form-container">
+        <h2>Chat</h2>
+        <div id='display_msg'>
+            <span> Please type your message....Our customer service will contact you </span>
+         </div>
+        <label for="msg"><b>Message</b></label>
+        <textarea id='send_message' placeholder="Type message.." name="msg" required></textarea>
+    
+        <button type="submit"   class="btn send_btn">Send</button>
+        <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+      </form>
+    </div>
+
+<script src='https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.dev.js'></script>     
+<script src='/js/chatEngine.js'></script>
+ 
+    <script>
+     
+        function openForm(){
+                console.log('click');
+              document.getElementById("myForm").style.display = "block";
+        }
+            
+        function closeForm(){
+              document.getElementById("myForm").style.display = "none";
+        }
+    </script> 

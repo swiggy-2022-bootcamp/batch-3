@@ -8,20 +8,13 @@ const bcrypt = require('bcryptjs');
 /* Define the User class */
 class User extends Model {
 
-    // Static Method to find User by Username
-    static async getByUsername (username) {
+    // Static Method to Verify Password
+    static async checkPassword (username, password) {
         const user = await User.findOne({ where: { username: username }});
-        console.log(user)
-        return user && user.dataValues;
-    }
-
-    checkPassword (password) {
-        return bcrypt.compareSync(password, this.password);
-    }
-
-    // Offcial Representation of User Entries
-    getUser () {
-        return `${this.id} ${this.email} - ${this.name}`;
+        if(user) {
+            return bcrypt.compareSync(password, user.password);
+        }
+        return false;
     }
 };
 

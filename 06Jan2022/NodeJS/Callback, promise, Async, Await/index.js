@@ -1,5 +1,5 @@
 let users = []
-function getDataFromServer() {
+function getDataFromServer(displayData) {
     setTimeout(() => {
         users = ["Ram", "Ravi", "Sam", "Sunder"]
         displayData()
@@ -9,4 +9,4 @@ function displayData() {
     console.log(users)
 }
 
-getDataFromServer()
+getDataFromServer(displayData)

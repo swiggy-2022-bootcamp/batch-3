@@ -24,7 +24,6 @@ class UserController {
         .onCreate(data.alreadyExisted ? 'User already existed' : msg.CREATED, data)
         .send();
     } catch (e) {
-      console.log(e);
       next(responseHandler.sendError(e));
     }
   };

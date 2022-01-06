@@ -7,7 +7,7 @@ class MeetController {
     public fetchAll = async (req: Request, res: Response, next: NextFunction) => {
         const responseHandler = new ResponseHandler();
         try {
-            responseHandler.reqRes(req, res).onFetch(msg.FETCH_ALL, await meetModel.fetchAllMeets(req.userId)).send();
+            responseHandler.reqRes(req, res).onFetch('All Meetings Fetched', await meetModel.fetchAllMeets(req.userId)).send();
         } catch (e) {
             // send error with next function.
             next(responseHandler.sendError(e));
@@ -17,7 +17,7 @@ class MeetController {
     public fetchById = async (req: Request, res: Response, next: NextFunction) => {
         const responseHandler = new ResponseHandler();
         try {
-            responseHandler.reqRes(req, res).onFetch(msg.FETCH_ALL, await meetModel.fetchMeetingByid(req.params.id)).send();
+            responseHandler.reqRes(req, res).onFetch('Meeting fetched by Id', await meetModel.fetchMeetingByid(req.params.id)).send();
         } catch (e) {
             // send error with next function.
             next(responseHandler.sendError(e));
@@ -57,7 +57,7 @@ class MeetController {
             let data = await meetModel.fetchMeetingsByCondition(req.query, req.userId);
             responseHandler
                 .reqRes(req, res)
-                .onCreate('Droped Off from the meeting', data)
+                .onCreate('Filtered Meetings', data)
                 .send();
         } catch (e) {
             next(responseHandler.sendError(e));

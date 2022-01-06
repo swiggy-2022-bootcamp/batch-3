@@ -39,7 +39,7 @@ export class UserModel {
     if (body.password && body.email && body.username) {
       const IsUser = await this.isUserExist(body);
       if (IsUser && IsUser.alreadyExisted) {
-        ;
+        throw new HTTP401Error('Username Already Exist')
       }
     } else {
       throw new HTTP401Error('Provide email, username and password')

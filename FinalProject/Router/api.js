@@ -9,6 +9,9 @@ app.post("/authenticate",(req,res)=>{
     return res.send(req.body);
 })
  
+app.get("/",(req,res)=>{
+return res.send(req.user);
+})
 
 module.exports=app;
 

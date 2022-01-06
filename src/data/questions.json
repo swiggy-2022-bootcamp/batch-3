@@ -1,0 +1,21 @@
+[
+    {
+        "answers": [
+            {
+                "id": "672a01a9-dc0c-40ca-a7db-5e3772fc5f6f",
+                "answer": "updated answer",
+                "createdBy": "b0a23ed0-64e9-43d7-9f57-87d88043e116",
+                "updatedBy": "b0a23ed0-64e9-43d7-9f57-87d88043e116",
+                "createdTs": "2022-01-06T09:51:21.218Z",
+                "updatedTs": "2022-01-06T09:51:21.218Z"
+            }
+        ],
+        "id": "38a313eb-428e-479c-a0e2-d1b6b5bab935",
+        "title": "how to write nodejs program",
+        "body": "I’m trying to build rest api with node and express js, I get error as express is missing",
+        "createdBy": "b0a23ed0-64e9-43d7-9f57-87d88043e116",
+        "updatedBy": "b0a23ed0-64e9-43d7-9f57-87d88043e116",
+        "createdTs": "2022-01-06T09:45:49.787Z",
+        "updatedTs": "2022-01-06T09:45:49.787Z"
+    }
+]

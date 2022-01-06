@@ -5,6 +5,9 @@ const identityRoutes = require('./routes/identity');
 const qaPlatformRoutes = require('./routes/qa-platform');
 const fallbackController = require('./controllers/fallback');
 
+const QuestionsDao = require('./dao/questions-dao');
+const UsersDao = require('./dao/users-dao');
+
 const app = express()
 
 // Enable parsing of json request body
@@ -24,5 +27,7 @@ app.use(contextPath, qaPlatformRoutes);
 app.use(fallbackController.get404);
 
 app.listen(port, () => {
+    UsersDao.init();
+    QuestionsDao.init();
     console.log(`Example app listening on port ${port}!`);
 })

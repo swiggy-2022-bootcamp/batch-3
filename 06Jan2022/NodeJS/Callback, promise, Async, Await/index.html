@@ -23,9 +23,16 @@
             });
         }
 
-        getUsersFromServer().then((products) => {
-            console.log(products);
-        })
+        // getUsersFromServer().then((products) => {
+        //     console.log(products);
+        // })
+
+        async function handledata() {
+            products = await getUsersFromServer();
+            console.log(products)
+        }
+
+        handledata()
     </script>
 </body>
 

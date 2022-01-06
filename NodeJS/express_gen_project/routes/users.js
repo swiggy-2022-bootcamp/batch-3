@@ -1,5 +1,7 @@
 var express = require("express");
 var router = express.Router();
+var fs = require("fs");
+
 
 /* GET users listing. */
 router.get("/", function (req, res, next) {
@@ -11,6 +13,7 @@ router.post("/login", checkUserInfo, (req, res) => {
 });
 
 router.post("/register", (req, res) => {
+  
   res.send("Message from Register Route");
 });
 

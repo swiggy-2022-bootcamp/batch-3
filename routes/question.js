@@ -1,31 +1,23 @@
 const router = require("express").Router();
 const { User } = require("../models/user.model");
 const { Question } = require("../models/question.model");
+const { loginRequired } = require('../middlewares/loginRequired');
 const {
   QUESTION_POSTED_SUCCESS,
   USER_LOGIN_FAILED,
   USER_AUTHORIZATION_FAILED,
 } = require("../utils/constants");
 
-router.post("/ask", async (req, res) => {
-  const { username, password, title, body } = req.body;
-
-  const isMatched = await User.checkPassword(username, password);
-
-  if (!isMatched) {
-    return res.status(401).json({
-      message: USER_AUTHORIZATION_FAILED,
-    });
-  }
+router.post("/ask", loginRequired ,async (req, res) => {
+  const { title, body } = req.body.question;
 
   try {
-    const user = await User.findOne({where: {username}})
     const queBody = {
       title: title,
       body: body,
-      UserId: user.id,
+      UserId: req.user.id,
     };
-    const question = await user.createQuestion(queBody);
+    const question = await req.user.createQuestion(queBody);
     return res.status(201).json({
       message: QUESTION_POSTED_SUCCESS,
       "question-id": question.question_id,
@@ -49,16 +41,24 @@ router.get("/questions", async (req, res) => {
 });
 
 
-router.post('/:question_id/answer',async (req, res) => {
+router.post('/:question_id/answer', loginRequired ,async (req, res) => {
 
   // Get the Question ID
   const question_id = req.params.question_id;
 
+  // Destructure answer
+  const { _, answer } = req.body.answer;
+
   // Get the Question Instance
-  const question = await Question.findByPk(question_id);
+  const question = await Question.findByPk(question_id); // ERROR HANDLING
 
-  console.log(question);
+  // Add Answer instance to question insance
+  const answerInstance = await question.createAnswer({ answer: answer }) // ERROR HANDLING
 
-  return res.json({msg: 'wait'});
+  return res.status(201).json({
+    message: 'Answer Posted Succesfully',
+    "question-id": question_id
+  });
+
 })
 module.exports = router;

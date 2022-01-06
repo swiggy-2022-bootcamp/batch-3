@@ -3,9 +3,9 @@ const app = express();
 const port = 3000;
 var bodyParser = require('body-parser')
 
-let users = ["John", "Bob", "Alice"];
-
 app.use(bodyParser.json())
+
+let users = ["John", "Bob", "Alice"];
 
 app.get('/', (req, res) => {
   
@@ -44,7 +44,7 @@ app.get('/deleteUser/:user', (req, res) => {
 
     res.json({users});
 
-})
+});
 
 app.post('/delete', (req, res) => {
   

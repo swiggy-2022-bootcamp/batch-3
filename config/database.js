@@ -16,6 +16,7 @@ async function checkConnection() {
     try {
         await sequelize.authenticate();
         console.log('SQLite: ✔ Connected!');
+        return;
     }
     catch(error) {
         console.log('SQLite: ❌ Error in Database Connection: ', error);
@@ -25,7 +26,7 @@ async function checkConnection() {
 // Synchronize all modals
 async function synchronizeModels () {
     try {
-        await sequelize.sync({ alter: true });
+        await sequelize.sync({ force: true });
         console.log('SQLite: ✔ All Models were synchronized!');
     }
     catch(error) {
@@ -35,6 +36,8 @@ async function synchronizeModels () {
 
 checkConnection();
 synchronizeModels();
+
+
 
 // Export the Sequelize Instance
 module.exports = { sequelize }

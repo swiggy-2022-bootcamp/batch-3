@@ -1,7 +1,7 @@
 /* Defining Question Model */
 
 const { DataTypes, Model } = require('sequelize');
-const sequelize = require('../config/database');
+const { sequelize } = require('../config/database');
 
 /* Declare Question Model */
 class Question extends Model {};
@@ -36,5 +36,6 @@ Question.init(
         updatedAt: 'updatedTimeStamp'
     }
 );
+
 
 module.exports = { Question };

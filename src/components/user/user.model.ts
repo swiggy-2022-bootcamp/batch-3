@@ -36,23 +36,21 @@ export class UserModel {
   };
 
   public async add(body: IUserModel) {
-    try {
-      if (body.password && body.email) {
-        const IsUser = await this.isUserExist(body);
-        if (IsUser && IsUser.alreadyExisted) {
-          return { username: IsUser.user.username, alreadyExisted: IsUser.alreadyExisted };
-        }
+    if (body.password && body.email && body.username) {
+      const IsUser = await this.isUserExist(body);
+      if (IsUser && IsUser.alreadyExisted) {
+        ;
       }
-
-      if (body.password) {
-        body.password = await bcrypt.hash(body.password, 12);
-      }
-      const q: IUserModel = new User(body);
-      const data: IUserModel = await q.addNewUser();
-      return { username: data.username, alreadyExisted: false };
-    } catch (e) {
-      throw new HTTP401Error(e.errmsg);
+    } else {
+      throw new HTTP401Error('Provide email, username and password')
     }
+
+    if (body.password) {
+      body.password = await bcrypt.hash(body.password, 12);
+    }
+    const q: IUserModel = new User(body);
+    const data: IUserModel = await q.addNewUser();
+    return { username: data.username, alreadyExisted: false };
   };
 
   public async login(body: any) {

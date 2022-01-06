@@ -5,7 +5,7 @@ import { isValidMongoId } from '../../lib/helpers';
 import { ObjectID } from 'bson';
 class MeetModel {
 
-    private default = "startDate endDate createdAt attendees title"
+    private default = " date startTime endTime createdAt attendees title"
 
     private checkValidTime(time: string) {
         let hours = Number(time.slice(0, 2));
@@ -53,7 +53,7 @@ class MeetModel {
     }
 
     public async fetchMeetingsByCondition(body: any, email: string) {
-        let condition: any = { members: email };
+        let condition: any = { attendees: email };
         const title = {
             title: {
                 $regex: body.title,

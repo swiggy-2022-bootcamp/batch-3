@@ -12,6 +12,11 @@ export default [
         handler: [meetController.fetchAll]
     },
     {
+        path: "/user/meetings/search",
+        method: "get",
+        handler: [meetController.fetchByCondition]
+    },
+    {
         path: "/user/meetings/:id",
         method: "get",
         handler: [meetController.fetchById]
@@ -25,11 +30,6 @@ export default [
         path: "/user/meetings/:id",
         method: "delete",
         handler: [meetController.dropOff]
-    },
-    {
-        path: "/user/meetings/search",
-        method: "delete",
-        handler: [meetController.fetchByCondition]
     }
 ];
 

@@ -21,6 +21,14 @@ class TeamModel {
         return { success: true, id: t._id };
     }
 
+    public async fetchTeamMeets(id: string) {
+        if (!isValidMongoId(id)) {
+            throw new HTTP401Error('Not a valid mongoDb Id')
+        }
+        const data = await Meet.find({ teamId: new ObjectID(id) });
+        return data;
+    }
+
     public async leave(id: string, email: string) {
         if (isValidMongoId(id)) {
             let session = await startSession();

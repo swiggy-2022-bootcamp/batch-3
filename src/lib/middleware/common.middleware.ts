@@ -1,11 +1,10 @@
-import {json, Router, urlencoded} from "express";
+import { json, Router, urlencoded } from "express";
 import cors from "cors";
 import compression from "compression";
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
-/* Custom imports */
-import {configCors, rateLimitConfig} from "../../config";
-import {requestLogger} from "./requestLogger";
+import { configCors, rateLimitConfig } from "../../config";
+import { requestLogger } from "./requestLogger";
 
 
 export const useHelmet = (router: Router) => {
@@ -33,7 +32,7 @@ export const allowCors = (router: Router) => {
 
 /* here all middleware come. Don't need to do anything in app.js*/
 export const handleBodyRequestParsing = (router: Router) => {
-  router.use(urlencoded({extended: true}));
+  router.use(urlencoded({ extended: true }));
   router.use(json());
 };
 
@@ -45,4 +44,19 @@ export const reqConsoleLogger = (router: Router) => {
 // Compress the payload and send through api
 export const handleCompression = (router: Router) => {
   router.use(compression());
+};
+
+export const requestLimiter = (router: Router) => {
+  const limiter: any = rateLimit({
+    windowMs: rateLimitConfig.inTime,
+    max: rateLimitConfig.maxRequest,
+    message: {
+      status: 0,
+      error: "Too Many Requests",
+      statusCode: 429,
+      message: "Oh boy! You look in hurry, take it easy",
+      description: "You have crossed maximum number of requests. please wait and try again."
+    }
+  });
+  router.use(limiter);
 };

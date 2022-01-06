@@ -14,12 +14,17 @@ export default [
   {
     path: "/team/meetings/:id",
     method: "get",
-    handler: [teamController.fetchAll]
+    handler: [teamController.fetchTeamMeets]
   },
   {
     path: "/team/leave/:id",
     method: "delete",
     handler: [teamController.leave]
+  },
+  {
+    path: "/team",
+    method: "get",
+    handler: [teamController.fetchAll]
   }
 ];
 

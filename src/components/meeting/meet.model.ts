@@ -54,10 +54,13 @@ class MeetModel {
 
     public async fetchMeetingsByCondition(body: any, email: string) {
         let condition: any = { attendees: email };
-        const title = {
-            title: {
-                $regex: body.title,
-                $options: "$i"
+        let title = {}
+        if (body.title) {
+            title = {
+                title: {
+                    $regex: body.title,
+                    $options: "$i"
+                }
             }
         }
         let today = new Date();

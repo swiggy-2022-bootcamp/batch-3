@@ -1,13 +1,13 @@
 import { NextFunction, Request, Response } from "express";
 import meetModel from "./meet.model";
 import ResponseHandler from "../../lib/helpers/responseHandler";
-import { user as msg } from "../../lib/helpers/customMessage";
+import { meet as msg } from "../../lib/helpers/customMessage";
 
 class MeetController {
     public fetchAll = async (req: Request, res: Response, next: NextFunction) => {
         const responseHandler = new ResponseHandler();
         try {
-            responseHandler.reqRes(req, res).onFetch('All Meetings Fetched', await meetModel.fetchAllMeets(req.userId)).send();
+            responseHandler.reqRes(req, res).onFetch(msg.FETCH_ALL, await meetModel.fetchAllMeets(req.userId)).send();
         } catch (e) {
             // send error with next function.
             next(responseHandler.sendError(e));
@@ -17,7 +17,7 @@ class MeetController {
     public fetchById = async (req: Request, res: Response, next: NextFunction) => {
         const responseHandler = new ResponseHandler();
         try {
-            responseHandler.reqRes(req, res).onFetch('Meeting fetched by Id', await meetModel.fetchMeetingByid(req.params.id)).send();
+            responseHandler.reqRes(req, res).onFetch(msg.FETCH, await meetModel.fetchMeetingByid(req.params.id)).send();
         } catch (e) {
             // send error with next function.
             next(responseHandler.sendError(e));
@@ -31,7 +31,7 @@ class MeetController {
             let data = await meetModel.create(req.body['meeting'], req.userId);
             responseHandler
                 .reqRes(req, res)
-                .onCreate('New Meet Created', data)
+                .onCreate(msg.CREATED, data)
                 .send();
         } catch (e) {
             next(responseHandler.sendError(e));
@@ -44,7 +44,7 @@ class MeetController {
             let data = await meetModel.dropOff(req.params.id, req.userId);
             responseHandler
                 .reqRes(req, res)
-                .onCreate('Droped Off from the meeting', data)
+                .onCreate(msg.DROP, data)
                 .send();
         } catch (e) {
             next(responseHandler.sendError(e));
@@ -57,7 +57,7 @@ class MeetController {
             let data = await meetModel.fetchMeetingsByCondition(req.query, req.userId);
             responseHandler
                 .reqRes(req, res)
-                .onCreate('Filtered Meetings', data)
+                .onCreate(msg.FETCH, data)
                 .send();
         } catch (e) {
             next(responseHandler.sendError(e));

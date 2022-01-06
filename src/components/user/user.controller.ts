@@ -35,7 +35,7 @@ class UserController {
       let data = await userModel.login(req.body);
       responseHandler
         .reqRes(req, res)
-        .onCreate('Logged In Successfully', data)
+        .onCreate(msg.LOG_IN, data)
         .send();
     } catch (e) {
       next(responseHandler.sendError(e));

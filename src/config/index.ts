@@ -26,8 +26,8 @@ export const configCors = {
 };
 
 export const rateLimitConfig = {
-  inTime: process.env.REQUEST_TIME || 60 * 1000,
-  maxRequest: process.env.MAX_REQUEST || 60
+  inTime: 60 * 1000,
+  maxRequest: 60
 };
 
 export const commonConfig = {

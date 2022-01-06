@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "dev": "nodemon ./bin/www",
+    "start:dev": "nodemon ./bin/www",
     "test:watch": "jest --watchAll .",
     "test:e2e": "jest ."
   },

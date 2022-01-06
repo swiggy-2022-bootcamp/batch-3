@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Document</title>
+    </head>
+    <body>
+        <script>
+            var person = {
+                fname: "Aryann", // The pair is called property. 'fname' is property name or key
+                lname: "Dhir",
+                email: "aryann@gmail.com",
+                mobile: 9876543212
+            };
+
+            // document.getElementById("demo").innerHTML = person.fname + "<br>" + person.lname
+            
+            var personinfo = "";
+
+            for(a in person)
+                personinfo = personinfo + person[a] + "<br>";
+
+            
+        </script>
+    </body>
+</html>

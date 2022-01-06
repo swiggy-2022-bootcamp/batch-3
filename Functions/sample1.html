@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Document</title>
+    </head>
+    <body>
+        <script>
+            var students = ["ram", "ravi", "sam", "sundar"]
+            students.push("aryann")
+            students.unshift("naman")
+            var studentinfo = ""
+
+            students.forEach((std)=>{
+                studentinfo = studentinfo + std + "<br>"
+            })
+
+            students.map((std)=>{
+                studentinfo = studentinfo + std + "<br>"
+            })
+
+            var newstudents = students.map((std)=>{
+                return std+"-SLK"
+            })
+            
+            console.log(students)
+            console.log(newstudents)
+
+        </script>
+    </body>
+</html>

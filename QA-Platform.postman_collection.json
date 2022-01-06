@@ -10,6 +10,15 @@
 			"request": {
 				"method": "POST",
 				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"mail@naveen.com\",\r\n    \"password\": \"keepguessing\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
 				"url": {
 					"raw": "localhost:3000/login",
 					"host": [
@@ -21,13 +30,145 @@
 					]
 				}
 			},
-			"response": []
+			"response": [
+				{
+					"name": "Successful login",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"mail@naveen.com\",\r\n    \"password\": \"keepguessing\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/login",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"login"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "41"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"29-cNd5A0EVWxBg0QW58UlLdMLHleo\""
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 06 Jan 2022 10:12:27 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"user logged in successfully\"\n}"
+				},
+				{
+					"name": "Invalid login credentials",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"nouser@naveen.com\",\r\n    \"password\": \"wrongpassword\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/login",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"login"
+							]
+						}
+					},
+					"status": "Unauthorized",
+					"code": 401,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "39"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"27-8HcHk983HYF8zFa8k6za5YS7ejs\""
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 06 Jan 2022 10:13:45 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"Sorry invalid credentials\"\n}"
+				}
+			]
 		},
 		{
 			"name": "2. Register",
 			"request": {
 				"method": "POST",
 				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"registration-name\": \"Naveen\",\r\n    \"username\": \"mail@naveen.com\",\r\n    \"password\": \"keepguessing\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
 				"url": {
 					"raw": "localhost:3000/register",
 					"host": [
@@ -46,6 +187,15 @@
 			"request": {
 				"method": "POST",
 				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"user-details\": {\r\n    \"username\": \"mail@naveen.com\",\r\n    \"password\": \"keepguessing\"\r\n  },\r\n  \"question\": {\r\n    \"title\": \"how to write nodejs program\",\r\n    \"body\": \"I’m trying to build rest api with node and express js, I get error as express is missing\"\r\n  }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
 				"url": {
 					"raw": "localhost:3000/question",
 					"host": [
@@ -64,15 +214,24 @@
 			"request": {
 				"method": "POST",
 				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"user-details\": {\r\n    \"username\": \"mail@naveen.com\",\r\n    \"password\": \"keepguessing\"\r\n  },\r\n  \"question\": {\r\n    \"question-id\": \"38a313eb-428e-479c-a0e2-d1b6b5bab935\",\r\n    \"answer\": \"you need to check if the express is installed, check package.json file under dependencies, if express exists, if not execute : npm install express\"\r\n  }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
 				"url": {
-					"raw": "localhost:3000/question/1/answer",
+					"raw": "localhost:3000/question/38a313eb-428e-479c-a0e2-d1b6b5bab935/answer",
 					"host": [
 						"localhost"
 					],
 					"port": "3000",
 					"path": [
 						"question",
-						"1",
+						"38a313eb-428e-479c-a0e2-d1b6b5bab935",
 						"answer"
 					]
 				}
@@ -84,15 +243,24 @@
 			"request": {
 				"method": "PUT",
 				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"user-details\": {\r\n    \"username\": \"mail@naveen.com\",\r\n    \"password\": \"keepguessing\"\r\n  },\r\n  \"question\": {\r\n    \"question-id\": \"38a313eb-428e-479c-a0e2-d1b6b5bab935\",\r\n    \"answer\": \"updated answer\"\r\n  }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
 				"url": {
-					"raw": "localhost:3000/question/1/answer",
+					"raw": "localhost:3000/question/38a313eb-428e-479c-a0e2-d1b6b5bab935/answer",
 					"host": [
 						"localhost"
 					],
 					"port": "3000",
 					"path": [
 						"question",
-						"1",
+						"38a313eb-428e-479c-a0e2-d1b6b5bab935",
 						"answer"
 					]
 				}
@@ -123,21 +291,21 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:3000/question/1",
+					"raw": "localhost:3000/question/38a313eb-428e-479c-a0e2-d1b6b5bab935",
 					"host": [
 						"localhost"
 					],
 					"port": "3000",
 					"path": [
 						"question",
-						"1"
+						"38a313eb-428e-479c-a0e2-d1b6b5bab935"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "6. Get answer for a question Copy",
+			"name": "7. Delete question",
 			"request": {
 				"method": "DELETE",
 				"header": [],

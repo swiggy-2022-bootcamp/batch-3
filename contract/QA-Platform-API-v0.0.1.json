@@ -1,0 +1,549 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "0.0.1",
+    "title": "QA Platform API",
+    "description": "Platform for people to ask questions to the community and get answers."
+  },
+  "host": "localhost:3000",
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "User",
+      "description": "Endpoints"
+    },
+    {
+      "name": "QA-Platform",
+      "description": "Endpoints"
+    }
+  ],
+  "schemes": [
+    "http"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/login": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "description": "Endpoint for user login.",
+        "parameters": [
+          {
+            "name": "login-details",
+            "in": "body",
+            "description": "User credentials for user login.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserAuthDtls"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Login successful.",
+            "schema": {
+              "$ref": "#/definitions/LoginSuccessResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized.",
+            "schema": {
+              "$ref": "#/definitions/Login401ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/register": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "description": "Endpoint for user registration.",
+        "parameters": [
+          {
+            "name": "user-details",
+            "in": "body",
+            "description": "User credentials for user register.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserDtls"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "User registration successful.",
+            "schema": {
+              "$ref": "#/definitions/RegisterSuccessResponse"
+            }
+          }
+        }
+      }
+    },
+    "/question": {
+      "post": {
+        "tags": [
+          "QA-Platform"
+        ],
+        "description": "Endpoint for adding a new question.",
+        "parameters": [
+          {
+            "name": "question",
+            "in": "body",
+            "description": "Question details.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Question"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Question add successful.",
+            "schema": {
+              "$ref": "#/definitions/QuestionAddSuccessResponse"
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "QA-Platform"
+        ],
+        "description": "Endpoint for fetching all questions.",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Fetch all questions successful.",
+            "schema": {
+              "$ref": "#/definitions/FetchAllQuestionsSuccessResponse"
+            }
+          }
+        }
+      }
+    },
+    "/question/{questionId}/answer": {
+      "post": {
+        "tags": [
+          "QA-Platform"
+        ],
+        "description": "Endpoint for adding a new answer for a question.",
+        "parameters": [
+          {
+            "name": "questionId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "answer",
+            "in": "body",
+            "description": "Answer details.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Answer"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Answer add successful.",
+            "schema": {
+              "$ref": "#/definitions/AnswerAddSuccessResponse"
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "QA-Platform"
+        ],
+        "description": "Endpoint for updating an answer.",
+        "parameters": [
+          {
+            "name": "questionId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "answer",
+            "in": "body",
+            "description": "Answer details.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Answer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Answer update successful.",
+            "schema": {
+              "$ref": "#/definitions/AnswerUpdateSuccessResponse"
+            }
+          }
+        }
+      }
+    },
+    "/question/{questionId}": {
+      "get": {
+        "tags": [
+          "QA-Platform"
+        ],
+        "description": "Endpoint for fetching a question.",
+        "parameters": [
+          {
+            "name": "questionId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "id",
+            "description": "Question ID",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Fetch question successful.",
+            "schema": {
+              "$ref": "#/definitions/FetchQuestionSuccessResponse"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "QA-Platform"
+        ],
+        "description": "Endpoint for deleting a question.",
+        "parameters": [
+          {
+            "name": "questionId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "id",
+            "description": "Question ID",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Question": {
+      "type": "object",
+      "properties": {
+        "user-details": {
+          "type": "object",
+          "properties": {
+            "username": {
+              "type": "string",
+              "example": "mail@naveen.com"
+            },
+            "password": {
+              "type": "string",
+              "example": "keepguessing"
+            }
+          }
+        },
+        "question": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string",
+              "example": "how to write nodejs program"
+            },
+            "body": {
+              "type": "string",
+              "example": "I’m trying to build rest api with node and express js, I get error as express is missing"
+            }
+          }
+        }
+      }
+    },
+    "Answer": {
+      "type": "object",
+      "properties": {
+        "user-details": {
+          "type": "object",
+          "properties": {
+            "username": {
+              "type": "string",
+              "example": "mail@naveen.com"
+            },
+            "password": {
+              "type": "string",
+              "example": "keepguessing"
+            }
+          }
+        },
+        "question": {
+          "type": "object",
+          "properties": {
+            "question-id": {
+              "type": "string",
+              "example": "38a313eb-428e-479c-a0e2-d1b6b5bab935"
+            },
+            "answer": {
+              "type": "string",
+              "example": "you need to check if the express is installed, check package.json file under dependencies, if express exists, if not execute : npm install express"
+            }
+          }
+        }
+      }
+    },
+    "UserDtls": {
+      "type": "object",
+      "properties": {
+        "registration-name": {
+          "type": "string",
+          "example": "Naveen"
+        },
+        "username": {
+          "type": "string",
+          "example": "mail@naveen.com"
+        },
+        "password": {
+          "type": "string",
+          "example": "keepguessing"
+        }
+      }
+    },
+    "UserAuthDtls": {
+      "type": "object",
+      "properties": {
+        "username": {
+          "type": "string",
+          "example": "mail@naveen.com"
+        },
+        "password": {
+          "type": "string",
+          "example": "keepguessing"
+        }
+      }
+    },
+    "LoginSuccessResponse": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "user logged in successfully"
+        }
+      }
+    },
+    "Login401ErrorResponse": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Sorry invalid credentials"
+        }
+      }
+    },
+    "RegisterSuccessResponse": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "User Registered Successfully"
+        },
+        "registration-name": {
+          "type": "string",
+          "example": "Naveen"
+        }
+      }
+    },
+    "AnswerUpdateSuccessResponse": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "answer updated successfully"
+        },
+        "question-id": {
+          "type": "string",
+          "example": "b0a23ed0-64e9-43d7-9f57-87d88043e116"
+        }
+      }
+    },
+    "QuestionAddSuccessResponse": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Question added successfully"
+        },
+        "question-id": {
+          "type": "string",
+          "example": "b0a23ed0-64e9-43d7-9f57-87d88043e116"
+        }
+      }
+    },
+    "AnswerAddSuccessResponse": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "answer posted successfully"
+        },
+        "question-id": {
+          "type": "string",
+          "example": "b0a23ed0-64e9-43d7-9f57-87d88043e116"
+        }
+      }
+    },
+    "FetchAllQuestionsSuccessResponse": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "38a313eb-428e-479c-a0e2-d1b6b5bab935"
+          },
+          "title": {
+            "type": "string",
+            "example": "how to write nodejs program"
+          },
+          "body": {
+            "type": "string",
+            "example": "I’m trying to build rest api with node and express js, I get error as express is missing"
+          },
+          "createdBy": {
+            "type": "string",
+            "example": "b0a23ed0-64e9-43d7-9f57-87d88043e116"
+          },
+          "updatedBy": {
+            "type": "string",
+            "example": "b0a23ed0-64e9-43d7-9f57-87d88043e116"
+          },
+          "createdTs": {
+            "type": "string",
+            "example": "2022-01-06T09:45:49.787Z"
+          },
+          "updatedTs": {
+            "type": "string",
+            "example": "2022-01-06T09:45:49.787Z"
+          },
+          "answers": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "example": "672a01a9-dc0c-40ca-a7db-5e3772fc5f6f"
+                },
+                "answer": {
+                  "type": "string",
+                  "example": "updated answer"
+                },
+                "createdBy": {
+                  "type": "string",
+                  "example": "b0a23ed0-64e9-43d7-9f57-87d88043e116"
+                },
+                "updatedBy": {
+                  "type": "string",
+                  "example": "b0a23ed0-64e9-43d7-9f57-87d88043e116"
+                },
+                "createdTs": {
+                  "type": "string",
+                  "example": "2022-01-06T09:51:21.218Z"
+                },
+                "updatedTs": {
+                  "type": "string",
+                  "example": "2022-01-06T09:51:21.218Z"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "FetchQuestionSuccessResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "example": "38a313eb-428e-479c-a0e2-d1b6b5bab935"
+        },
+        "title": {
+          "type": "string",
+          "example": "how to write nodejs program"
+        },
+        "body": {
+          "type": "string",
+          "example": "I’m trying to build rest api with node and express js, I get error as express is missing"
+        },
+        "createdBy": {
+          "type": "string",
+          "example": "b0a23ed0-64e9-43d7-9f57-87d88043e116"
+        },
+        "updatedBy": {
+          "type": "string",
+          "example": "b0a23ed0-64e9-43d7-9f57-87d88043e116"
+        },
+        "createdTs": {
+          "type": "string",
+          "example": "2022-01-06T09:45:49.787Z"
+        },
+        "updatedTs": {
+          "type": "string",
+          "example": "2022-01-06T09:45:49.787Z"
+        },
+        "answers": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "example": "672a01a9-dc0c-40ca-a7db-5e3772fc5f6f"
+              },
+              "answer": {
+                "type": "string",
+                "example": "updated answer"
+              },
+              "createdBy": {
+                "type": "string",
+                "example": "b0a23ed0-64e9-43d7-9f57-87d88043e116"
+              },
+              "updatedBy": {
+                "type": "string",
+                "example": "b0a23ed0-64e9-43d7-9f57-87d88043e116"
+              },
+              "createdTs": {
+                "type": "string",
+                "example": "2022-01-06T09:51:21.218Z"
+              },
+              "updatedTs": {
+                "type": "string",
+                "example": "2022-01-06T09:51:21.218Z"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

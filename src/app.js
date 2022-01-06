@@ -1,5 +1,7 @@
 const express = require('express')
 const bodyParser = require('body-parser')
+const swaggerUi = require('swagger-ui-express')
+const swaggerFile = require('../contract/QA-Platform-API-v0.0.1.json')
 
 const identityRoutes = require('./routes/identity');
 const qaPlatformRoutes = require('./routes/qa-platform');
@@ -24,6 +26,9 @@ const contextPath = '/'
 
 app.use(contextPath, identityRoutes);
 app.use(contextPath, qaPlatformRoutes);
+
+app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerFile))
+
 app.use(fallbackController.get404);
 
 app.listen(port, () => {

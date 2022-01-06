@@ -32,10 +32,11 @@ class QuestionsDao {
         this.updateFile();
     }
 
-    static updateAnswer = (questionId, answer) => {        
+    static updateAnswer = (questionId, answerTxt, userId) => {        
         const question = this.questions.find(q => q.id == questionId);
-        question.answers = question.answers.filter(ans => ans.createdBy != answer.createdBy);
-        question.answers.push(answer);
+        const answer = question.answers.find(ans => ans.createdBy == userId);
+        answer.answer = answerTxt;
+        answer.updatedTs = new Date().toISOString();
         this.updateFile();
     }
 

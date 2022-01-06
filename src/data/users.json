@@ -8,5 +8,15 @@
         "updatedBy": "9ee32fda-f776-4ace-b5c1-b8b35f154a3d",
         "createdTs": "2022-01-06T10:09:02.662Z",
         "updatedTs": "2022-01-06T10:09:02.662Z"
+    },
+    {
+        "id": "3a9aa5ff-76d0-4f3a-b1f4-e5c2f20048cc",
+        "fullName": "Naveen",
+        "username": "mail@naveen.com",
+        "password": "keepguessing",
+        "createdBy": "3a9aa5ff-76d0-4f3a-b1f4-e5c2f20048cc",
+        "updatedBy": "3a9aa5ff-76d0-4f3a-b1f4-e5c2f20048cc",
+        "createdTs": "2022-01-06T15:16:37.169Z",
+        "updatedTs": "2022-01-06T15:16:37.169Z"
     }
 ]

@@ -3,7 +3,8 @@ function getDataFromServer() {
     return new Promise((success, failure) => {
         setTimeout(() => {
             users = ["Ram", "Ravi", "Sam", "Sunder"]
-            success()
+            // success()
+            failure()
         }, 5000)
     })
 }

@@ -1,4 +1,5 @@
 var express = require('express');
+const { Question } = require('../models/question.model');
 const { User } = require('../models/user.model');
 const { USER_REGISTERATION_SUCCESS, USER_LOGIN_SUCCESS, USER_LOGIN_FAILED } = require('../utils/constants');
 var router = express.Router();
@@ -32,11 +33,11 @@ router.post('/registration', async (req, res, next) => {
     // return
     return res.status(201).json({
         message: USER_REGISTERATION_SUCCESS,
-        registration_name: user.name
+        "registration-name": user.name
       })
   }
   catch(error) {
-    return res.status(500).json({
+    return res.status(406).json({
       message: error.errors[0].message
     })
   }
@@ -49,15 +50,13 @@ router.post('/login', async (req, res) => {
   // Destructure Request Body
   const { username, password } = req.body;
 
-  // Get User by Username
-  console.log(await User.getByUsername(username));
-  const user = await User.findOne({where: { username: username }})
+  // Check Password
+  const isMatched = await User.checkPassword(username, password);
 
-  // Check for valid password
-  if(user && user.checkPassword(password)) {
+  // Create response
+  if(isMatched) {
     return res.status(201).json({
-      message: USER_LOGIN_SUCCESS,
-      user: user
+      message: USER_LOGIN_SUCCESS
     })
   }
 
@@ -66,6 +65,5 @@ router.post('/login', async (req, res) => {
     message: USER_LOGIN_FAILED
   })
 })
-
 
 module.exports = router;

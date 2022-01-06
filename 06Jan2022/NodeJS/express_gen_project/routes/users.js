@@ -10,4 +10,8 @@ router.post("/login", (req, res) => {
   res.send("Message from Login Route");
 });
 
+router.post("/register", (req, res) => {
+  res.send("Message from Register Route");
+});
+
 module.exports = router;

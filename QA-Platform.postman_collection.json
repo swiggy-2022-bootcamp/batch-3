@@ -1,0 +1,159 @@
+{
+	"info": {
+		"_postman_id": "d518e07b-a834-4665-98a6-2da9e390b2ad",
+		"name": "QA-Platform",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "1. Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/login",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "2. Register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/register",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "3. Ask question",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/question",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"question"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "4. Answer a question",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/question/1/answer",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"question",
+						"1",
+						"answer"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "4.3 Update answer for a question",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/question/1/answer",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"question",
+						"1",
+						"answer"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "5. Get answer for all questions",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/question",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"question"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "6. Get answer for a question",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/question/1",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"question",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "6. Get answer for a question Copy",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/question/1",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"question",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

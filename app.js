@@ -2,7 +2,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-
+var { errorHandler } = require('./middlewares/errorHandler');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var questionRouter = require('./routes/question');
@@ -19,4 +19,5 @@ require('./models/index');
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/question', questionRouter);
+app.use(errorHandler);
 module.exports = app;

@@ -65,6 +65,43 @@ app.post("/register", async (req, res) => {
   }
 });
 
+app.post("/login", async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    if (!(email && password)) {
+      res.status(400).send("All input is required");
+    }
+
+    const findUserQuery = `
+    SELECT userId, name, email, password
+    FROM users
+    WHERE email = ?
+    `;
+
+    const findUserQueryParams = [email];
+
+    const user = await query(findUserQuery, findUserQueryParams);
+
+    console.log("user", user, user[0].password, password);
+
+    if (user && (await bcrypt.compare(password, user[0].password))) {
+      const token = jwt.sign(
+        { user_id: user.userId, email },
+        process.env.TOKEN_KEY,
+        {
+          expiresIn: "2h",
+        }
+      );
+      res.status(200).json({ email, password, token });
+    }
+    res.status(400).send("Invalid Credentials");
+  } catch (err) {
+    console.log(err);
+  }
+  // Our register logic ends here
+});
+
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
 });

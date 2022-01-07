@@ -1,6 +1,8 @@
 const express = require("express");
 const mysql = require("mysql2");
 const dotenv = require("dotenv");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
 const app = express();
 dotenv.config();
@@ -15,24 +17,16 @@ app.get("/", (req, res) => {
 });
 
 app.post("/register", async (req, res) => {
-  // Our register logic starts here
   try {
-    // Get user input
-
-    console.log("here", req.body);
     const { name, email, password } = req.body;
 
-    // Validate user input
     if (!(email && password && name)) {
       res.status(400).send("All input is required");
     }
 
-    // check if user already exist
-    // Validate if user exist in our database
-
     const checkIfUserExistQuery = `
     SELECT userId 
-    FROM project1.users
+    FROM users
     WHERE email = ?
     `;
 
@@ -40,40 +34,35 @@ app.post("/register", async (req, res) => {
 
     const oldUser = await query(checkIfUserExistQuery, checkIfUserExistParams);
 
-    console.log("old user", oldUser);
-
     if (oldUser.length > 0) {
       return res.status(409).send("User Already Exist. Please Login");
     }
 
-    //Encrypt user password
-    // encryptedPassword = await bcrypt.hash(password, 10);
+    const encryptedPassword = await bcrypt.hash(password, 10);
 
-    // // Create user in our database
-    // const user = await User.create({
-    //   first_name,
-    //   last_name,
-    //   email: email.toLowerCase(), // sanitize: convert email to lowercase
-    //   password: encryptedPassword,
-    // });
+    const createUserQuery = `
+    INSERT INTO users (name, password, email)
+    VALUES (?,?,?)
+    `;
 
-    // // Create token
-    // const token = jwt.sign(
-    //   { user_id: user._id, email },
-    //   process.env.TOKEN_KEY,
-    //   {
-    //     expiresIn: "2h",
-    //   }
-    // );
-    // // save user token
-    // user.token = token;
+    const createUserQueryParams = [name, encryptedPassword, email];
 
-    // return new user
-    res.status(201).json({ success: true });
+    const user = await query(createUserQuery, createUserQueryParams);
+
+    const token = jwt.sign(
+      { user_id: user.insertId, email },
+      process.env.TOKEN_KEY,
+      {
+        expiresIn: "2h",
+      }
+    );
+
+    user.token = token;
+
+    res.status(201).json({ user, success: true });
   } catch (err) {
     console.log(err);
   }
-  // Our register logic ends here
 });
 
 app.listen(port, () => {

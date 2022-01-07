@@ -12,12 +12,15 @@ const { Question } = require('./question.model');
 const { Answer } = require('./answer.model');
 
 (async () => {
-    // /* User (One) ==> Question (Many)*/
+
     await User.hasMany(Question);
     await Question.belongsTo(User);
-    // /* Question (One) ==> Answer (Many) */
+
     await Question.hasMany(Answer);
     await Answer.belongsTo(Question);
+
+    await User.hasMany(Answer);
+    await Answer.belongsTo(User);
 })();
 
 console.log('SQLite: ✔ Association Established.')

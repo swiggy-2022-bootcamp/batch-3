@@ -56,6 +56,12 @@
             "schema": {
               "$ref": "#/definitions/Login401ErrorResponse"
             }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/InternalServerError"
+            }
           }
         }
       }
@@ -82,6 +88,15 @@
             "description": "User registration successful.",
             "schema": {
               "$ref": "#/definitions/RegisterSuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/InternalServerError"
             }
           }
         }
@@ -111,6 +126,12 @@
               "$ref": "#/definitions/QuestionAddSuccessResponse"
             }
           },
+          "401": {
+            "description": "Unauthorized.",
+            "schema": {
+              "$ref": "#/definitions/Login401ErrorResponse"
+            }
+          },
           "500": {
             "description": "Internal Server Error",
             "schema": {
@@ -130,6 +151,12 @@
             "description": "Fetch all questions successful.",
             "schema": {
               "$ref": "#/definitions/FetchAllQuestionsSuccessResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized.",
+            "schema": {
+              "$ref": "#/definitions/Login401ErrorResponse"
             }
           },
           "500": {
@@ -171,6 +198,12 @@
               "$ref": "#/definitions/AnswerAddSuccessResponse"
             }
           },
+          "401": {
+            "description": "Unauthorized.",
+            "schema": {
+              "$ref": "#/definitions/Login401ErrorResponse"
+            }
+          },
           "500": {
             "description": "Internal Server Error",
             "schema": {
@@ -206,6 +239,12 @@
             "description": "Answer update successful.",
             "schema": {
               "$ref": "#/definitions/AnswerUpdateSuccessResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized.",
+            "schema": {
+              "$ref": "#/definitions/Login401ErrorResponse"
             }
           },
           "500": {
@@ -244,6 +283,12 @@
               "$ref": "#/definitions/FetchQuestionSuccessResponse"
             }
           },
+          "401": {
+            "description": "Unauthorized.",
+            "schema": {
+              "$ref": "#/definitions/Login401ErrorResponse"
+            }
+          },
           "500": {
             "description": "Internal Server Error",
             "schema": {
@@ -276,6 +321,12 @@
             "description": "Fetch question successful.",
             "schema": {
               "$ref": "#/definitions/FetchQuestionSuccessResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized.",
+            "schema": {
+              "$ref": "#/definitions/Login401ErrorResponse"
             }
           },
           "500": {

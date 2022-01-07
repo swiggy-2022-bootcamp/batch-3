@@ -14,54 +14,30 @@ exports.addQuestion = (req, res) => {
             schema: { $ref: "#/definitions/Question" }
     } */
 
-    const username = req.body['user-details']['username'];
-    const password = req.body['user-details']['password'];
+    const questionTitle = req.body['question']['title'];
+    const questionBody = req.body['question']['body'];
+    const user = res.locals.user;
 
-    User.findOne({ username: username, password: password })
-        .then(u => {
-            if (!u) {
-                /* #swagger.responses[401] = { 
-                    schema: { $ref: "#/definitions/Login401ErrorResponse" },
-                    description: 'Unauthorized.' 
-                } */
-                return res.status(401).send({
-                    message: 'Sorry invalid credentials'
-                });
-            }
+    let question = new Question({ 
+        title: questionTitle,
+        body: questionBody,            
+        createdBy: user,
+        updatedBy: user
+    });
+    question.save()
+        .then(q => {
 
-            const questionTitle = req.body['question']['title'];
-            const questionBody = req.body['question']['body'];
-            let question = new Question({ 
-                title: questionTitle,
-                body: questionBody,            
-                createdBy: u,
-                updatedBy: u
+            user.questions.push(q);
+            user.save();
+
+            /* #swagger.responses[201] = { 
+                schema: { $ref: "#/definitions/QuestionAddSuccessResponse" },
+                description: 'Question add successful.' 
+            } */
+            res.status(201).send({
+                message: 'Question posted successfully.',
+                'question-id': q.id
             });
-            question.save()
-                .then(q => {
-
-                    u.questions.push(q);
-                    u.save();
-
-                    /* #swagger.responses[201] = { 
-                        schema: { $ref: "#/definitions/QuestionAddSuccessResponse" },
-                        description: 'Question add successful.' 
-                    } */
-                    res.status(201).send({
-                        message: 'Question posted successfully.',
-                        'question-id': q.id
-                    });
-                })
-                .catch(err => {
-                    console.log(err);
-                    /* #swagger.responses[500] = { 
-                        schema: { $ref: "#/definitions/InternalServerError" },
-                        description: 'Internal Server Error' 
-                    } */
-                    res.status(500).send({
-                        message: 'Internal Server Error'
-                    });
-                });    
         })
         .catch(err => {
             console.log(err);
@@ -72,7 +48,7 @@ exports.addQuestion = (req, res) => {
             res.status(500).send({
                 message: 'Internal Server Error'
             });
-        })
+        });
 };
 
 exports.addAnswer = (req, res) => {
@@ -87,58 +63,34 @@ exports.addAnswer = (req, res) => {
             schema: { $ref: "#/definitions/Answer" }
     } */
 
-    const username = req.body['user-details']['username'];
-    const password = req.body['user-details']['password'];
+    const questionId = req.body['question']['question-id'];
+    const answerTxt = req.body['question']['answer'];
+    const user = res.locals.user;
 
-    User.findOne({ username: username, password: password })
-        .then(u => {
-            if (!u) {
-                /* #swagger.responses[401] = { 
-                    schema: { $ref: "#/definitions/Login401ErrorResponse" },
-                    description: 'Unauthorized.' 
-                } */
-                return res.status(401).send({
-                    message: 'Sorry invalid credentials'
-                });
-            }
+    const answer = new Answer({
+        answer: answerTxt,    
+        createdBy: user,
+        updatedBy: user
+    });
 
-            const questionId = req.body['question']['question-id'];
-            const answerTxt = req.body['question']['answer'];            
-            const answer = new Answer({
-                answer: answerTxt,    
-                createdBy: u,
-                updatedBy: u
+    Question.findOne({ id: questionId })
+        .then(question => {            
+            question.answers.push(answer);
+            return question.save();
+        })
+        .then(question => {
+
+            user.answers.push(answer);
+            user.save();
+
+            /* #swagger.responses[201] = { 
+                schema: { $ref: "#/definitions/AnswerAddSuccessResponse" },
+                description: 'Answer add successful.' 
+            } */
+            res.status(201).send({
+                message: "answer posted successfully",
+                'question-id': question.id
             });
-
-            Question.findOne({ id: questionId })
-                .then(question => {            
-                    question.answers.push(answer);
-                    return question.save();
-                })
-                .then(question => {
-
-                    u.answers.push(answer);
-                    u.save();
-
-                    /* #swagger.responses[201] = { 
-                        schema: { $ref: "#/definitions/AnswerAddSuccessResponse" },
-                        description: 'Answer add successful.' 
-                    } */
-                    res.status(201).send({
-                        message: "answer posted successfully",
-                        'question-id': question.id
-                    });
-                })
-                .catch(err => {
-                    console.log(err);
-                    /* #swagger.responses[500] = { 
-                        schema: { $ref: "#/definitions/InternalServerError" },
-                        description: 'Internal Server Error' 
-                    } */
-                    res.status(500).send({
-                        message: 'Internal Server Error'
-                    });
-                });
         })
         .catch(err => {
             console.log(err);
@@ -149,7 +101,7 @@ exports.addAnswer = (req, res) => {
             res.status(500).send({
                 message: 'Internal Server Error'
             });
-        })    
+        });
 };
 
 exports.updateAnswer = (req, res) => {   
@@ -166,13 +118,12 @@ exports.updateAnswer = (req, res) => {
     
     const questionId = req.body['question']['question-id'];
     const answerTxt = req.body['question']['answer'];
-    // const userId = 'b0a23ed0-64e9-43d7-9f57-87d88043e116';
-    const userId = 'd01773a0-efec-4529-aa2c-ebb913d26907';
+    const user = res.locals.user;
 
     Question.findOneAndUpdate(
         {
             id: questionId,
-            'answers.createdBy': userId 
+            'answers.createdBy': user 
         },
         {
             'answers.$.answer': answerTxt

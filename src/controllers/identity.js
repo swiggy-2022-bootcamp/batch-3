@@ -1,3 +1,4 @@
+const bcrypt = require('bcryptjs');
 const User = require('../models/user');
 
 exports.login = (req, res) => {
@@ -15,7 +16,7 @@ exports.login = (req, res) => {
     const username = req.body['username'];
     const password = req.body['password'];
  
-    User.findOne({ username: username, password: password })
+    User.findOne({ username: username })
         .then(u => {
             if (!u) {
                 /* #swagger.responses[401] = { 
@@ -26,14 +27,31 @@ exports.login = (req, res) => {
                     message: 'Sorry invalid credentials'
                 });
             }
-
-            /* #swagger.responses[200] = { 
+            bcrypt.compare(password, u.password)
+            .then(isEqual => {
+                if (!isEqual) {
+                    return res.status(401).send({
+                        message: 'Sorry invalid credentials'
+                    });
+                }
+                /* #swagger.responses[200] = { 
                     schema: { $ref: "#/definitions/LoginSuccessResponse" },
                     description: 'Login successful.' 
-            } */
-            res.status(200).send({
-                message: 'user logged in successfully'
-            });
+                } */
+                return res.status(200).send({
+                    message: 'user logged in successfully'
+                });
+            })
+            .catch(err => {
+                console.log(err);
+                /* #swagger.responses[500] = { 
+                    schema: { $ref: "#/definitions/InternalServerError" },
+                    description: 'Internal Server Error' 
+                } */
+                res.status(500).send({
+                    message: 'Internal Server Error'
+                });
+            })
         })
         .catch(err => {
             console.log(err);
@@ -63,23 +81,44 @@ exports.register = (req, res) => {
     const username = req.body['username'];
     const password = req.body['password'];
     
-    const user = new User({
-        fullName: fullName,
-        username: username, 
-        password: password
-    });
-
-    user.save()
+    User.findOne({ username: username })
         .then(u => {
-            /* #swagger.responses[201] = { 
-                schema: { $ref: "#/definitions/RegisterSuccessResponse" },
-                description: 'User registration successful.' 
-            } */
-            res.status(201).send({
-                message: 'User Registered Successfully',
-                "registration-name": fullName
-            });
-        })
+            if (u) {
+                return res.status(400).send({
+                    message: 'The username is already taken'
+                });
+            }
+            return bcrypt.hash(password, 12)
+                    .then(hashPassword => {
+                        const user = new User({
+                            fullName: fullName,
+                            username: username, 
+                            password: hashPassword
+                        });
+                    
+                        user.save()
+                            .then(u => {
+                                /* #swagger.responses[201] = { 
+                                    schema: { $ref: "#/definitions/RegisterSuccessResponse" },
+                                    description: 'User registration successful.' 
+                                } */
+                                res.status(201).send({
+                                    message: 'User Registered Successfully',
+                                    "registration-name": fullName
+                                });
+                            })
+                            .catch(err => {
+                                console.log(err);
+                                /* #swagger.responses[500] = { 
+                                    schema: { $ref: "#/definitions/InternalServerError" },
+                                    description: 'Internal Server Error' 
+                                } */
+                                res.status(500).send({
+                                    message: 'Internal Server Error'
+                                });
+                            });
+                    })
+        })        
         .catch(err => {
             console.log(err);
             /* #swagger.responses[500] = { 

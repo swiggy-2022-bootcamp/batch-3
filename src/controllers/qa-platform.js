@@ -49,7 +49,7 @@ exports.addQuestion = (req, res) => {
                 message: 'Internal Server Error'
             });
         });
-};
+}
 
 exports.addAnswer = (req, res) => {
     // #swagger.tags = ['QA-Platform']
@@ -102,9 +102,9 @@ exports.addAnswer = (req, res) => {
                 message: 'Internal Server Error'
             });
         });
-};
+}
 
-exports.updateAnswer = (req, res) => {   
+exports.updateAnswer = (req, res) => {    
     // #swagger.tags = ['QA-Platform']
     // #swagger.description = 'Endpoint for updating an answer.'
 
@@ -148,7 +148,7 @@ exports.updateAnswer = (req, res) => {
                 message: 'Internal Server Error'
             });
         });
-};
+}
 
 exports.getAllQuestions = (req, res) => {
     // #swagger.tags = ['QA-Platform']
@@ -172,7 +172,7 @@ exports.getAllQuestions = (req, res) => {
                 message: 'Internal Server Error'
             });
         });
-};
+}
 
 exports.getQuestion = (req, res) => {
     // #swagger.tags = ['QA-Platform']
@@ -199,7 +199,7 @@ exports.getQuestion = (req, res) => {
                 message: 'Internal Server Error'
             });
         })    
-};
+}
 
 exports.deleteQuestion = (req, res) => {
     // #swagger.tags = ['QA-Platform']
@@ -228,4 +228,4 @@ exports.deleteQuestion = (req, res) => {
                 message: 'Internal Server Error'
             });
         })  
-};
+}

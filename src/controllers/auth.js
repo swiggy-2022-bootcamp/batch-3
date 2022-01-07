@@ -1,10 +1,21 @@
 const bcrypt = require('bcryptjs');
 const User = require('../models/user');
+const { validationResult } = require('express-validator');
 
 module.exports = (req, res, next) => {
 
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        console.error(errors.array());
+        /* #swagger.responses[400] = { 
+            schema: { $ref: "#/definitions/ValidationErrorResponse" },
+            description: 'Validation error.' 
+        } */
+        return res.status(400).send(errors.array());
+    }
+
     const username = req.body['user-details']['username'];
-    const password = req.body['user-details']['password'];
+    const password = req.body['user-details']['password'];    
 
     User.findOne({ username: username })
         .then(u => {
@@ -47,5 +58,5 @@ module.exports = (req, res, next) => {
             res.status(500).send({
                 message: 'Internal Server Error'
             });
-        })
+        })   
 }

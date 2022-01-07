@@ -1,5 +1,6 @@
 const bcrypt = require('bcryptjs');
 const User = require('../models/user');
+const { validationResult } = require('express-validator');
 
 exports.login = (req, res) => {
     // #swagger.tags = ['User']
@@ -12,6 +13,16 @@ exports.login = (req, res) => {
             type: 'object',
             schema: { $ref: "#/definitions/UserAuthDtls" }
     } */
+
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        console.error(errors.array());
+        /* #swagger.responses[400] = { 
+            schema: { $ref: "#/definitions/ValidationErrorResponse" },
+            description: 'Validation error.' 
+        } */
+        return res.status(400).send(errors.array());
+    }
 
     const username = req.body['username'];
     const password = req.body['password'];
@@ -77,56 +88,49 @@ exports.register = (req, res) => {
             schema: { $ref: "#/definitions/UserDtls" }
     } */
 
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        console.error(errors.array());
+        /* #swagger.responses[400] = { 
+            schema: { $ref: "#/definitions/ValidationErrorResponse" },
+            description: 'Validation error.' 
+        } */
+        return res.status(400).send(errors.array());
+    }
+
     const fullName = req.body['registration-name'];
     const username = req.body['username'];
     const password = req.body['password'];
     
-    User.findOne({ username: username })
-        .then(u => {
-            if (u) {
-                return res.status(400).send({
-                    message: 'The username is already taken'
-                });
-            }
-            return bcrypt.hash(password, 12)
-                    .then(hashPassword => {
-                        const user = new User({
-                            fullName: fullName,
-                            username: username, 
-                            password: hashPassword
-                        });
-                    
-                        user.save()
-                            .then(u => {
-                                /* #swagger.responses[201] = { 
-                                    schema: { $ref: "#/definitions/RegisterSuccessResponse" },
-                                    description: 'User registration successful.' 
-                                } */
-                                res.status(201).send({
-                                    message: 'User Registered Successfully',
-                                    "registration-name": fullName
-                                });
-                            })
-                            .catch(err => {
-                                console.log(err);
-                                /* #swagger.responses[500] = { 
-                                    schema: { $ref: "#/definitions/InternalServerError" },
-                                    description: 'Internal Server Error' 
-                                } */
-                                res.status(500).send({
-                                    message: 'Internal Server Error'
-                                });
-                            });
-                    })
-        })        
-        .catch(err => {
-            console.log(err);
-            /* #swagger.responses[500] = { 
-                schema: { $ref: "#/definitions/InternalServerError" },
-                description: 'Internal Server Error' 
-            } */
-            res.status(500).send({
-                message: 'Internal Server Error'
+    
+    bcrypt.hash(password, 12)
+        .then(hashPassword => {
+            const user = new User({
+                fullName: fullName,
+                username: username, 
+                password: hashPassword
             });
+        
+            user.save()
+                .then(u => {
+                    /* #swagger.responses[201] = { 
+                        schema: { $ref: "#/definitions/RegisterSuccessResponse" },
+                        description: 'User registration successful.' 
+                    } */
+                    return res.status(201).send({
+                            message: 'User Registered Successfully',
+                            "registration-name": fullName
+                        });
+                })
+                .catch(err => {
+                    console.log(err);
+                    /* #swagger.responses[500] = { 
+                        schema: { $ref: "#/definitions/InternalServerError" },
+                        description: 'Internal Server Error' 
+                    } */
+                    return res.status(500).send({
+                            message: 'Internal Server Error'
+                        });
+                });
         });
 }

@@ -127,6 +127,14 @@ const doc = {
         QuestionDeleteSuccessResponse: {
             message: 'Question deleted successfully',            
         },
+        ValidationErrorResponse: [
+            {
+                "value": "string",
+                "msg": "string",
+                "param": "string",
+                "location": "string"
+            }
+        ],
         InternalServerError: {
             message: 'Internal Server Error'
         }

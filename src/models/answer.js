@@ -5,11 +5,11 @@ const Schema = mongoose.Schema;
 const autoIncrement = require('mongoose-auto-increment')
 
 const answerSchema = new Schema({
-    id: { type: Number, unique: true },
+    id: { type: Number, index: false },
     answer: { type: String, required: true },    
     createdBy: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     updatedBy: { type: Schema.Types.ObjectId, ref: 'User', required: true }
-}, {timestamps: true})
+}, {timestamps: true, autoIndex: false })
 
 autoIncrement.initialize(mongoose.connection);
 

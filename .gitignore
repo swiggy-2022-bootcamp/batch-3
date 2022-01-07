@@ -105,3 +105,6 @@ dist
 
 # Vim temp files
 *~
+
+# MongoDb data folder
+data

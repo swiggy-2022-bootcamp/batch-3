@@ -1,19 +1,23 @@
-const { v4: uuidv4 } = require('uuid');
+const mongoose = require('mongoose');
 
-class Answer {
-    
-    constructor(answer, userId) {
-        this.id = uuidv4();
-        this.answer = answer;        
+const Schema = mongoose.Schema;
 
-        this.createdBy = userId;        
-        this.updatedBy = userId;
+const autoIncrement = require('mongoose-auto-increment')
 
-        const currentTs = new Date().toISOString();
-        this.createdTs = currentTs;
-        this.updatedTs = currentTs;
-    }
+const answerSchema = new Schema({
+    id: { type: Number, unique: true },
+    answer: { type: String, required: true },    
+    createdBy: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+    updatedBy: { type: Schema.Types.ObjectId, ref: 'User', required: true }
+}, {timestamps: true})
 
-}
+autoIncrement.initialize(mongoose.connection);
 
-module.exports = Answer;
+answerSchema.plugin(autoIncrement.plugin, {
+    model: 'answer',
+    field: 'id',
+    startAt: 1,
+    incrementBy: 1
+});
+
+module.exports = mongoose.model('Answer', answerSchema);

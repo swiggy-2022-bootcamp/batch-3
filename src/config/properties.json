@@ -1,0 +1,18 @@
+{
+    "dvl": {
+        "PORT": 3000,
+        "MONGODB_URI": "mongodb://localhost:27017/qa-platform"
+    },
+    "uat": {
+        "PORT": 3000,
+        "MONGODB_URI": "mongodb://localhost:27017/qa-platform"
+    },
+    "stage": {
+        "PORT": 3000,
+        "MONGODB_URI": "mongodb://localhost:27017/qa-platform"
+    },
+    "prod": {
+        "PORT": 3000,
+        "MONGODB_URI": "mongodb://localhost:27017/qa-platform"
+    }
+}

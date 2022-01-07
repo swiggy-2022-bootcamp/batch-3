@@ -77,6 +77,9 @@ const doc = {
             message: 'Question added successfully',
             'question-id': 'b0a23ed0-64e9-43d7-9f57-87d88043e116'
         },
+        QuestionAddErrorResponse: {
+            message: 'Failed to post question.'
+        },
         AnswerAddSuccessResponse: {
             message: "answer posted successfully",
             'question-id': 'b0a23ed0-64e9-43d7-9f57-87d88043e116'
@@ -120,6 +123,12 @@ const doc = {
                     "updatedTs": "2022-01-06T09:51:21.218Z"
                 }
             ]
+        },
+        QuestionDeleteSuccessResponse: {
+            message: 'Question deleted successfully',            
+        },
+        InternalServerError: {
+            message: 'Internal Server Error'
         }
     }
 }

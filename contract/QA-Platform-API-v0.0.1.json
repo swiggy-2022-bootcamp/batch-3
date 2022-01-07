@@ -110,6 +110,12 @@
             "schema": {
               "$ref": "#/definitions/QuestionAddSuccessResponse"
             }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/InternalServerError"
+            }
           }
         }
       },
@@ -124,6 +130,12 @@
             "description": "Fetch all questions successful.",
             "schema": {
               "$ref": "#/definitions/FetchAllQuestionsSuccessResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/InternalServerError"
             }
           }
         }
@@ -158,6 +170,12 @@
             "schema": {
               "$ref": "#/definitions/AnswerAddSuccessResponse"
             }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/InternalServerError"
+            }
           }
         }
       },
@@ -189,6 +207,12 @@
             "schema": {
               "$ref": "#/definitions/AnswerUpdateSuccessResponse"
             }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/InternalServerError"
+            }
           }
         }
       }
@@ -219,6 +243,12 @@
             "schema": {
               "$ref": "#/definitions/FetchQuestionSuccessResponse"
             }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/InternalServerError"
+            }
           }
         }
       },
@@ -243,7 +273,16 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Fetch question successful.",
+            "schema": {
+              "$ref": "#/definitions/FetchQuestionSuccessResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/InternalServerError"
+            }
           }
         }
       }
@@ -399,6 +438,15 @@
         }
       }
     },
+    "QuestionAddErrorResponse": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Failed to post question."
+        }
+      }
+    },
     "AnswerAddSuccessResponse": {
       "type": "object",
       "properties": {
@@ -542,6 +590,24 @@
               }
             }
           }
+        }
+      }
+    },
+    "QuestionDeleteSuccessResponse": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Question deleted successfully"
+        }
+      }
+    },
+    "InternalServerError": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Internal Server Error"
         }
       }
     }

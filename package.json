@@ -21,6 +21,8 @@
   "dependencies": {
     "body-parser": "^1.19.1",
     "express": "^4.17.2",
+    "mongoose": "^6.1.5",
+    "mongoose-auto-increment": "^5.0.1",
     "morgan": "^1.10.0",
     "rotating-file-stream": "^3.0.2",
     "swagger-autogen": "^2.18.4",

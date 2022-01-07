@@ -9,6 +9,9 @@ const swaggerFile = require('../contract/QA-Platform-API-v0.0.1.json')
 const morgan = require('morgan')
 const rfs = require('rotating-file-stream')
 
+require('./config/config');
+require('./config/db.config');
+
 // Import controllers
 const identityRoutes = require('./routes/identity');
 const qaPlatformRoutes = require('./routes/qa-platform');

@@ -1,34 +1,29 @@
-const { v4: uuidv4 } = require('uuid');
+const mongoose = require('mongoose');
+const Answer = require('./answer').schema;
 
-class Question {
-    answers = [];
+const Schema = mongoose.Schema;
 
-    constructor(title, body, userId) {
-        this.id = uuidv4();
-        this.title = title;
-        this.body = body;
+const autoIncrement = require('mongoose-auto-increment')
 
-        this.createdBy = userId;        
-        this.updatedBy = userId;
+const questionSchema = new Schema({
+    id: { type: Number, unique: true },
+    title: { type: String, required: true },
+    body: { type: String, required: true },
+    answers: {
+        type: [Answer],
+        default: []
+    },
+    createdBy: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+    updatedBy: { type: Schema.Types.ObjectId, ref: 'User', required: true }
+}, {timestamps: true})
 
-        const currentTs = new Date().toISOString();
-        this.createdTs = currentTs;
-        this.updatedTs = currentTs;
-    }
+autoIncrement.initialize(mongoose.connection);
 
-    addAnswer(ans) {
-        this.answers.push(ans);
-    }
+questionSchema.plugin(autoIncrement.plugin, {
+    model: 'question',
+    field: 'id',
+    startAt: 1,
+    incrementBy: 1
+});
 
-    getAnswer(id) {
-        this.answers.find(ans => ans.id == id);
-    }
-
-    updateAnswer(userId, updatedAns) {
-        this.answers = this.answers.filter(a => a.userId == userId);        
-        this.answers.push(updatedAns);
-    }
-
-}
-
-module.exports = Question;
+module.exports = mongoose.model('Question', questionSchema);

@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('../utils/path');
+const Question = require('../models/question'); 
 
 class QuestionsDao {
     questions = [];
@@ -22,8 +23,23 @@ class QuestionsDao {
     }
 
     static addQuestion = (question) => {
-        this.questions.push(question);
-        this.updateFile();
+        // this.questions.push(question);
+        // this.updateFile();
+
+        const q = new Question({
+            title: question.title,
+            body: question.body,            
+            createdBy: question.userId,
+            updatedBy: question.userId
+        });
+        q.save()
+            .then(res => {
+                console.log(res);
+                return res;
+            })
+            .catch(err => {
+                console.log(err);
+            })
     }
 
     static addAnswer = (questionId, answer) => {        

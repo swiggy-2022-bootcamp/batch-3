@@ -20,4 +20,33 @@ router.post('/', (req, res, next) => {
   })
 });
 
+/* GET all meetings for a user, validate user*/
+router.get('/meetings', (req, res, next) => {
+  const {userid, password} = req.body
+
+  var meetings = [
+    {
+      "date-of-meeting" : "2020-01-20",
+      "start-time" : "14:00",
+      "end-time" : "14:30",
+      "description" : "Sprint Retrospective",
+      "email-ids-of-attendees" : "irov@swiggy.com,jolly@swiggy.com,kalashnikov@swiggy.com,lango@swiggy.com"
+    },{
+      "date-of-meeting" : "2020-01-07",
+      "start-time" : "11:00",
+      "end-time" : "12:00",
+      "description" : "Daily Scrum Meeting",
+      "email-ids-of-attendees" : "eric@swiggy.com,faizal@swiggy.com,greta@swiggy.com,henry@swiggy.com"
+    },{
+      "date-of-meeting" : "2020-01-20",
+      "start-time" : "14:00",
+      "end-time" : "14:30",
+      "description" : "Sprint Retrospective",
+      "email-ids-of-attendees" : "irov@swiggy.com,jolly@swiggy.com,kalashnikov@swiggy.com,lagno@swiggy.com"
+    }
+  ]
+
+  res.send({meetings})
+})
+
 module.exports = router;

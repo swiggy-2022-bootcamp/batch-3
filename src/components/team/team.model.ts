@@ -14,8 +14,11 @@ class TeamModel {
         if (!body.name) {
             throw new HTTP401Error('Missing Fields');
         }
-        body = { ...body, members: [] };
+        if (!body.members) {
+            body.members = []
+        }
         body.members.push(email);
+        body.creator=email;
         let t: ITeamModel = new Team(body);
         await t.save();
         return { success: true, id: t._id };
@@ -31,6 +34,10 @@ class TeamModel {
 
     public async leave(id: string, email: string) {
         if (isValidMongoId(id)) {
+            let t = await Team.findOne({ _id: id, members: email }).lean();
+            if (!t) {
+                throw new HTTP401Error('No such team exist/ you are not a member');
+            }
             let session = await startSession();
             session.startTransaction();
             try {
@@ -48,9 +55,32 @@ class TeamModel {
         }
     }
 
+    public async removeFromTeam(id: string, email: string, member: string) {
+        if (isValidMongoId(id)) {
+            let t = await Team.findOne({ _id: id, members: email }).lean();
+            if (t.creator !== email) {
+                throw new HTTP401Error('Only the creator can remove a member');
+            }
+            let session = await startSession();
+            session.startTransaction();
+            try {
+                await Team.updateOne({ _id: new ObjectID(id) }, { $pull: { members: member } }, { session })
+                await Meet.updateMany({ teamId: new ObjectID(id) }, { $pull: { attendees: member } }, { session })
+                await session.commitTransaction();
+                session.endSession();
+                return { success: true }
+            } catch (e) {
+                await session.abortTransaction();
+                session.endSession();
+            }
+        } else {
+            throw new HTTP401Error('Invalid MongoDb Id')
+        }
+    }
+
     public async createMeeting(body: any, id: string, email: string) {
         if (isValidMongoId(id)) {
-            let team = await Team.findOne({ $and: [{ _id: new ObjectID(id) }, { members: email }] });       
+            let team = await Team.findOne({ $and: [{ _id: new ObjectID(id) }, { members: email }] });
             if (team) {
                 return await meetModel.create({ ...body, teamId: id, attendees: team.members }, email);
             } else {

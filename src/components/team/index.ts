@@ -25,6 +25,11 @@ export default [
     path: "/team",
     method: "get",
     handler: [teamController.fetchAll]
+  },
+  {
+    path: "/team/member",
+    method: "delete",
+    handler: [teamController.removeFromTeam]
   }
 ];
 

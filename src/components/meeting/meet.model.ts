@@ -64,6 +64,9 @@ class MeetModel {
             }
         }
         let today = new Date();
+        if (body.startDate && body.endDate) {
+            condition.date = { $gte: new Date(body.startDate), $lte: new Date(body.endDate) }
+        }
         if (body.mode === 'past') {
             condition.date = { $lt: today };
         }

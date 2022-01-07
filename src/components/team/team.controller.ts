@@ -53,7 +53,20 @@ class MeetController {
     public leave = async (req: Request, res: Response, next: NextFunction) => {
         const responseHandler = new ResponseHandler();
         try {
-            let data = await teamModel.leave(req.params.id,req.userId);
+            let data = await teamModel.leave(req.params.id, req.userId);
+            responseHandler
+                .reqRes(req, res)
+                .onCreate(msg.LEAVE, data)
+                .send();
+        } catch (e) {
+            next(responseHandler.sendError(e));
+        }
+    };
+
+    public removeFromTeam = async (req: Request, res: Response, next: NextFunction) => {
+        const responseHandler = new ResponseHandler();
+        try {
+            let data = await teamModel.removeFromTeam(req.body.id, req.userId, req.body.email);
             responseHandler
                 .reqRes(req, res)
                 .onCreate(msg.LEAVE, data)

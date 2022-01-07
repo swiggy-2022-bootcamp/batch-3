@@ -4,7 +4,8 @@ import { ITeamModel } from "./team.interface";
 export const TeamSchema: Schema = new Schema(
     {
         name: String,
-        members: [String]
+        members: [String],
+        creator: String
     },
     {
         timestamps: true

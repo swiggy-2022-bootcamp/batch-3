@@ -4,9 +4,20 @@
 const { DataTypes, Model } = require('sequelize');
 const { sequelize } = require('../config/database');
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 /* Define the User class */
 class User extends Model {
+
+    static async generateJWT ( username ) {
+        const SECRET = process.env.JWT_SECRET;
+        const token = await jwt.sign(
+            { username: username },
+            SECRET,
+            { expiresIn: '1h' }
+        );
+        return token;
+    }
 
     // Static Method to Verify Password
     static async checkPassword (username, password) {
@@ -17,10 +28,11 @@ class User extends Model {
         return false;
     }
 
-    // Instance Method for matching password
+    // Method for matching password
     async isMatched (password) {
         return bcrypt.compareSync(password, this.password);
     }
+
 };
 
 /* Initialize User Model */
@@ -56,11 +68,8 @@ User.init(
             type: DataTypes.STRING,
             field: 'password',
             set(value) {
-                // Generate salt
                 const salt = bcrypt.genSaltSync(10);
-                // Generate hashed password
                 const hash = bcrypt.hashSync(value, salt);
-                // Substitute hashed password with password
                 this.setDataValue('password', hash);
             }
         }

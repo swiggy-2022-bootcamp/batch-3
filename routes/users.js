@@ -41,16 +41,14 @@ router.post('/registration', async (req, res, next) => {
 /* POST: User LOGIN */
 router.post('/login', async (req, res) => {
 
-  // Destructure Request Body
   const { username, password } = req.body;
-
-  // Check Password
   const isMatched = await User.checkPassword(username, password);
-
+  const token = await User.generateJWT(username);
   // Create response
   if(isMatched) {
     return res.status(201).json({
-      message: USER_LOGIN_SUCCESS
+      message: USER_LOGIN_SUCCESS,
+      token: token
     })
   }
 

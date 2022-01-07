@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // function () {}
+
+      function sayHello() {
+        console.log("Hello Named Function How Are you ?");
+      }
+
+      sayHello();
+
+      var myFunction = function () {
+        console.log("Hello from Function Expression");
+      };
+
+      myFunction();
+
+      var sayHelloToMe = function helloWorld() {
+        console.log("hello wold for SayHelloTome");
+      };
+
+      var getInfo = (function () {
+        console.log("hello FROM SIF");
+        return "Hello world From SIF";
+        return {};
+        return ["Murali"];
+        return function () {
+          console.log("I am function from SIF");
+        };
+      })();
+      console.log(getInfo);
+
+      var getInfo = () => {};
+    </script>
+  </body>
+</html>

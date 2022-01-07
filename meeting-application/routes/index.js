@@ -11,5 +11,16 @@ router.get('/', async (req, res, next) => {
   });
 });
 
+var userids = ['ram@success.com'] //THIS IS TEMPORARY, THIS WILL COME FROM DB
+router.post('/login', (req, res, next) => {
+  const {userid, password} = req.body
+  console.log(userid, password)
+
+  if(userids.findIndex(element => element == userid) >= 0){ //THIS IS TEMPORARY, MAKE DB CALL TO CHECK
+    res.status(201).send({"message" : "Logged In Successfully"})
+  } else {
+    res.status(401).send({"message" : "Invalid Userid or Password"})
+  }
+});
 
 module.exports = router;

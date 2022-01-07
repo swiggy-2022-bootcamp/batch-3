@@ -9,11 +9,11 @@ router.get('/', function(req, res, next) {
 /* POST users route to register user*/
 router.post('/', (req, res, next) => {
 
-  var {userid,password} = req.body
-  var registrationName = req.body["registration-name"]
+  const {userid,password} = req.body
+  const registrationName = req.body["registration-name"]
 
   console.log(registrationName, userid, password)
-  
+
   res.status(201).send({
     'message' : 'User Registered Successfully',
     'registration-name' : `${registrationName}`

@@ -1,13 +1,7 @@
 var express = require('express');
-const { Question } = require('../models/question.model');
 const { User } = require('../models/user.model');
 const { USER_REGISTERATION_SUCCESS, USER_LOGIN_SUCCESS, USER_LOGIN_FAILED } = require('../utils/constants');
 var router = express.Router();
-
-/* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
-});
 
 
 /* POST user registration */

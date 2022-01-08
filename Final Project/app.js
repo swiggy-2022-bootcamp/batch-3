@@ -5,6 +5,7 @@ const morgan = require('morgan');
 
 // import routes
 const userRoute = require('./routes/userRoutes');
+const questionRoute = require('./routes/questionRoutes');
 const errorHandler = require('./controllers/errorController');
 const AppError = require('./utils/appError');
 
@@ -26,13 +27,12 @@ app.use(bodyParser.json());
 
 //Routes
 app.use('/', userRoute);
-
+app.use('/', questionRoute);
 
 //Handling remaining routes that doesn't exsists --- 404 Not Found
 app.all('*', (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
 });
-
 
 //global error handler
 app.use(errorHandler);

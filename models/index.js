@@ -12,14 +12,14 @@ const { Question } = require('./question.model');
 const { Answer } = require('./answer.model');
 
 (async () => {
-    await User.hasMany(Question);
-    await Question.belongsTo(User);
+    await User.hasMany(Question, { foreignKey: 'UserId'});
+    await Question.belongsTo(User, { foreignKey: 'UserId'});
 
     await Question.hasMany(Answer, { foreignKey: 'question_id'});
-    await Answer.belongsTo(Question);
+    await Answer.belongsTo(Question, { foreignKey: 'question_id'});
 
-    await User.hasMany(Answer);
-    await Answer.belongsTo(User);
+    await User.hasMany(Answer, { foreignKey: 'UserId'});
+    await Answer.belongsTo(User, { foreignKey: 'UserId'});
 })();
 
 console.log('SQLite: ✔ Association Established.')

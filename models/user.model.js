@@ -1,10 +1,9 @@
-/* Model Definition for Users table */
-
 /* Import Dependencies */
 const { DataTypes, Model } = require('sequelize');
 const { sequelize } = require('../config/database');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const { udpateBadge } = require('../utils/updateBadge');
 
 /* Define the User class */
 class User extends Model {
@@ -14,7 +13,7 @@ class User extends Model {
         const token = await jwt.sign(
             { username: username },
             SECRET,
-            { expiresIn: '1h' }
+            { expiresIn: '24h' }
         );
         return token;
     }
@@ -72,6 +71,16 @@ User.init(
                 const hash = bcrypt.hashSync(value, salt);
                 this.setDataValue('password', hash);
             }
+        },
+        reputation_point: {
+            type: DataTypes.NUMBER,
+            allowNull: false,
+            defaultValue: 0,
+        },
+        badge: {
+            type: DataTypes.ENUM,
+            values: ['NewBie', 'Apprentice', 'Advanced', 'Experienced', 'Superior', 'Ultra', 'Professional', 'Expert', 'Champion', 'Master', 'Celebrity', 'Legendary'],
+            defaultValue: 'NewBie',
         }
     },
     {
@@ -84,5 +93,20 @@ User.init(
     }
 )
 
+/*
+ * Hook for Updating badge according fto reputation_point.
+ */
+User.addHook('afterUpdate', async (user, options) => {
+    await udpateBadge(user, options)
+})
+
+
+/*
+ * Hook for factoring Date types.
+ */
+User.addHook('beforeCreate', (user, options) => {
+    user.dataValues.createdAt = new Date().toISOString().replace(/T/, ' '). replace(/\.. + /g, '');
+    user.dataValues.updatedAt = new Date().toISOString().replace(/T/, ' '). replace(/\.. + /g, '');
+});
 
 module.exports = { User }

@@ -13,10 +13,15 @@ const {
   getAnswersController,
 } = require("../controller/qna.controller");
 
+const {
+  createCommentsController,
+} = require("../controller/comment.controller");
+
 router.route("/register").post(createUserController);
 router.route("/login").post(logInUserController);
 router.route("/question").post(verifyToken, createQuestionController);
 router.route("/answer").post(verifyToken, createAnswerController);
 router.route("/question/:questionId").get(verifyToken, getAnswersController);
+router.route("/comment").post(verifyToken, createCommentsController);
 
 module.exports = router;

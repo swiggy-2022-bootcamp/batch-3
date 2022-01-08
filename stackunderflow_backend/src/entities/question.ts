@@ -5,17 +5,17 @@ import {
 } from "typeorm";
 
 @Entity()
-export class Users {
+export class  Questions{
 
     @PrimaryGeneratedColumn()
     pk: number;
 
     @Column()
-    username: String;
+    title: string;
 
-    @Column({name: "registration_name"})
-    registrationName: string;
+    @Column({name: "user_pk"})
+    userPK: number;
 
     @Column()
-    password: string;
+    body: string;
 }

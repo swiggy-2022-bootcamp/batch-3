@@ -1,17 +1,21 @@
 const jwt = require("jsonwebtoken");
 
-const verifyToken = (req, res, next) => {
+const verifyToken = async (req, res, next) => {
   const token =
     req.body.token || req.query.token || req.headers["x-access-token"];
 
   if (!token) {
-    return res.status(403).send("A token is required for authentication");
+    return await res
+      .status(403)
+      .json({ data: req.body, message: "Token not provided!" });
   }
   try {
     const decoded = jwt.verify(token, process.env.TOKEN_KEY);
     req.user = decoded;
   } catch (err) {
-    return res.status(401).send("Invalid Token");
+    return await res
+      .status(401)
+      .json({ data: req.body, message: "Invalid credentials!" });
   }
   return next();
 };

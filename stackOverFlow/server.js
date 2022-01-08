@@ -127,6 +127,29 @@ app.post("/question", verifyToken, async (req, res) => {
   }
 });
 
+app.post("/answer", verifyToken, async (req, res) => {
+  try {
+    const { question } = req.body;
+    const { questionId, answer } = question;
+
+    const insertAnswerQuery = `
+    INSERT INTO answers (questionId, answer, userId)
+    VALUES (?,?,?)
+    ON DUPLICATE KEY UPDATE answer = VALUES(answer)
+    `;
+
+    const insertAnswerQueryParams = [questionId, answer, req.user.userId];
+
+    const response = await query(insertAnswerQuery, insertAnswerQueryParams);
+
+    res
+      .status(200)
+      .json({ questionId, message: "Answer posted successfully!" });
+  } catch (err) {
+    console.log(err);
+  }
+});
+
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
 });

@@ -13,6 +13,7 @@ router.post("/login", async function (req, res, next) {
   let { email, password } = req.body;
   var emailExist = await User.findOne({ email });
   // check if the user exists
+  console.log(email, emailExist);
   if (!emailExist) return res.json({ msg: "User does not exist" });
   else {
     // if user exists then check if password is correct
@@ -20,7 +21,7 @@ router.post("/login", async function (req, res, next) {
     if (!validpass) res.status(400).send({ msg: "Password is invalid" });
 
     // if password is correct then send jwt token
-    const token = jwt.sign({ email }, "some secret");
+    const token = jwt.sign({ email }, "somesecret");
     res.header("auth-token", token).send({ msg: "Welcome", token });
   }
 });
@@ -44,5 +45,19 @@ router.post("/register", async function (req, res, next) {
     res.json({ msg: "Some error occured", error });
   }
 });
+
+router.get("/getAllUsers", validateUser, (req, res) => {
+  res.json({ msg: "from getAllUsers" });
+});
+
+function validateUser(req, res, next) {
+  let jwtToken = req.headers.authorization;
+  console.log(jwtToken);
+
+  jwt.verify(jwtToken, "somesecret", (err, result) => {
+    if (result) next();
+    else res.json({ msg: "Invalid Auth token." });
+  });
+}
 
 module.exports = router;

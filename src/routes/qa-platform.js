@@ -1,6 +1,6 @@
 const express = require('express');
 const authenticate = require('../controllers/auth')
-const { body, param } = require('express-validator')
+const { body, header } = require('express-validator')
 
 const router = express.Router();
 
@@ -9,6 +9,18 @@ const qaPlatformController = require('../controllers/qa-platform');
 router.post(
     '/question',
     [ 
+        header('authorization')            
+            .custom(val => {
+                if (!val) {
+                    throw new Error('Required');
+                }
+
+                const arr = val.split(' ');                
+                if (!val.toLowerCase().startsWith("bearer") || !(arr.length == 2)) {
+                    throw new Error('Auhtorization token is invalid');
+                }
+                return true;
+            }),
         body('user-details.username')
             .exists().withMessage('Required')
             .isEmail().withMessage('Username should be a valid email')
@@ -25,14 +37,19 @@ router.post(
 
 router.post(
     '/question/:questionId/answer',
-    [ 
-        body('user-details.username')
-            .exists().withMessage('Required')
-            .isEmail().withMessage('Username should be a valid email')
-            .normalizeEmail(),
-        body('user-details.password')
-            .exists().withMessage('Required')
-            .isLength({ min: 6 }).withMessage('Password must be atleast 6 characters long'),
+    [      
+        header('authorization')            
+            .custom(val => {
+                if (!val) {
+                    throw new Error('Required');
+                }
+
+                const arr = val.split(' ');                
+                if (!val.toLowerCase().startsWith("bearer") || !(arr.length == 2)) {
+                    throw new Error('Auhtorization token is invalid');
+                }
+                return true;
+            }), 
         body('question.question-id')
             .notEmpty().withMessage('Required')            
             .isInt({ min: 1 }),
@@ -50,14 +67,19 @@ router.post(
 
 router.put(
     '/question/:questionId/answer', 
-    [ 
-        body('user-details.username')
-            .exists().withMessage('Required')
-            .isEmail().withMessage('Username should be a valid email')
-            .normalizeEmail(),
-        body('user-details.password')
-            .exists().withMessage('Required')
-            .isLength({ min: 6 }).withMessage('Password must be atleast 6 characters long'),
+    [
+        header('authorization')            
+            .custom(val => {
+                if (!val) {
+                    throw new Error('Required');
+                }
+
+                const arr = val.split(' ');                
+                if (!val.toLowerCase().startsWith("bearer") || !(arr.length == 2)) {
+                    throw new Error('Auhtorization token is invalid');
+                }
+                return true;
+            }),
         body('question.question-id')
             .notEmpty().withMessage('Required')            
             .isInt({ min: 1 }),
@@ -76,13 +98,18 @@ router.put(
 router.get(
     '/question',
     [ 
-        body('user-details.username')
-            .exists().withMessage('Required')
-            .isEmail().withMessage('Username should be a valid email')
-            .normalizeEmail(),
-        body('user-details.password')
-            .exists().withMessage('Required')
-            .isLength({ min: 6 }).withMessage('Password must be atleast 6 characters long')        
+        header('authorization')            
+            .custom(val => {
+                if (!val) {
+                    throw new Error('Required');
+                }
+
+                const arr = val.split(' ');                
+                if (!val.toLowerCase().startsWith("bearer") || !(arr.length == 2)) {
+                    throw new Error('Auhtorization token is invalid');
+                }
+                return true;
+            }),     
     ], 
     authenticate, 
     qaPlatformController.getAllQuestions
@@ -90,14 +117,19 @@ router.get(
 
 router.get(
     '/question/:questionId',
-    [ 
-        body('user-details.username')
-            .exists().withMessage('Required')
-            .isEmail().withMessage('Username should be a valid email')
-            .normalizeEmail(),
-        body('user-details.password')
-            .exists().withMessage('Required')
-            .isLength({ min: 6 }).withMessage('Password must be atleast 6 characters long')        
+    [
+        header('authorization')            
+            .custom(val => {
+                if (!val) {
+                    throw new Error('Required');
+                }
+
+                const arr = val.split(' ');                
+                if (!val.toLowerCase().startsWith("bearer") || !(arr.length == 2)) {
+                    throw new Error('Auhtorization token is invalid');
+                }
+                return true;
+            }),
     ], 
     authenticate, 
     qaPlatformController.getQuestion

@@ -1,8 +1,9 @@
 const bcrypt = require('bcryptjs');
 const User = require('../models/user');
+const jwt = require('jsonwebtoken');
 const { validationResult } = require('express-validator');
 
-exports.login = (req, res) => {
+exports.login = async (req, res) => {
     // #swagger.tags = ['User']
     // #swagger.description = 'Endpoint for user login.'
 
@@ -27,56 +28,75 @@ exports.login = (req, res) => {
     const username = req.body['username'];
     const password = req.body['password'];
  
-    User.findOne({ username: username })
-        .then(u => {
-            if (!u) {
-                /* #swagger.responses[401] = { 
-                    schema: { $ref: "#/definitions/Login401ErrorResponse" },
-                    description: 'Unauthorized.' 
-                } */
-                return res.status(401).send({
-                    message: 'Sorry invalid credentials'
-                });
-            }
-            bcrypt.compare(password, u.password)
-            .then(isEqual => {
-                if (!isEqual) {
-                    return res.status(401).send({
-                        message: 'Sorry invalid credentials'
-                    });
-                }
-                /* #swagger.responses[200] = { 
-                    schema: { $ref: "#/definitions/LoginSuccessResponse" },
-                    description: 'Login successful.' 
-                } */
-                return res.status(200).send({
-                    message: 'user logged in successfully'
-                });
-            })
-            .catch(err => {
-                console.log(err);
-                /* #swagger.responses[500] = { 
-                    schema: { $ref: "#/definitions/InternalServerError" },
-                    description: 'Internal Server Error' 
-                } */
-                res.status(500).send({
-                    message: 'Internal Server Error'
-                });
-            })
-        })
-        .catch(err => {
-            console.log(err);
-            /* #swagger.responses[500] = { 
-                schema: { $ref: "#/definitions/InternalServerError" },
-                description: 'Internal Server Error' 
-            } */
-            res.status(500).send({
-                message: 'Internal Server Error'
+    let user;
+    try {
+        user = await User.findOne({ username: username }).exec();
+    } catch(err) {
+        console.error(err);
+        /* #swagger.responses[500] = { 
+            schema: { $ref: "#/definitions/InternalServerError" },
+            description: 'Internal Server Error' 
+        } */
+        return res.status(500).send({
+            message: 'Internal Server Error'
+        });
+    }
+
+    if (!user) {
+        /* #swagger.responses[401] = { 
+            schema: { $ref: "#/definitions/Login401ErrorResponse" },
+            description: 'Unauthorized.' 
+        } */
+        return res.status(401).send({
+            message: 'Sorry invalid credentials'
+        });
+    }
+    
+    try {
+        const doMatch = await bcrypt.compare(password, user.password);
+        if (!doMatch) {
+            return res.status(401).send({
+                message: 'Sorry invalid credentials'
             });
-        })
+        }
+    } catch(err) {
+        console.error(err);
+        return res.status(500).send({
+            message: 'Internal Server Error'
+        });
+    }
+    
+    const token = jwt.sign(
+        { user_id: user._id, email: user.username },
+        "SECRET123",
+        {
+          expiresIn: "2h",
+        }
+    );
+
+    // save user token
+    user.token = token;
+    try {
+        await user.save();
+    } catch(err) {
+        console.error(err);
+        return res.status(500).send({
+            message: 'Internal Server Error'
+        });
+    }
+
+    /* #swagger.responses[200] = { 
+        schema: { $ref: "#/definitions/LoginSuccessResponse" },
+        description: 'Login successful.' 
+    } */
+    return res.status(200).send({
+        message: 'user logged in successfully',
+        token: token,
+        expiresIn: 7200
+    });
 }
 
-exports.register = (req, res) => {
+exports.register = async (req, res) => {
     // #swagger.tags = ['User']
     // #swagger.description = 'Endpoint for user registration.'
 
@@ -103,34 +123,33 @@ exports.register = (req, res) => {
     const password = req.body['password'];
     
     
-    bcrypt.hash(password, 12)
-        .then(hashPassword => {
-            const user = new User({
-                fullName: fullName,
-                username: username, 
-                password: hashPassword
+    const hashedPassword = await bcrypt.hash(password, 12);
+    const user = new User({
+        fullName: fullName,
+        username: username, 
+        password: hashedPassword
+    });
+
+    let savedUser;
+    try {
+        savedUser = await user.save();
+    } catch(err) {
+        console.error(err);
+        /* #swagger.responses[500] = { 
+            schema: { $ref: "#/definitions/InternalServerError" },
+            description: 'Internal Server Error' 
+        } */
+        return res.status(500).send({
+                message: 'Internal Server Error'
             });
-        
-            user.save()
-                .then(u => {
-                    /* #swagger.responses[201] = { 
-                        schema: { $ref: "#/definitions/RegisterSuccessResponse" },
-                        description: 'User registration successful.' 
-                    } */
-                    return res.status(201).send({
-                            message: 'User Registered Successfully',
-                            "registration-name": fullName
-                        });
-                })
-                .catch(err => {
-                    console.log(err);
-                    /* #swagger.responses[500] = { 
-                        schema: { $ref: "#/definitions/InternalServerError" },
-                        description: 'Internal Server Error' 
-                    } */
-                    return res.status(500).send({
-                            message: 'Internal Server Error'
-                        });
-                });
-        });
+    }
+
+    /* #swagger.responses[201] = { 
+        schema: { $ref: "#/definitions/RegisterSuccessResponse" },
+        description: 'User registration successful.' 
+    } */
+    return res.status(201).send({
+        message: 'User Registered Successfully',
+        "registration-name": savedUser.fullName
+    });
 }

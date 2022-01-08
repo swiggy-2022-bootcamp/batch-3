@@ -22,6 +22,7 @@ router.post(
         body('password').exists().isLength({ min: 6 }).withMessage('Password must be atleast 6 characters long'),
         body('registration-name').exists().isAlpha('en-US', {ignore: ' '}).withMessage('Name can only be composed of letters and spaces'),
         body('username').custom(async val => {
+            // Add try catch
             const u = await User.findOne({ username: val });
             if (u) {
                 return Promise.reject('Given email is already registered.');

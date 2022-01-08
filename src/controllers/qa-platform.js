@@ -24,6 +24,7 @@ exports.addQuestion = (req, res) => {
         createdBy: user,
         updatedBy: user
     });
+
     question.save()
         .then(q => {
 

@@ -1,8 +1,8 @@
-const bcrypt = require('bcryptjs');
-const User = require('../models/user');
+const jwt = require("jsonwebtoken");
+const User = require("../models/user");
 const { validationResult } = require('express-validator');
 
-module.exports = (req, res, next) => {
+module.exports = async (req, res, next) => {
 
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -14,49 +14,17 @@ module.exports = (req, res, next) => {
         return res.status(400).send(errors.array());
     }
 
-    const username = req.body['user-details']['username'];
-    const password = req.body['user-details']['password'];    
+    const token = req.headers['authorization'].split(" ")[1];
+    
+    let decoded;
+    try {
+        decoded = jwt.verify(token, "SECRET123");
+        
+    } catch (err) {
+        return res.status(401).send("Invalid Token");
+    }
 
-    User.findOne({ username: username })
-        .then(u => {
-            if (!u) {
-                /* #swagger.responses[401] = { 
-                    schema: { $ref: "#/definitions/Login401ErrorResponse" },
-                    description: 'Unauthorized.' 
-                } */
-                return res.status(401).send({
-                    message: 'Sorry invalid credentials'
-                });
-            }
-            bcrypt.compare(password, u.password)
-            .then(isEqual => {
-                if (!isEqual) {
-                    return res.status(401).send({
-                        message: 'Sorry invalid credentials'
-                    });
-                }
-                res.locals.user = u;                
-                next();
-            })
-            .catch(err => {
-                console.log(err);
-                /* #swagger.responses[500] = { 
-                    schema: { $ref: "#/definitions/InternalServerError" },
-                    description: 'Internal Server Error' 
-                } */
-                res.status(500).send({
-                    message: 'Internal Server Error'
-                });
-            })
-        })
-        .catch(err => {
-            console.log(err);
-            /* #swagger.responses[500] = { 
-                schema: { $ref: "#/definitions/InternalServerError" },
-                description: 'Internal Server Error' 
-            } */
-            res.status(500).send({
-                message: 'Internal Server Error'
-            });
-        })   
+    const user = await User.findById(decoded.user_id);
+    res.locals.user = user;
+    next();
 }

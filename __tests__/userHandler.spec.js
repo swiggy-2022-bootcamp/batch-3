@@ -1,7 +1,8 @@
 const iUserHandler = require('../handlers/userHandler');
 const UsersInMemoryDbWrapper = require('../db-wrappers/users_inMemoryDbWrapper');
+const bcryptWrapper = require('../wrappers/bcryptWrapper');
 
-const userHandler = new iUserHandler(new UsersInMemoryDbWrapper());
+const userHandler = new iUserHandler(new UsersInMemoryDbWrapper(), new bcryptWrapper());
 
 test('should register a user successfully', async () => {
     let username = "abcd@gmail.com";
@@ -16,7 +17,6 @@ test('should not allow duplicate users', async () => {
     let password = "123";
     let registrationName = "prafful";
     await expect(userHandler.register(registrationName, username, password)).rejects.toHaveProperty("message", "User already exists");
-    // expect(result.status).toThrow();
 })
 
 test('should allow login to registered users', async () => {

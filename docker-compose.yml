@@ -9,6 +9,7 @@ services:
     environment:
       MONGODB_URL: mongodb://mongo:27017/question-answer-app
       PORT: 3000
+      BCRYPT_ROUNDS: 10
     ports:
       - 3000:3000
     depends_on: 

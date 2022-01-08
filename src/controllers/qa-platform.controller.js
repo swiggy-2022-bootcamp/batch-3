@@ -135,17 +135,47 @@ exports.getAllQuestions = (req, res) => {
     // #swagger.tags = ['QA-Platform']
     // #swagger.description = 'Endpoint for fetching all questions.'
 
+    const page = req.query.page || 1;
+    const limit = req.query.limit || 5;
+
+    let total;
     Question.find()
+        .count()
+        .then(numQuestions => {
+            total = numQuestions;
+            return Question.find().skip((page-1) * limit).limit(limit);
+        })
         .then(questions => {
             /* #swagger.responses[200] = { 
                 schema: { $ref: "#/definitions/FetchAllQuestionsSuccessResponse" },
                 description: 'Fetch all questions successful.' 
             } */
-            res.status(200).send(questions);
+            return res.status(200)
+                .set({
+                    total: total,
+                    hasNextPage: (limit * page) < total,
+                    hasPreviousPage: page > 1,
+                    nextPage: page + 1,
+                    previousPage: page - 1,
+                    lastPage: Math.ceil(total / limit)
+                })
+                .send(questions);
         })
         .catch(err => {
             throw new ServerError(err);
         });
+
+    // Question.find()
+    //     .then(questions => {
+    //         /* #swagger.responses[200] = { 
+    //             schema: { $ref: "#/definitions/FetchAllQuestionsSuccessResponse" },
+    //             description: 'Fetch all questions successful.' 
+    //         } */
+    //         res.status(200).send(questions);
+    //     })
+    //     .catch(err => {
+    //         throw new ServerError(err);
+    //     });
 }
 
 exports.getQuestion = (req, res) => {

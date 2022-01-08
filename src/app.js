@@ -48,12 +48,6 @@ app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerFile))
 
 app.use(fallbackController.get404);
 
-// app.use((err, req, res, next) => {
-//   console.log('flag');
-//   console.log(err.name);
-//   return res.status(400).send('Validation Error');
-// })
-
 app.use(fallbackController.errorHandler);
 
 app.listen(port, () => {

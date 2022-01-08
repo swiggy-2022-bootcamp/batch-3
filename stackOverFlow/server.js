@@ -4,6 +4,8 @@ const dotenv = require("dotenv");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
+const { verifyToken } = require("./middleware/auth");
+
 const app = express();
 dotenv.config();
 
@@ -100,6 +102,10 @@ app.post("/login", async (req, res) => {
     console.log(err);
   }
   // Our register logic ends here
+});
+
+app.post("/welcome", verifyToken, (req, res) => {
+  res.status(200).send("Welcome 🙌 ");
 });
 
 app.listen(port, () => {

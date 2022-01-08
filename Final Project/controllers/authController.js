@@ -13,6 +13,16 @@ const signToken = id => {
 
   const createSendToken = (user, statusCode, res) => {
     const token = signToken(user._id);
+    const cookieOptions = {
+        expires: new Date(
+          Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
+        ),
+        httpOnly: true
+      };
+      if (process.env.NODE_ENV === 'production') cookieOptions.secure = true;
+    
+      res.cookie('jwt', token, cookieOptions);
+    
     // Remove password from output
     user.password = undefined;
   
@@ -63,7 +73,6 @@ exports.protect = catchAsync(async (req, res, next) => {
       token = req.headers.authorization.split(' ')[1];
     }
     if (!token || token === 'null') {
-        console.log(token)
       return next(
         new AppError('You are not logged in! Please log in to get access.', 401)
       );
@@ -94,3 +103,34 @@ exports.protect = catchAsync(async (req, res, next) => {
     req.user = currentUser;
     next();
   });
+
+  
+exports.updatePassword = catchAsync(async (req, res, next) => {
+    // Get user from collection
+    const user = await User.findById(req.user.id).select('+password');
+  
+    // Check if POSTed current password is correct
+    if (!(await user.correctPassword(req.body.passwordCurrent, user.password))) {
+      return next(new AppError('Your current password is wrong.', 401));
+    }
+  
+    // If so, update password
+    user.password = req.body.password;
+    await user.save();
+    // User.findByIdAndUpdate will NOT work as intended!
+  
+    // Log user in, send JWT
+    createSendToken(user, 201, res);
+  });
+
+  exports.restrictTo = (...roles) => {
+    return (req, res, next) => {
+      if (!roles.includes(req.user.role)) {
+        return next(
+          new AppError('You do not have permission to perform this action', 403)
+        );
+      }
+  
+      next();
+    };
+  };

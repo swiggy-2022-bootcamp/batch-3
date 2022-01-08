@@ -1,4 +1,5 @@
 var express = require('express');
+const { hasNotVoted } = require('../middlewares/hasNotVoted');
 const { User } = require('../models/user.model');
 const { USER_REGISTERATION_SUCCESS, USER_LOGIN_SUCCESS, USER_LOGIN_FAILED } = require('../utils/constants');
 var router = express.Router();
@@ -31,8 +32,11 @@ router.post('/registration', async (req, res, next) => {
       })
   }
   catch(error) {
+    if(error.message == 'Validation error') {
+      error.message = error.errors[0].message;
+    }
     return res.status(406).json({
-      message: error.errors[0].message
+      message: error.message
     })
   }
 })
@@ -58,4 +62,18 @@ router.post('/login', async (req, res) => {
   })
 })
 
+
+router.put('/update', hasNotVoted , async (req, res) => {
+  try{
+    const username = req.body.username;
+    const user = await User.findOne({ where: { username: username } });
+    user.reputation_point += 100;
+    await user.save();
+    return res.json({ msg: 'udpated', user})
+  }
+  catch(e) {
+    console.log(e)
+    return res.json({ msg: e.message })
+  }
+})
 module.exports = router;

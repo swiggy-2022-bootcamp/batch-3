@@ -7,5 +7,6 @@ module.exports = {
     QUESTION_POSTED_FAILED: 'Question Not Posted',
     ANSWER_POSTED_SUCCESS: 'Answer Posted Succesfully',
     ANSWER_POSTED_FAILED: 'Answer Not Posted',
-    ANSWER_UPDATED_SUCCESS: 'Answer Updated Successfully'
+    ANSWER_UPDATED_SUCCESS: 'Answer Updated Successfully',
+    ANSWER_VOTED_SUCCESS: 'Answer Voted Successfully'
 }

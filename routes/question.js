@@ -9,6 +9,7 @@ const {
   ANSWER_POSTED_SUCCESS,
   ANSWER_POSTED_FAILED,
   ANSWER_UPDATED_SUCCESS,
+  ANSWER_VOTED_SUCCESS,
 } = require("../utils/constants");
 const { hasAnswered } = require('../middlewares/hasAnswered');
 const { isAuthorized } = require('../middlewares/isAuthorized');
@@ -38,16 +39,23 @@ router.post("/ask", loginRequired, isAuthorized ,async (req, res) => {
 
 router.post("/all", loginRequired, isAuthorized,async (req, res) => {
   const user = req.user;
-  const askedQues = await Question.findAll({
-    include: Answer,
-  });
-  const response = {
-    msg: "Successfull Fetch Questions",
-    question: askedQues,
-  };
-  return res.json({
-    response,
-  });
+  try {
+
+    const askedQues = await Question.findAll({
+      include: Answer,
+    });
+    const response = {
+      msg: "Successfull Fetch Questions",
+      question: askedQues,
+    };
+    return res.json({
+      response,
+    });
+  }
+  catch (err) {
+    console.log(err)
+    res.json({msg: err.message})
+  }
 });
 
 
@@ -97,5 +105,22 @@ router.put("/:question_id/answer",
 });
 
 
+router.put('/:question_id/answer/upvote', loginRequired, isAuthorized, hasAnswered, async (req, res, next) => {
+  const answerObj = req.answerObj;
+  const user = req.user;
+  try {
+    await answerObj.upVote(user.id);
+    await answerObj.save();
+    return res.status(201).json({
+      message: ANSWER_VOTED_SUCCESS,
+      // "answer-id": answerObj.answer_id
+      answer: answerObj
+    })
+  }
+  catch(error) {
+    error.status = 401;
+    next(error);
+  }
 
+})
 module.exports = router;

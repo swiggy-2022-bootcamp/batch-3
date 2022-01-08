@@ -4,7 +4,17 @@ const { DataTypes, Model } = require('sequelize');
 const { sequelize } = require('../config/database');
 
 /* Declare Question Model */
-class Question extends Model {};
+class Question extends Model {
+
+    upVote (voterID) {
+        this.votes += 1;
+    }
+    downVote () {
+        if(this.votes) {
+            this.votes -= 1;
+        }
+    }
+};
 
 /* Initialize Question Model */
 Question.init(
@@ -25,6 +35,16 @@ Question.init(
             type: DataTypes.TEXT,
             allowNull: true,
             field: 'body'
+        },
+        votes: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            defaultValue: 0,
+            field: 'votes'
+        },
+        votersID: {
+            type: DataTypes.ARRAY(DataTypes.INTEGER),
+            field: 'votersID'
         }
     },
     {

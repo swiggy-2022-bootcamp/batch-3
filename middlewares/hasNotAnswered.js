@@ -18,6 +18,12 @@ async function hasNotAnswered (req, res, next) {
         }
         const user = req.user;
         const questionInstane = await Question.findByPk(question_id);
+        if(!questionInstane) {
+            const err = new Error('Question Id is not valid.');
+            err.status = 406;
+            next(err);
+            return;
+        }
         const answers = await questionInstane.getAnswers();
         const answered = answers.find((answer) => answer.UserId == user.id );
         if(!answered) {

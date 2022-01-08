@@ -1,6 +1,6 @@
 /* Custom Error Handler */
 function errorHandler (err, req, res, next) {
-    console.log(err.status)
+    if(!err.status) { err.status = 500; }
     res.status(err.status).json({message: err.message });
 }
 

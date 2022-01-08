@@ -65,3 +65,5 @@ package-lock.json
 
 # db files
 /db
+
+plan.txt

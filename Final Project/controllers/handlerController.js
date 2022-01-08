@@ -1,10 +1,17 @@
 const catchAsync = require('./../utils/catchAsync');
 const AppError = require('./../utils/appError');
 
-
-exports.createOne = Model =>
+const filterObj = (obj, ...allowedFields) => {
+  const newObj = {};
+  Object.keys(obj).forEach(el => {
+    if (allowedFields.includes(el)) newObj[el] = obj[el];
+  });
+  return newObj;
+};
+exports.createOne = (Model,...filteroptions) =>
   catchAsync(async (req, res, next) => {
-    const doc = await Model.create(req.body);
+    const filteredBody = filterObj(req.body, ...filteroptions)
+    const doc = await Model.create(filteredBody);
     res.status(201).json({
       status: 'success',
       doc
@@ -28,13 +35,7 @@ exports.getOne = (Model, popOptions) =>
       }
     });
   });
-const filterObj = (obj, ...allowedFields) => {
-    const newObj = {};
-    Object.keys(obj).forEach(el => {
-      if (allowedFields.includes(el)) newObj[el] = obj[el];
-    });
-    return newObj;
-  };
+
 
 exports.updateOne = (Model,...filteroptions)=>
   catchAsync(async (req, res, next) => {

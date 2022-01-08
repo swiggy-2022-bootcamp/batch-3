@@ -96,6 +96,11 @@ userSchema.virtual('questions',{
   foreignField:'owner',
   localField:'_id'
 })
+userSchema.virtual('answers',{
+  ref:'Answer',
+  foreignField:'owner',
+  localField:'_id'
+})
 
 const User = mongoose.model('User', userSchema);
 

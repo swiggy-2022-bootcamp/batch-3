@@ -5,9 +5,9 @@ const questionSchema = new mongoose.Schema(
     {
       title: {
         type: String,
-        required: [true, 'A title must have a name'],
+        required: [true, 'A title must not be empty'],
         trim: true,
-        maxlength: [20, 'A tour name must have less or equal then 40 characters'],
+        maxlength: [20, 'A title must have less or equal then 40 characters'],
       },
       body: {
         type: String,
@@ -35,6 +35,12 @@ const questionSchema = new mongoose.Schema(
       toObject: { virtuals: true }
     }
   );
+
+  questionSchema.virtual('answers',{
+    ref:'Answer',
+    foreignField:'question',
+    localField:'_id'
+  })
 
   const Question= mongoose.model('Question',questionSchema);
 

@@ -48,4 +48,4 @@ exports.deleteMe = catchAsync(async (req, res, next) => {
     });
 });
 
-exports.getUser=handler.getOne(User,'questions')
+exports.getUser=handler.getOne(User,'questions answers')

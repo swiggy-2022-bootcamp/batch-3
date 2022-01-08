@@ -52,7 +52,7 @@ app.post("/register", async (req, res) => {
     const user = await query(createUserQuery, createUserQueryParams);
 
     const token = jwt.sign(
-      { user_id: user.insertId, email },
+      { userId: user.insertId, email },
       process.env.TOKEN_KEY,
       {
         expiresIn: "2h",
@@ -85,17 +85,13 @@ app.post("/login", async (req, res) => {
 
     const user = await query(findUserQuery, findUserQueryParams);
 
-    console.log("user", user, user[0].password, password);
+    const userId = user[0].userId;
 
     if (user && (await bcrypt.compare(password, user[0].password))) {
-      const token = jwt.sign(
-        { user_id: user.userId, email },
-        process.env.TOKEN_KEY,
-        {
-          expiresIn: "2h",
-        }
-      );
-      res.status(200).json({ email, password, token });
+      const token = jwt.sign({ userId: userId, email }, process.env.TOKEN_KEY, {
+        expiresIn: "2h",
+      });
+      res.status(200).json({ userId, email, password, token });
     }
     res.status(400).send("Invalid Credentials");
   } catch (err) {
@@ -104,8 +100,31 @@ app.post("/login", async (req, res) => {
   // Our register logic ends here
 });
 
-app.post("/welcome", verifyToken, (req, res) => {
-  res.status(200).send("Welcome 🙌 ");
+app.post("/question", verifyToken, async (req, res) => {
+  try {
+    const { question } = req.body;
+    const { title, body } = question;
+
+    const insertQuestionQuery = `
+    INSERT INTO questions (title, body, userId)
+    VALUES (?,?,?)
+    `;
+
+    const insertQuestionQueryParams = [title, body, req.user.userId];
+
+    const response = await query(
+      insertQuestionQuery,
+      insertQuestionQueryParams
+    );
+
+    const questionId = response.insertId;
+
+    res
+      .status(200)
+      .json({ questionId, message: "Question posted successfully!" });
+  } catch (err) {
+    console.log(err);
+  }
 });
 
 app.listen(port, () => {

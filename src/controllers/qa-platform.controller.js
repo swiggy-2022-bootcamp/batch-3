@@ -1,6 +1,7 @@
 const User = require('../models/user.model');
 const Question = require('../models/question.model');
 const Answer = require('../models/answer.model');
+const ServerError = require('../error/server.error');
 
 exports.addQuestion = (req, res) => {
     // #swagger.tags = ['QA-Platform']
@@ -41,14 +42,7 @@ exports.addQuestion = (req, res) => {
             });
         })
         .catch(err => {
-            console.log(err);
-            /* #swagger.responses[500] = { 
-                schema: { $ref: "#/definitions/InternalServerError" },
-                description: 'Internal Server Error' 
-            } */
-            res.status(500).send({
-                message: 'Internal Server Error'
-            });
+            throw new ServerError(err);
         });
 }
 
@@ -94,14 +88,7 @@ exports.addAnswer = (req, res) => {
             });
         })
         .catch(err => {
-            console.log(err);
-            /* #swagger.responses[500] = { 
-                schema: { $ref: "#/definitions/InternalServerError" },
-                description: 'Internal Server Error' 
-            } */
-            res.status(500).send({
-                message: 'Internal Server Error'
-            });
+            throw new ServerError(err);
         });
 }
 
@@ -140,14 +127,7 @@ exports.updateAnswer = (req, res) => {
             })
         })
         .catch(err => {
-            console.log(err);
-            /* #swagger.responses[500] = { 
-                schema: { $ref: "#/definitions/InternalServerError" },
-                description: 'Internal Server Error' 
-            } */
-            res.status(500).send({
-                message: 'Internal Server Error'
-            });
+            throw new ServerError(err);
         });
 }
 
@@ -164,14 +144,7 @@ exports.getAllQuestions = (req, res) => {
             res.status(200).send(questions);
         })
         .catch(err => {
-            console.log(err);
-            /* #swagger.responses[500] = { 
-                schema: { $ref: "#/definitions/InternalServerError" },
-                description: 'Internal Server Error' 
-            } */
-            res.status(500).send({
-                message: 'Internal Server Error'
-            });
+            throw new ServerError(err);
         });
 }
 
@@ -191,14 +164,7 @@ exports.getQuestion = (req, res) => {
             res.status(200).send(question);
         })
         .catch(err => {
-            console.log(err);
-            /* #swagger.responses[500] = { 
-                schema: { $ref: "#/definitions/InternalServerError" },
-                description: 'Internal Server Error' 
-            } */
-            res.status(500).send({
-                message: 'Internal Server Error'
-            });
+            throw new ServerError(err);
         })    
 }
 
@@ -220,13 +186,6 @@ exports.deleteQuestion = (req, res) => {
             });
         })
         .catch(err => {
-            console.log(err);
-            /* #swagger.responses[500] = { 
-                schema: { $ref: "#/definitions/InternalServerError" },
-                description: 'Internal Server Error' 
-            } */
-            res.status(500).send({
-                message: 'Internal Server Error'
-            });
+            throw new ServerError(err);
         })  
 }

@@ -1,6 +1,9 @@
 const bcrypt = require('bcryptjs');
 const User = require('../models/user.model');
 const jwt = require('jsonwebtoken');
+const ServerError = require('../error/server.error');
+const IdentityError = require('../error/identity.error');
+const ValidationError = require('../error/validation.error');
 const { validationResult } = require('express-validator');
 
 exports.login = async (req, res) => {
@@ -16,13 +19,8 @@ exports.login = async (req, res) => {
     } */
 
     const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        console.error(errors.array());
-        /* #swagger.responses[400] = { 
-            schema: { $ref: "#/definitions/ValidationErrorResponse" },
-            description: 'Validation error.' 
-        } */
-        return res.status(400).send(errors.array());
+    if (!errors.isEmpty()) {        
+        throw new ValidationError(errors.array());   
     }
 
     const username = req.body['username'];
@@ -32,38 +30,22 @@ exports.login = async (req, res) => {
     try {
         user = await User.findOne({ username: username }).exec();
     } catch(err) {
-        console.error(err);
-        /* #swagger.responses[500] = { 
-            schema: { $ref: "#/definitions/InternalServerError" },
-            description: 'Internal Server Error' 
-        } */
-        return res.status(500).send({
-            message: 'Internal Server Error'
-        });
+        throw new ServerError(err);
     }
 
-    if (!user) {
-        /* #swagger.responses[401] = { 
-            schema: { $ref: "#/definitions/Login401ErrorResponse" },
-            description: 'Unauthorized.' 
-        } */
-        return res.status(401).send({
-            message: 'Sorry invalid credentials'
-        });
+    if (!user) {        
+        throw new IdentityError('Sorry invalid credentials', 401);
     }
     
+    let doMatch;
     try {
-        const doMatch = await bcrypt.compare(password, user.password);
-        if (!doMatch) {
-            return res.status(401).send({
-                message: 'Sorry invalid credentials'
-            });
-        }
+        doMatch = await bcrypt.compare(password, user.password);        
     } catch(err) {
-        console.error(err);
-        return res.status(500).send({
-            message: 'Internal Server Error'
-        });
+        throw new ServerError(err);
+    }
+
+    if (!doMatch) {
+        throw new IdentityError('Sorry invalid credentials', 401);
     }
     
     const token = jwt.sign(
@@ -79,10 +61,7 @@ exports.login = async (req, res) => {
     try {
         await user.save();
     } catch(err) {
-        console.error(err);
-        return res.status(500).send({
-            message: 'Internal Server Error'
-        });
+        throw new ServerError(err);
     }
 
     /* #swagger.responses[200] = { 
@@ -110,18 +89,29 @@ exports.register = async (req, res) => {
 
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        console.error(errors.array());
-        /* #swagger.responses[400] = { 
-            schema: { $ref: "#/definitions/ValidationErrorResponse" },
-            description: 'Validation error.' 
-        } */
-        return res.status(400).send(errors.array());
+        throw new ValidationError(errors.array());        
     }
 
     const fullName = req.body['registration-name'];
     const username = req.body['username'];
     const password = req.body['password'];
-    
+
+    let exisitingUser;
+    try {
+        exisitingUser = await User.findOne({ username: username });
+    } catch(err) {
+        throw new ServerError(err);
+    }
+    if (exisitingUser) {
+        throw new ValidationError([
+            {
+                "value": username,
+                "msg": "Provided email is already registered in the system.",
+                "param": "username",
+                "location": "body"
+            }
+        ]);
+    }
     
     const hashedPassword = await bcrypt.hash(password, 12);
     const user = new User({
@@ -134,14 +124,7 @@ exports.register = async (req, res) => {
     try {
         savedUser = await user.save();
     } catch(err) {
-        console.error(err);
-        /* #swagger.responses[500] = { 
-            schema: { $ref: "#/definitions/InternalServerError" },
-            description: 'Internal Server Error' 
-        } */
-        return res.status(500).send({
-                message: 'Internal Server Error'
-            });
+        throw new ServerError(err);
     }
 
     /* #swagger.responses[201] = { 

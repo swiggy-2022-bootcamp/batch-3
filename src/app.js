@@ -1,4 +1,5 @@
 const express = require('express')
+require('express-async-errors');
 const bodyParser = require('body-parser')
 
 // Swagger dependency
@@ -21,10 +22,10 @@ const app = express()
 
 // create a rotating write stream
 var accessLogStream = rfs.createStream('access.log', {
-    interval: '1d', // rotate daily
-    path: 'log'
-  })
- 
+  interval: '1d', // rotate daily
+  path: 'log'
+})
+
 // setup the logger
 app.use(morgan('combined', { stream: accessLogStream }))
 
@@ -47,6 +48,14 @@ app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerFile))
 
 app.use(fallbackController.get404);
 
+// app.use((err, req, res, next) => {
+//   console.log('flag');
+//   console.log(err.name);
+//   return res.status(400).send('Validation Error');
+// })
+
+app.use(fallbackController.errorHandler);
+
 app.listen(port, () => {
-    console.log(`Example app listening on port ${port}!`);
+  console.log(`Example app listening on port ${port}!`);
 })

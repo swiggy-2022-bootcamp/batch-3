@@ -88,7 +88,6 @@ router.put("/:question_id/answer",
   isAuthorized,
   hasAnswered,
   async (req, res) => {
-    const question_id = req.params.question_id;
     const { _, answer } = req.body.question;
     req.answerObj.answer = answer;
     req.answerObj.save();

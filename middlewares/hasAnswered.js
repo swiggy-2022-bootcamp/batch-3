@@ -18,7 +18,7 @@ async function hasAnswered (req, res, next) {
         }
         const user = req.user;
         const questionInstane = await Question.findByPk(question_id);
-        if(!questionInstane || (questionInstane.UserId !== user.id)) {
+        if(!questionInstane) {
             const err = new Error('Please Provide a valid question Id.');
             err.status = 406;
             next(err);
@@ -31,7 +31,7 @@ async function hasAnswered (req, res, next) {
             next();
             return;
         }
-        const err = new Error('You have  answered the question.')
+        const err = new Error('You have not answered the question.')
         err.status = 406;
         next(err);
         return;

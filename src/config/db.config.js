@@ -9,6 +9,6 @@ mongoose.connect(process.env.MONGODB_URI, {useNewUrlParser: true}, (err) => {
     }
 });
 
-require('../models/user')
-require('../models/question')
-require('../models/answer')
+require('../models/user.model')
+require('../models/question.model')
+// require('../models/answer.model')

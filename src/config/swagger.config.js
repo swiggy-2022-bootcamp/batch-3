@@ -6,7 +6,7 @@
 const swaggerAutogen = require('swagger-autogen')()
 
 const outputFile = 'contract/QA-Platform-API-v0.0.1.json'
-const endpointsFiles = ['src/routes/identity.js', 'src/routes/qa-platform.js']
+const endpointsFiles = ['src/routes/identity.route.js', 'src/routes/qa-platform.route.js']
 
 const doc = {
     info: {

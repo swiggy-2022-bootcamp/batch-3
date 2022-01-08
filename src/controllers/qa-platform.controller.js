@@ -1,6 +1,6 @@
-const User = require('../models/user');
-const Question = require('../models/question');
-const Answer = require('../models/answer');
+const User = require('../models/user.model');
+const Question = require('../models/question.model');
+const Answer = require('../models/answer.model');
 
 exports.addQuestion = (req, res) => {
     // #swagger.tags = ['QA-Platform']

@@ -1,10 +1,10 @@
 const express = require('express');
-const User = require('../models/user');
+const User = require('../models/user.model');
 const { body } = require('express-validator');
 
 const router = express.Router();
 
-const identityController = require('../controllers/identity');
+const identityController = require('../controllers/identity.controller');
 
 router.post(
     '/login', 

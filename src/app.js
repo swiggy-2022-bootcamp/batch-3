@@ -13,9 +13,9 @@ require('./config/config');
 require('./config/db.config');
 
 // Import controllers
-const identityRoutes = require('./routes/identity');
-const qaPlatformRoutes = require('./routes/qa-platform');
-const fallbackController = require('./controllers/fallback');
+const identityRoutes = require('./routes/identity.route');
+const qaPlatformRoutes = require('./routes/qa-platform.route');
+const fallbackController = require('./controllers/fallback.controller');
 
 const app = express()
 

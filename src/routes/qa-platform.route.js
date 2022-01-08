@@ -1,10 +1,10 @@
 const express = require('express');
-const authenticate = require('../controllers/auth')
+const authenticate = require('../controllers/auth.controller')
 const { body, header } = require('express-validator')
 
 const router = express.Router();
 
-const qaPlatformController = require('../controllers/qa-platform');
+const qaPlatformController = require('../controllers/qa-platform.controller');
 
 router.post(
     '/question',

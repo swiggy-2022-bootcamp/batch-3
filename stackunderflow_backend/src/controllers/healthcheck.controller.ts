@@ -4,7 +4,7 @@ interface HealthcheckResponse {
   message: string;
 }
 
-@Route("ping")
+@Route("healthcheck")
 export default class HealthcheckController {
   @Get("/")
   public async getMessage(): Promise<HealthcheckResponse> {

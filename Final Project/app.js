@@ -49,7 +49,7 @@ app.use(xss());
 
 //Routes
 app.use('/', userRoute);
-app.use('/', questionRoute);
+app.use('/question', questionRoute);
 
 //Handling remaining routes that doesn't exsists --- 404 Not Found
 app.all('*', (req, res, next) => {

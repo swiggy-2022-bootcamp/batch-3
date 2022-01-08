@@ -22,10 +22,8 @@ const questionSchema = new mongoose.Schema(
         default: 0
       },
       createDate: Date,
-      tags:[{
-        type: String
-    }],
-      Owner: 
+      tags:[String],
+      owner: 
         {
           type: mongoose.Schema.ObjectId,
           ref: 'User',

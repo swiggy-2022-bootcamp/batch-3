@@ -43,8 +43,11 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     default: true,
     select: false
+  }},{
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true }
   }
-});
+);
 
 userSchema.pre('save', async function(next) {
     // Only run this function if password was actually modified
@@ -88,6 +91,11 @@ userSchema.methods.changedPasswordAfter = function(JWTTimestamp) {
     return false;
 };
 
+userSchema.virtual('questions',{
+  ref:'Question',
+  foreignField:'owner',
+  localField:'_id'
+})
 
 const User = mongoose.model('User', userSchema);
 

@@ -12,6 +12,10 @@ export const findUserByUsername = async (name :String) :Promise<Users> => {
   const userRepository = getRepository(Users);
   console.log(name);
   return await userRepository.findOne({
-    select: ["pk"],
     where: {username: name}});
 } 
+
+export const createUser = async (registrationName :string, username :string, hashedPassword :string) => {
+  const userRepository = getRepository(Users);
+  await userRepository.insert({username: username, registrationName: registrationName, password: hashedPassword});
+}

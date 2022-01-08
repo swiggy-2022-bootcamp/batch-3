@@ -76,6 +76,32 @@ class MeetController {
         }
     };
 
+    public addToTeam = async (req: Request, res: Response, next: NextFunction) => {
+        const responseHandler = new ResponseHandler();
+        try {
+            let data = await teamModel.addToTeam(req.body.id, req.userId, req.body.email);
+            responseHandler
+                .reqRes(req, res)
+                .onCreate(msg.ADD, data)
+                .send();
+        } catch (e) {
+            next(responseHandler.sendError(e));
+        }
+    };
+
+    public fetchTeamById= async (req: Request, res: Response, next: NextFunction) => {
+        const responseHandler = new ResponseHandler();
+        try {
+            let data = await Team.findById(req.params.id);
+            responseHandler
+                .reqRes(req, res)
+                .onCreate(msg.LEAVE, data)
+                .send();
+        } catch (e) {
+            next(responseHandler.sendError(e));
+        }
+    };
+
 }
 
 export default new MeetController();

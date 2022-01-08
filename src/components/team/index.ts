@@ -27,9 +27,19 @@ export default [
     handler: [teamController.fetchAll]
   },
   {
+    path: "/team/:id",
+    method: "get",
+    handler: [teamController.fetchTeamById]
+  },
+  {
     path: "/team/member",
     method: "delete",
     handler: [teamController.removeFromTeam]
+  },
+  {
+    path: "/team/member",
+    method: "put",
+    handler: [teamController.addToTeam]
   }
 ];
 

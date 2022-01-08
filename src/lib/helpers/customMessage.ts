@@ -24,5 +24,6 @@ export let team = {
   TEAM_MEETING: `Hurray, Team Meeting Created.`,
   FETCH_ALL: "Hurray! Here are all your teams.",
   FETCH_TEAM_MEET: "Here are all team meetings.",
-  LEAVE: "You have successfully left the team."
+  LEAVE: "You have successfully left the team.",
+  ADD:'New member added to the team'
 };

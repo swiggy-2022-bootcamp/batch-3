@@ -152,4 +152,6 @@ router.get(
 
 router.delete('/question/:questionId', authenticate, qaPlatformController.deleteQuestion)
 
+router.post('/question/:questionId/answer/:answerId', authenticate, qaPlatformController.upvoteAnswer)
+
 module.exports = router;

@@ -22,7 +22,12 @@ const autoIncrement = require('mongoose-auto-increment')
 
 const answerSchema = new Schema({
     id: { type: Number, index: false },
-    answer: { type: String, required: true },    
+    answer: { type: String, required: true },
+    upvotes: {
+        type: [Schema.Types.ObjectId],
+        ref: 'User',
+        unique: true
+    },
     createdBy: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     updatedBy: { type: Schema.Types.ObjectId, ref: 'User', required: true }
 }, {timestamps: true, autoIndex: false })

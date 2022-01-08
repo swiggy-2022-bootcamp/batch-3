@@ -251,3 +251,45 @@ exports.deleteQuestion = (req, res) => {
             throw new ServerError(err);
         })  
 }
+
+exports.upvoteAnswer = async (req, res) => {
+    // #swagger.tags = ['QA-Platform']
+    // #swagger.description = 'Upvote an answer.'
+
+    // #swagger.parameters['questionId'] = { description: 'Question ID' }
+    const questionId = req.params.questionId;
+
+    // #swagger.parameters['answerId'] = { description: 'Answer ID' }
+    const answerId = req.params.answerId;
+
+    const user = res.locals.user;
+
+    let question;
+    try {
+        question = await Question.findOneAndUpdate(
+                        {
+                            id: questionId,
+                            'answers.id': answerId,
+                            'answers.createdBy': { '$ne': user }
+                        },
+                        {
+                            '$push': { 'answers.$.upvotes': user }
+                        }
+                    )
+    } catch(err) {
+        throw new ServerError(err);
+    }
+
+    if (!question) {
+        return res.status(404).json({ message: 'Did not find any relevant answer to upvote' });
+    }
+             
+    /* #swagger.responses[200] = { 
+        schema: { $ref: "#/definitions/AnswerUpdateSuccessResponse" },
+        description: 'Answer update successful.' 
+    } */    
+    res.status(200).send({
+        message: "answer upvoted successfully"
+    });
+
+}

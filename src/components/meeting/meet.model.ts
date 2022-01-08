@@ -13,22 +13,6 @@ class MeetModel {
         return hours >= 0 && hours <= 24 && minute >= 0 && minute <= 60;
     }
 
-    private async checkDoubleBooking(date: string, startTime: string, endTime: string , email : string) {
-        let condition = {
-            $and: [{ date: date }, { attendees: email }, {
-                $or: [{
-                    $and: [{ startTime: { $lte: startTime } }, { $and: [{ endTime: { $gte: startTime } }, { endTime: { $lte: endTime } }] }]
-                },
-                {
-                    $and: [{ $and: [{ startTime: { $gte: startTime } }, { startTime: { $lte: endTime } }] }, { endTime: { $gte: endTime } }]
-                },
-                {
-                    $and: [{ startTime: { $gte: startTime } }, { endTime: { $lte: endTime } }]
-                }]
-            }]
-        }
-        return await Meet.findOne(condition).select(this.default).lean();
-    }
 
     public async create(body: any, email: string) {
         if (!body.date || !body.startTime || !body.endTime || !body.title || !body.attendees || !Array.isArray(body.attendees)) {
@@ -36,10 +20,6 @@ class MeetModel {
         }
         if (!this.checkValidTime(body.startTime) || !this.checkValidTime(body.endTime)) {
             throw new HTTP401Error('Invalid Time Format')
-        }
-        let existingMeeting= await this.checkDoubleBooking(body.date,body.startTime,body.endTime,email);
-        if(existingMeeting){
-            throw new HTTP401Error('Meetings already exist in this time slot')
         }
         body.attendees.push(email);
         body.creator = email;

@@ -3,8 +3,10 @@ import QuestionController from "../controllers/question.controller";
 
 const questionRouter = express.Router();
 
+const auth = require("../middleware/auth");
+
 // Route: /question: To ask the question 
-questionRouter.post("/", async (req, res) => {
+questionRouter.post("/", auth, async (req, res, next) => {
   console.log("Inside question router !");
   console.log(req.body);
   const controller = new QuestionController();
@@ -12,7 +14,7 @@ questionRouter.post("/", async (req, res) => {
 });
 
 // Route: /question/{questionId}/answer: To answer the question with given question id
-questionRouter.post("/:questionid/answer", async (_req, res) => {   
+questionRouter.post("/:questionid/answer", auth, async (_req, res) => {   
   console.log("Inside question router !");
   console.log(_req.body);
   const controller = new QuestionController();

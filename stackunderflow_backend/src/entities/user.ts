@@ -14,8 +14,8 @@ export class Users {
     username: String;
 
     @Column({name: "registration_name"})
-    registrationName: string;
+    registrationName: String;
 
     @Column()
-    password: string;
+    password: String;
 }

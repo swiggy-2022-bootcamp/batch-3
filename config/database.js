@@ -1,13 +1,10 @@
 /* Connecting to SQLite3 using Sequelize ORM */
 
-// Import Sequelize
 const Sequelize = require('sequelize');
 
-// Create Sequelize Instance
 const sequelize = new Sequelize({
-    dialect: 'sqlite', // Database driver
-    storage: './db/database.sqlite', // Storage path
-    // logging: msg => console.log(msg), // Logging Queries
+    dialect: 'sqlite',
+    storage: './db/database.sqlite',
     logging: false
 })
 
@@ -26,7 +23,7 @@ async function checkConnection() {
 // Synchronize all modals
 async function synchronizeModels () {
     try {
-        await sequelize.sync({ force: true });
+        await sequelize.sync();
         console.log('SQLite: ✔ All Models were synchronized!');
     }
     catch(error) {
@@ -38,6 +35,4 @@ checkConnection();
 synchronizeModels();
 
 
-
-// Export the Sequelize Instance
 module.exports = { sequelize }

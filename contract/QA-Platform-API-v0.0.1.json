@@ -5,7 +5,7 @@
     "title": "QA Platform API",
     "description": "Platform for people to ask questions to the community and get answers."
   },
-  "host": "localhost:3000",
+  "host": "localhost:4000",
   "basePath": "/",
   "tags": [
     {
@@ -50,18 +50,6 @@
             "schema": {
               "$ref": "#/definitions/LoginSuccessResponse"
             }
-          },
-          "401": {
-            "description": "Unauthorized.",
-            "schema": {
-              "$ref": "#/definitions/Login401ErrorResponse"
-            }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "schema": {
-              "$ref": "#/definitions/InternalServerError"
-            }
           }
         }
       }
@@ -89,15 +77,6 @@
             "schema": {
               "$ref": "#/definitions/RegisterSuccessResponse"
             }
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "schema": {
-              "$ref": "#/definitions/InternalServerError"
-            }
           }
         }
       }
@@ -109,6 +88,11 @@
         ],
         "description": "Endpoint for adding a new question.",
         "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
           {
             "name": "question",
             "in": "body",
@@ -125,18 +109,6 @@
             "schema": {
               "$ref": "#/definitions/QuestionAddSuccessResponse"
             }
-          },
-          "401": {
-            "description": "Unauthorized.",
-            "schema": {
-              "$ref": "#/definitions/Login401ErrorResponse"
-            }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "schema": {
-              "$ref": "#/definitions/InternalServerError"
-            }
           }
         }
       },
@@ -145,24 +117,28 @@
           "QA-Platform"
         ],
         "description": "Endpoint for fetching all questions.",
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "type": "string"
+          }
+        ],
         "responses": {
           "200": {
             "description": "Fetch all questions successful.",
             "schema": {
               "$ref": "#/definitions/FetchAllQuestionsSuccessResponse"
-            }
-          },
-          "401": {
-            "description": "Unauthorized.",
-            "schema": {
-              "$ref": "#/definitions/Login401ErrorResponse"
-            }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "schema": {
-              "$ref": "#/definitions/InternalServerError"
             }
           }
         }
@@ -182,6 +158,11 @@
             "type": "string"
           },
           {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
             "name": "answer",
             "in": "body",
             "description": "Answer details.",
@@ -198,17 +179,8 @@
               "$ref": "#/definitions/AnswerAddSuccessResponse"
             }
           },
-          "401": {
-            "description": "Unauthorized.",
-            "schema": {
-              "$ref": "#/definitions/Login401ErrorResponse"
-            }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "schema": {
-              "$ref": "#/definitions/InternalServerError"
-            }
+          "404": {
+            "description": "Not Found"
           }
         }
       },
@@ -222,6 +194,11 @@
             "name": "questionId",
             "in": "path",
             "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
             "type": "string"
           },
           {
@@ -241,17 +218,8 @@
               "$ref": "#/definitions/AnswerUpdateSuccessResponse"
             }
           },
-          "401": {
-            "description": "Unauthorized.",
-            "schema": {
-              "$ref": "#/definitions/Login401ErrorResponse"
-            }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "schema": {
-              "$ref": "#/definitions/InternalServerError"
-            }
+          "404": {
+            "description": "Not Found"
           }
         }
       }
@@ -270,6 +238,11 @@
             "type": "string"
           },
           {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
             "name": "id",
             "description": "Question ID",
             "in": "query",
@@ -283,17 +256,8 @@
               "$ref": "#/definitions/FetchQuestionSuccessResponse"
             }
           },
-          "401": {
-            "description": "Unauthorized.",
-            "schema": {
-              "$ref": "#/definitions/Login401ErrorResponse"
-            }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "schema": {
-              "$ref": "#/definitions/InternalServerError"
-            }
+          "404": {
+            "description": "Not Found"
           }
         }
       },
@@ -310,6 +274,11 @@
             "type": "string"
           },
           {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
             "name": "id",
             "description": "Question ID",
             "in": "query",
@@ -321,18 +290,6 @@
             "description": "Fetch question successful.",
             "schema": {
               "$ref": "#/definitions/FetchQuestionSuccessResponse"
-            }
-          },
-          "401": {
-            "description": "Unauthorized.",
-            "schema": {
-              "$ref": "#/definitions/Login401ErrorResponse"
-            }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "schema": {
-              "$ref": "#/definitions/InternalServerError"
             }
           }
         }
@@ -650,6 +607,30 @@
         "message": {
           "type": "string",
           "example": "Question deleted successfully"
+        }
+      }
+    },
+    "ValidationErrorResponse": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string",
+            "example": "string"
+          },
+          "msg": {
+            "type": "string",
+            "example": "string"
+          },
+          "param": {
+            "type": "string",
+            "example": "string"
+          },
+          "location": {
+            "type": "string",
+            "example": "string"
+          }
         }
       }
     },

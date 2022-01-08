@@ -61,7 +61,7 @@ exports.addQuestion = (req, res) => {
         });
 }
 
-exports.addAnswer = (req, res) => {
+exports.addAnswer = async (req, res) => {
     // #swagger.tags = ['QA-Platform']
     // #swagger.description = 'Endpoint for adding a new answer for a question.'
 
@@ -83,31 +83,45 @@ exports.addAnswer = (req, res) => {
         updatedBy: user
     });
 
-    Question.findOne({ id: questionId })
-        .then(question => {            
-            question.answers.push(answer);
-            return question.save();
-        })
-        .then(question => {
 
-            user.answers.push(answer);
-            user.save();
+    let question;
+    try {
+        question = await Question.findOne({ id: questionId }).exec();
+    } catch(err) {
+        throw new ServerError(err);
+    }
 
-            /* #swagger.responses[201] = { 
-                schema: { $ref: "#/definitions/AnswerAddSuccessResponse" },
-                description: 'Answer add successful.' 
-            } */
-            res.status(201).send({
-                message: "answer posted successfully",
-                'question-id': question.id
-            });
-        })
-        .catch(err => {
-            throw new ServerError(err);
-        });
+    if (!question) {
+        return res.status(404).json({ message: 'Question with id ' + questionId + ' not found' });
+    }
+
+    question.answers.push(answer);
+    
+    let savedQuestion;
+    try {
+        savedQuestion = await question.save();
+    } catch(err) {
+        throw new ServerError(err);
+    }
+
+    user.answers.push(answer);
+    try {
+        await user.save();
+    } catch(err) {
+        throw new ServerError(err);
+    }
+
+    /* #swagger.responses[201] = { 
+        schema: { $ref: "#/definitions/AnswerAddSuccessResponse" },
+        description: 'Answer add successful.' 
+    } */
+    res.status(201).send({
+        message: "answer posted successfully",
+        'question-id': savedQuestion.id
+    });
 }
 
-exports.updateAnswer = (req, res) => {    
+exports.updateAnswer = async (req, res) => {    
     // #swagger.tags = ['QA-Platform']
     // #swagger.description = 'Endpoint for updating an answer.'
 
@@ -123,27 +137,32 @@ exports.updateAnswer = (req, res) => {
     const answerTxt = req.body['question']['answer'];
     const user = res.locals.user;
 
-    Question.findOneAndUpdate(
-        {
-            id: questionId,
-            'answers.createdBy': user 
-        },
-        {
-            'answers.$.answer': answerTxt
-        })        
-        .then(question => {            
-            /* #swagger.responses[200] = { 
-                schema: { $ref: "#/definitions/AnswerUpdateSuccessResponse" },
-                description: 'Answer update successful.' 
-            } */    
-            res.status(200).send({
-                message: "answer updated successfully",
-                'question-id': question.id
-            })
-        })
-        .catch(err => {
-            throw new ServerError(err);
-        });
+    let question;
+    try {
+        question = await  Question.findOneAndUpdate(
+                            {
+                                id: questionId,
+                                'answers.createdBy': user 
+                            },
+                            {
+                                'answers.$.answer': answerTxt
+                            });
+    } catch(err) {
+        throw new ServerError(err);
+    }
+
+    if (!question) {
+        return res.status(404).json({ message: 'Did not find any relevant answer to update' });
+    }
+             
+    /* #swagger.responses[200] = { 
+        schema: { $ref: "#/definitions/AnswerUpdateSuccessResponse" },
+        description: 'Answer update successful.' 
+    } */    
+    res.status(200).send({
+        message: "answer updated successfully",
+        'question-id': question.id
+    });
 }
 
 exports.getAllQuestions = (req, res) => {
@@ -158,7 +177,10 @@ exports.getAllQuestions = (req, res) => {
         .count()
         .then(numQuestions => {
             total = numQuestions;
-            return Question.find().skip((page-1) * limit).limit(limit);
+            return Question.find()
+                    .skip((page-1) * limit)
+                    .limit(limit)
+                    .select("title body answers.answer -_id");
         })
         .then(questions => {
             /* #swagger.responses[200] = { 
@@ -179,38 +201,33 @@ exports.getAllQuestions = (req, res) => {
         .catch(err => {
             throw new ServerError(err);
         });
-
-    // Question.find()
-    //     .then(questions => {
-    //         /* #swagger.responses[200] = { 
-    //             schema: { $ref: "#/definitions/FetchAllQuestionsSuccessResponse" },
-    //             description: 'Fetch all questions successful.' 
-    //         } */
-    //         res.status(200).send(questions);
-    //     })
-    //     .catch(err => {
-    //         throw new ServerError(err);
-    //     });
 }
 
-exports.getQuestion = (req, res) => {
+exports.getQuestion = async (req, res) => {
     // #swagger.tags = ['QA-Platform']
     // #swagger.description = 'Endpoint for fetching a question.'
 
     // #swagger.parameters['id'] = { description: 'Question ID' }
     const questionId = req.params.questionId;
 
-    Question.findOne({ id: questionId })
-        .then(question => {
-            /* #swagger.responses[200] = { 
-                schema: { $ref: "#/definitions/FetchQuestionSuccessResponse" },
-                description: 'Fetch question successful.' 
-            } */    
-            res.status(200).send(question);
-        })
-        .catch(err => {
-            throw new ServerError(err);
-        })    
+    let question;
+    try {
+        question = await Question.findOne({ id: questionId })
+                                    .select("title body answers.answer -_id")
+                                    .exec();
+    } catch(err) {
+        throw new ServerError(err);
+    }
+
+    if (!question) {
+        return res.status(404).json({ message: 'Question with id ' + questionId + ' not found' });
+    }
+
+    /* #swagger.responses[200] = { 
+        schema: { $ref: "#/definitions/FetchQuestionSuccessResponse" },
+        description: 'Fetch question successful.' 
+    } */    
+    res.status(200).send(question);
 }
 
 exports.deleteQuestion = (req, res) => {

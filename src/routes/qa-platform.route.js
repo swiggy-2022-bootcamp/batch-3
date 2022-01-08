@@ -16,7 +16,7 @@
 
 const express = require('express');
 const authenticate = require('../controllers/auth.controller')
-const { body, header } = require('express-validator')
+const { body, header, param } = require('express-validator')
 
 const router = express.Router();
 
@@ -37,13 +37,6 @@ router.post(
                 }
                 return true;
             }),
-        body('user-details.username')
-            .exists().withMessage('Required')
-            .isEmail().withMessage('Username should be a valid email')
-            .normalizeEmail(),
-        body('user-details.password')
-            .exists().withMessage('Required')
-            .isLength({ min: 6 }).withMessage('Password must be atleast 6 characters long'),
         body('question.title').notEmpty().withMessage('Question title cannot be empty'),
         body('question.body').notEmpty().withMessage('Question body cannot be empty')
     ],
@@ -65,7 +58,9 @@ router.post(
                     throw new Error('Auhtorization token is invalid');
                 }
                 return true;
-            }), 
+            }),
+        param('questionId')
+            .isInt({ min: 1 }), 
         body('question.question-id')
             .notEmpty().withMessage('Required')            
             .isInt({ min: 1 }),
@@ -96,6 +91,8 @@ router.put(
                 }
                 return true;
             }),
+        param('questionId')
+            .isInt({ min: 1 }), 
         body('question.question-id')
             .notEmpty().withMessage('Required')            
             .isInt({ min: 1 }),
@@ -146,6 +143,8 @@ router.get(
                 }
                 return true;
             }),
+        param('questionId')
+            .isInt({ min: 1 }), 
     ], 
     authenticate, 
     qaPlatformController.getQuestion

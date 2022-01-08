@@ -1,18 +1,26 @@
 {
     "dvl": {
-        "PORT": 3000,
-        "MONGODB_URI": "mongodb://localhost:27017/qa-platform"
+        "PORT": 4000,
+        "MONGODB_URI": "mongodb://localhost:27017/qa-platform",
+        "JWT_SECRET": "SECRET123",
+        "JWT_EXP": "600"
     },
     "uat": {
         "PORT": 3000,
-        "MONGODB_URI": "mongodb://localhost:27017/qa-platform"
+        "MONGODB_URI": "mongodb://localhost:27017/qa-platform",
+        "JWT_SECRET": "SECRET123",
+        "JWT_EXP": "600"
     },
     "stage": {
         "PORT": 3000,
-        "MONGODB_URI": "mongodb://localhost:27017/qa-platform"
+        "MONGODB_URI": "mongodb://localhost:27017/qa-platform",
+        "JWT_SECRET": "SECRET123",
+        "JWT_EXP": "600"
     },
     "prod": {
         "PORT": 3000,
-        "MONGODB_URI": "mongodb://localhost:27017/qa-platform"
+        "MONGODB_URI": "mongodb://localhost:27017/qa-platform",
+        "JWT_SECRET": "SECRET123",
+        "JWT_EXP": "600"
     }
 }

@@ -8,6 +8,9 @@
 		{
 			"name": "1. Login",
 			"request": {
+				"auth": {
+					"type": "noauth"
+				},
 				"method": "POST",
 				"header": [],
 				"body": {
@@ -20,11 +23,10 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:3000/login",
+					"raw": "{{localhost}}/login",
 					"host": [
-						"localhost"
+						"{{localhost}}"
 					],
-					"port": "3000",
 					"path": [
 						"login"
 					]
@@ -90,7 +92,7 @@
 						}
 					],
 					"cookie": [],
-					"body": "{\n    \"message\": \"user logged in successfully\"\n}"
+					"body": "{\n    \"message\": \"user logged in successfully\",\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjFkOTM5Njg0YzA2ODIzMWNhYmZmNGMyIiwiZW1haWwiOiJtYWlsQG5hdmVlbi5jb20iLCJpYXQiOjE2NDE2NTExNDQsImV4cCI6MTY0MTY1MTE0NH0.LrzYXDoslmpPTIan6TbzgF_17Lq302kFbWtp-Fk3W6A\",\n    \"expiresIn\": 600\n}"
 				},
 				{
 					"name": "Invalid login credentials",
@@ -152,12 +154,86 @@
 					],
 					"cookie": [],
 					"body": "{\n    \"message\": \"Sorry invalid credentials\"\n}"
+				},
+				{
+					"name": "Invalid input",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{localhost}}/login",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "283"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"11b-Nh/c03VkQhTpkdw3XZaSkP4yLMQ\""
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 08 Jan 2022 14:13:11 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"msg\": \"Required\",\n        \"param\": \"username\",\n        \"location\": \"body\"\n    },\n    {\n        \"msg\": \"Username should be a valid email\",\n        \"param\": \"username\",\n        \"location\": \"body\"\n    },\n    {\n        \"msg\": \"Required\",\n        \"param\": \"password\",\n        \"location\": \"body\"\n    },\n    {\n        \"msg\": \"Password must be atleast 6 characters long\",\n        \"param\": \"password\",\n        \"location\": \"body\"\n    }\n]"
 				}
 			]
 		},
 		{
 			"name": "2. Register",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
+				"auth": {
+					"type": "noauth"
+				},
 				"method": "POST",
 				"header": [],
 				"body": {
@@ -170,26 +246,223 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:3000/register",
+					"raw": "{{localhost}}/register",
 					"host": [
-						"localhost"
+						"{{localhost}}"
 					],
-					"port": "3000",
 					"path": [
 						"register"
 					]
 				}
 			},
-			"response": []
+			"response": [
+				{
+					"name": "Successful register",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"registration-name\": \"Naveen\",\r\n    \"username\": \"mail@naveen.com\",\r\n    \"password\": \"keepguessing\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{localhost}}/register",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"register"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "71"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"47-h4zYP++x/4q4/7kqoF2fDHH3t+o\""
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 08 Jan 2022 14:19:17 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"User Registered Successfully\",\n    \"registration-name\": \"Naveen\"\n}"
+				},
+				{
+					"name": "User already registered",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"registration-name\": \"Naveen\",\r\n    \"username\": \"mail@naveen.com\",\r\n    \"password\": \"keepguessing\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{localhost}}/register",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"register"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "126"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"7e-2nPOtYUTKRYzTHCOxtbifiVxGw8\""
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 08 Jan 2022 14:14:05 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"value\": \"mail@naveen.com\",\n        \"msg\": \"Provided email is already registered in the system.\",\n        \"param\": \"username\",\n        \"location\": \"body\"\n    }\n]"
+				},
+				{
+					"name": "Invalid input",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"registration-name\": \"Naveen123\",\r\n    \"username\": \"mail\",\r\n    \"password\": \"keepguessing\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{localhost}}/register",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"register"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "220"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"dc-BI7L0R/OHotCvSZgKx2VAt2MpYY\""
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 08 Jan 2022 14:20:01 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"value\": \"mail\",\n        \"msg\": \"Username should be a valid email\",\n        \"param\": \"username\",\n        \"location\": \"body\"\n    },\n    {\n        \"value\": \"Naveen123\",\n        \"msg\": \"Name can only be composed of letters and spaces\",\n        \"param\": \"registration-name\",\n        \"location\": \"body\"\n    }\n]"
+				}
+			]
 		},
 		{
 			"name": "3. Ask question",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjFkOTM5Njg0YzA2ODIzMWNhYmZmNGMyIiwiZW1haWwiOiJtYWlsQG5hdmVlbi5jb20iLCJpYXQiOjE2NDE2NDg2MjcsImV4cCI6MTY0MTY1NTgyN30.tsD8HBD2qNSYxVkcMl6oslF5Mb7-o9Bmw5Jn56FWVHE",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"user-details\": {\r\n    \"username\": \"mail@naveen.com\",\r\n    \"password\": \"keepguessing\"\r\n  },\r\n  \"question\": {\r\n    \"title\": \"how to write nodejs program\",\r\n    \"body\": \"I’m trying to build rest api with node and express js, I get error as express is missing\"\r\n  }\r\n}",
+					"raw": "{\r\n  \"question\": {\r\n    \"title\": \"how to write nodejs program\",\r\n    \"body\": \"I’m trying to build rest api with node and express js, I get error as express is missing\"\r\n  }\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -197,26 +470,230 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:3000/question",
+					"raw": "{{localhost}}/question",
 					"host": [
-						"localhost"
+						"{{localhost}}"
 					],
-					"port": "3000",
 					"path": [
 						"question"
 					]
 				}
 			},
-			"response": []
+			"response": [
+				{
+					"name": "Success add question",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjFkOTM5Njg0YzA2ODIzMWNhYmZmNGMyIiwiZW1haWwiOiJtYWlsQG5hdmVlbi5jb20iLCJpYXQiOjE2NDE2NDg2MjcsImV4cCI6MTY0MTY1NTgyN30.tsD8HBD2qNSYxVkcMl6oslF5Mb7-o9Bmw5Jn56FWVHE",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"question\": {\r\n    \"title\": \"how to write nodejs program\",\r\n    \"body\": \"I’m trying to build rest api with node and express js, I get error as express is missing\"\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{localhost}}/question",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"question"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "59"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"3b-HKRVp5EW0PpJ0MuL/lMhMT3xTrE\""
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 08 Jan 2022 14:25:25 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"Question posted successfully.\",\n    \"question-id\": 1\n}"
+				},
+				{
+					"name": "Invalid input",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjFkOTM5Njg0YzA2ODIzMWNhYmZmNGMyIiwiZW1haWwiOiJtYWlsQG5hdmVlbi5jb20iLCJpYXQiOjE2NDE2NDg2MjcsImV4cCI6MTY0MTY1NTgyN30.tsD8HBD2qNSYxVkcMl6oslF5Mb7-o9Bmw5Jn56FWVHE",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"question\": {\r\n    \r\n    \"body\": \"I’m trying to build rest api with node and express js, I get error as express is missing\"\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{localhost}}/question",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"question"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "85"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"55-Lgx0tFP78/UPeT03Q0tGyFGW3fk\""
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 08 Jan 2022 14:26:44 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"msg\": \"Question title cannot be empty\",\n        \"param\": \"question.title\",\n        \"location\": \"body\"\n    }\n]"
+				},
+				{
+					"name": "Unauthorized",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjFkOTM5Njg0YzA2ODIzMWNhYmZmNGMyIiwiZW1haWwiOiJtYWlsQG5hdmVlbi5jb20iLCJpYXQiOjE2NDE2NDg2MjcsImV4cCI6MTY0MTY1NTgyN30.tsD8HBD2qNSYxVkcMl6oslF5Mb7-o9Bmw5Jn56FWVHE",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"question\": {\r\n    \"title\": \"how to write nodejs program\",\r\n    \"body\": \"I’m trying to build rest api with node and express js, I get error as express is missing\"\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{localhost}}/question",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"question"
+							]
+						}
+					},
+					"status": "Unauthorized",
+					"code": 401,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "27"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"1b-w4O8U+0Ll+sSArmfAX18RvhWpiQ\""
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 08 Jan 2022 14:28:06 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"Invalid token\"\n}"
+				}
+			]
 		},
 		{
 			"name": "4. Answer a question",
 			"request": {
 				"method": "POST",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjFkOTM5Njg0YzA2ODIzMWNhYmZmNGMyIiwiZW1haWwiOiJtYWlsQG5hdmVlbi5jb20iLCJpYXQiOjE2NDE2MjU5ODYsImV4cCI6MTY0MTYzMzE4Nn0.5OV5WNAycoW2yt9S-DIMiHUDjfHxBwhlG9DjXNfFIOI",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"user-details\": {\r\n    \"username\": \"mail@naveen.com\",\r\n    \"password\": \"keepguessing\"\r\n  },\r\n  \"question\": {\r\n    \"question-id\": \"38a313eb-428e-479c-a0e2-d1b6b5bab935\",\r\n    \"answer\": \"you need to check if the express is installed, check package.json file under dependencies, if express exists, if not execute : npm install express\"\r\n  }\r\n}",
+					"raw": "{\r\n  \"question\": {\r\n    \"question-id\": 1,\r\n    \"answer\": \"you need to check if the express is installed, check package.json file under dependencies, if express exists, if not execute : npm install express\"\r\n  }\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -224,28 +701,306 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:3000/question/38a313eb-428e-479c-a0e2-d1b6b5bab935/answer",
+					"raw": "{{localhost}}/question/1/answer",
 					"host": [
-						"localhost"
+						"{{localhost}}"
 					],
-					"port": "3000",
 					"path": [
 						"question",
-						"38a313eb-428e-479c-a0e2-d1b6b5bab935",
+						"1",
 						"answer"
 					]
 				}
 			},
-			"response": []
+			"response": [
+				{
+					"name": "Success add answer",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjFkOTM5Njg0YzA2ODIzMWNhYmZmNGMyIiwiZW1haWwiOiJtYWlsQG5hdmVlbi5jb20iLCJpYXQiOjE2NDE2MjU5ODYsImV4cCI6MTY0MTYzMzE4Nn0.5OV5WNAycoW2yt9S-DIMiHUDjfHxBwhlG9DjXNfFIOI",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"question\": {\r\n    \"question-id\": 1,\r\n    \"answer\": \"you need to check if the express is installed, check package.json file under dependencies, if express exists, if not execute : npm install express\"\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{localhost}}/question/1/answer",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"question",
+								"1",
+								"answer"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "56"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"38-YCbB1l0KYhYE2M3+ZzgSi8LOI+Q\""
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 08 Jan 2022 14:35:46 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"answer posted successfully\",\n    \"question-id\": 1\n}"
+				},
+				{
+					"name": "Invalid question id",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjFkOTM5Njg0YzA2ODIzMWNhYmZmNGMyIiwiZW1haWwiOiJtYWlsQG5hdmVlbi5jb20iLCJpYXQiOjE2NDE2MjU5ODYsImV4cCI6MTY0MTYzMzE4Nn0.5OV5WNAycoW2yt9S-DIMiHUDjfHxBwhlG9DjXNfFIOI",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"question\": {\r\n    \"question-id\": 3,\r\n    \"answer\": \"you need to check if the express is installed, check package.json file under dependencies, if express exists, if not execute : npm install express\"\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{localhost}}/question/3/answer",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"question",
+								"3",
+								"answer"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "42"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"2a-8o53tlZdheQrtQbIsTNCldUMWd0\""
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 08 Jan 2022 14:34:09 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"Question with id 3 not found\"\n}"
+				},
+				{
+					"name": "Invalid request body",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjFkOTM5Njg0YzA2ODIzMWNhYmZmNGMyIiwiZW1haWwiOiJtYWlsQG5hdmVlbi5jb20iLCJpYXQiOjE2NDE2MjU5ODYsImV4cCI6MTY0MTYzMzE4Nn0.5OV5WNAycoW2yt9S-DIMiHUDjfHxBwhlG9DjXNfFIOI",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"question\": {\r\n    \"question-id\": \"abc\"\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{localhost}}/question/1/answer",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"question",
+								"1",
+								"answer"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "304"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"130-O1UQIk3JkRmnOIzsh2Btxo7j7eU\""
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 08 Jan 2022 14:35:01 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"value\": \"abc\",\n        \"msg\": \"Invalid value\",\n        \"param\": \"question.question-id\",\n        \"location\": \"body\"\n    },\n    {\n        \"msg\": \"Answer cannot be empty\",\n        \"param\": \"question.answer\",\n        \"location\": \"body\"\n    },\n    {\n        \"value\": \"abc\",\n        \"msg\": \"The question id in request paramater and request body must match.\",\n        \"param\": \"question.question-id\",\n        \"location\": \"body\"\n    }\n]"
+				},
+				{
+					"name": "Invalid path param",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjFkOTM5Njg0YzA2ODIzMWNhYmZmNGMyIiwiZW1haWwiOiJtYWlsQG5hdmVlbi5jb20iLCJpYXQiOjE2NDE2MjU5ODYsImV4cCI6MTY0MTYzMzE4Nn0.5OV5WNAycoW2yt9S-DIMiHUDjfHxBwhlG9DjXNfFIOI",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"question\": {\r\n    \"question-id\": 1,\r\n    \"answer\": \"you need to check if the express is installed, check package.json file under dependencies, if express exists, if not execute : npm install express\"\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{localhost}}/question/abc/answer",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"question",
+								"abc",
+								"answer"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "215"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"d7-fv64eIrpSNt0jppOg15BY8XWxes\""
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 08 Jan 2022 14:49:04 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"value\": \"abc\",\n        \"msg\": \"Invalid value\",\n        \"param\": \"questionId\",\n        \"location\": \"params\"\n    },\n    {\n        \"value\": 1,\n        \"msg\": \"The question id in request paramater and request body must match.\",\n        \"param\": \"question.question-id\",\n        \"location\": \"body\"\n    }\n]"
+				}
+			]
 		},
 		{
 			"name": "4.3 Update answer for a question",
 			"request": {
 				"method": "PUT",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjFkOTM5Njg0YzA2ODIzMWNhYmZmNGMyIiwiZW1haWwiOiJtYWlsQG5hdmVlbi5jb20iLCJpYXQiOjE2NDE2MjU5ODYsImV4cCI6MTY0MTYzMzE4Nn0.5OV5WNAycoW2yt9S-DIMiHUDjfHxBwhlG9DjXNfFIOI",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"user-details\": {\r\n    \"username\": \"mail@naveen.com\",\r\n    \"password\": \"keepguessing\"\r\n  },\r\n  \"question\": {\r\n    \"question-id\": \"38a313eb-428e-479c-a0e2-d1b6b5bab935\",\r\n    \"answer\": \"updated answer\"\r\n  }\r\n}",
+					"raw": "{\r\n  \"question\": {\r\n    \"question-id\": 1,\r\n    \"answer\": \"updated anser\"\r\n  }\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -253,37 +1008,279 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:3000/question/38a313eb-428e-479c-a0e2-d1b6b5bab935/answer",
+					"raw": "{{localhost}}/question/1/answer",
 					"host": [
-						"localhost"
+						"{{localhost}}"
 					],
-					"port": "3000",
 					"path": [
 						"question",
-						"38a313eb-428e-479c-a0e2-d1b6b5bab935",
+						"1",
 						"answer"
 					]
 				}
 			},
-			"response": []
+			"response": [
+				{
+					"name": "Invalid question id",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjFkOTM5Njg0YzA2ODIzMWNhYmZmNGMyIiwiZW1haWwiOiJtYWlsQG5hdmVlbi5jb20iLCJpYXQiOjE2NDE2MjU5ODYsImV4cCI6MTY0MTYzMzE4Nn0.5OV5WNAycoW2yt9S-DIMiHUDjfHxBwhlG9DjXNfFIOI",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"question\": {\r\n    \"question-id\": 3,\r\n    \"answer\": \"updated anser\"\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{localhost}}/question/3/answer",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"question",
+								"3",
+								"answer"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "42"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"2a-8o53tlZdheQrtQbIsTNCldUMWd0\""
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 08 Jan 2022 14:38:37 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"Did not find any relevant answer to update\"\n}"
+				},
+				{
+					"name": "Success updated answer",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjFkOTM5Njg0YzA2ODIzMWNhYmZmNGMyIiwiZW1haWwiOiJtYWlsQG5hdmVlbi5jb20iLCJpYXQiOjE2NDE2MjU5ODYsImV4cCI6MTY0MTYzMzE4Nn0.5OV5WNAycoW2yt9S-DIMiHUDjfHxBwhlG9DjXNfFIOI",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"question\": {\r\n    \"question-id\": 1,\r\n    \"answer\": \"updated anser\"\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{localhost}}/question/1/answer",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"question",
+								"1",
+								"answer"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "57"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"39-DadeRsEwBlYkkhH7iu/lt92kP10\""
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 08 Jan 2022 14:39:59 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"answer updated successfully\",\n    \"question-id\": 1\n}"
+				}
+			]
 		},
 		{
 			"name": "5. Get answer for all questions",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:3000/question",
+					"raw": "{{localhost}}/question?page=1&limit=5",
 					"host": [
-						"localhost"
+						"{{localhost}}"
 					],
-					"port": "3000",
 					"path": [
 						"question"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "limit",
+							"value": "5"
+						}
 					]
 				}
 			},
-			"response": []
+			"response": [
+				{
+					"name": "Success get all questions",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{localhost}}/question?page=1&limit=5",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"question"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "5"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "total",
+							"value": "2"
+						},
+						{
+							"key": "hasNextPage",
+							"value": "false"
+						},
+						{
+							"key": "hasPreviousPage",
+							"value": "false"
+						},
+						{
+							"key": "nextPage",
+							"value": "11"
+						},
+						{
+							"key": "previousPage",
+							"value": "0"
+						},
+						{
+							"key": "lastPage",
+							"value": "1"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "333"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"14d-4wsW3dh0CqZDmuaiYOMLwWYFoRc\""
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 08 Jan 2022 14:43:07 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"title\": \"how to write nodejs program\",\n        \"body\": \"I’m trying to build rest api with node and express js, I get error as express is missing\",\n        \"answers\": [\n            {\n                \"answer\": \"updated anser\"\n            }\n        ]\n    },\n    {\n        \"title\": \"how to write nodejs program\",\n        \"body\": \"I’m trying to build rest api with node and express js, I get error as express is missing\",\n        \"answers\": []\n    }\n]"
+				}
+			]
 		},
 		{
 			"name": "6. Get answer for a question",
@@ -291,18 +1288,122 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:3000/question/38a313eb-428e-479c-a0e2-d1b6b5bab935",
+					"raw": "{{localhost}}/question/1",
 					"host": [
-						"localhost"
+						"{{localhost}}"
 					],
-					"port": "3000",
 					"path": [
 						"question",
-						"38a313eb-428e-479c-a0e2-d1b6b5bab935"
+						"1"
 					]
 				}
 			},
-			"response": []
+			"response": [
+				{
+					"name": "Invalid question id",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{localhost}}/question/3",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"question",
+								"3"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "42"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"2a-8o53tlZdheQrtQbIsTNCldUMWd0\""
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 08 Jan 2022 14:46:59 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"Question with id 3 not found\"\n}"
+				},
+				{
+					"name": "Success get a question",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{localhost}}/question/1",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"question",
+								"1"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "178"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"b2-P6cxnZFU/nHN2qHj0n6kiuJplpA\""
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 08 Jan 2022 14:47:20 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"title\": \"how to write nodejs program\",\n    \"body\": \"I’m trying to build rest api with node and express js, I get error as express is missing\",\n    \"answers\": [\n        {\n            \"answer\": \"updated anser\"\n        }\n    ]\n}"
+				}
+			]
 		},
 		{
 			"name": "7. Delete question",
@@ -310,18 +1411,93 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "localhost:3000/question/1",
+					"raw": "localhost:3000/question/3",
 					"host": [
 						"localhost"
 					],
 					"port": "3000",
 					"path": [
 						"question",
-						"1"
+						"3"
 					]
 				}
 			},
 			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{access_token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"if (",
+					"    pm.info.requestName !== '2. Register'",
+					") {",
+					"    pm.sendRequest({",
+					"        url: pm.collectionVariables.get(\"token_url\"),",
+					"        method: 'POST',",
+					"        header: {",
+					"            'content-type': 'application/json'",
+					"        },",
+					"        body: {        ",
+					"            mode: 'raw',",
+					"            raw: JSON.stringify({",
+					"                'username': pm.collectionVariables.get(\"username\"),",
+					"                'password': pm.collectionVariables.get(\"password\")",
+					"            })",
+					"        }",
+					"    }, function (err, res) {    ",
+					"        pm.collectionVariables.set(\"access_token\",  res.json().token);",
+					"    });",
+					"}"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "token_url",
+			"value": "localhost:4000/login",
+			"type": "default"
+		},
+		{
+			"key": "username",
+			"value": "mail@naveen.com",
+			"type": "default"
+		},
+		{
+			"key": "password",
+			"value": "keepguessing",
+			"type": "default"
+		},
+		{
+			"key": "access_token",
+			"value": ""
+		},
+		{
+			"key": "localhost",
+			"value": "localhost:4000",
+			"type": "default"
 		}
 	]
 }

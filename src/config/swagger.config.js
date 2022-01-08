@@ -30,7 +30,7 @@ const doc = {
         title: "QA Platform API",
         description: "Platform for people to ask questions to the community and get answers."
     },
-    host: "localhost:3000",
+    host: "localhost:4000",
     basePath: "/",
     schemes: ['http'],
     consumes: ['application/json'],

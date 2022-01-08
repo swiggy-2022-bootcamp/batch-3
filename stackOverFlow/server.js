@@ -5,6 +5,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 const { verifyToken } = require("./middleware/auth");
+const { groupArray } = require("./utils/helper");
 
 const app = express();
 dotenv.config();
@@ -145,6 +146,31 @@ app.post("/answer", verifyToken, async (req, res) => {
     res
       .status(200)
       .json({ questionId, message: "Answer posted successfully!" });
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+app.get("/question/:questionId", verifyToken, async (req, res) => {
+  try {
+    const questionId = req.params.questionId;
+
+    const fetchAnswerQuery = `
+    SELECT sq.questionId, sq.title, sq.body, sa.answer
+    FROM stackOverFlow.answers sa
+    JOIN stackOverFlow.questions sq on sa.questionId = sq.questionId 
+    `;
+
+    const fetchAnswerQueryParams = [];
+
+    const response = await query(fetchAnswerQuery, fetchAnswerQueryParams);
+
+    const questionAnswerArray = groupArray(response);
+
+    res.status(200).json({
+      response: [...questionAnswerArray],
+      message: "Answer fetched successfully!",
+    });
   } catch (err) {
     console.log(err);
   }

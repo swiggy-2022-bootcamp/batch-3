@@ -1,8 +1,10 @@
 const jwt = require('jsonwebtoken');
 const { USER_AUTHORIZATION_FAILED } = require('../utils/constants');
+const { User } = require('../models/user.model');
 
 async function isAuthorized (req, res, next) {
-    const token = req.headers['authorization'];
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(" ")[1];
     if(!token) {
         const err = new Error('You are not authorized, please log in.');
         err.status = 401;
@@ -19,6 +21,7 @@ async function isAuthorized (req, res, next) {
         return;
     }
     catch(err) {
+        console.log(err.message);
         err.status = 401;
         err.message = USER_AUTHORIZATION_FAILED;
         next(err);

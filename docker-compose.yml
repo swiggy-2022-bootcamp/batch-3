@@ -10,6 +10,7 @@ services:
       MONGODB_URL: mongodb://mongo:27017/question-answer-app
       PORT: 3000
       BCRYPT_ROUNDS: 10
+      JWT_SECRET: c2204d67e8823af6168faf18ab5368772b59bc215539608517fb748f474e07f1ec3abfa6be720d731f2f95f0f5950007a6ec66a54aa8de8351a70c922f6dce1f
     ports:
       - 3000:3000
     depends_on: 

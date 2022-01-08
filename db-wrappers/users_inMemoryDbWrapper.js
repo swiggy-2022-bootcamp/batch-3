@@ -9,8 +9,8 @@ class UsersInMemoryDbWrapper {
         return newUser;
     }
 
-    verifyUserExists(username, password) {
-        return this.users.filter(user => user.username === username && user.password === password).length === 1;
+    findUserByUsername(username) {
+        return this.users.find(user => user.username === username);
     }
 
     verifyUniqueUser(username) {

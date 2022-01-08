@@ -10,6 +10,8 @@ const verifyUserInfo = require("../middleware/verifyUserInfo");
  *     tags: 
  *       - questions
  *     summary: Create Question
+ *     security:
+ *       - BearerAuth: []
  *     Description: Post a new question
  *     produces:
  *       - application/json
@@ -25,13 +27,6 @@ const verifyUserInfo = require("../middleware/verifyUserInfo");
  *           schema:
  *             type: object
  *             properties:
- *               userDetails:
- *                 type: object
- *                 properties:
- *                   username: 
- *                     type: string
- *                   password:
- *                     type: string
  *               question:
  *                 type: object
  *                 properties:
@@ -41,7 +36,7 @@ const verifyUserInfo = require("../middleware/verifyUserInfo");
  *                     type: string
  */
 router.post('/', verifyUserInfo, (req, res) => {
-    const {username} = req.body.userDetails;
+    const {username} = req.user;
     const {title, body} = req.body.question;
     questionHandler.postQuestion(username, title, body)
         .then(data => {
@@ -62,6 +57,8 @@ router.post('/', verifyUserInfo, (req, res) => {
  *     tags: 
  *       - questions
  *     summary: Answer a question
+ *     security:
+ *       - BearerAuth: []
  *     description: post an answer to a question
  *     parameters:
  *       - in: path
@@ -86,13 +83,6 @@ router.post('/', verifyUserInfo, (req, res) => {
  *           schema:
  *             type: object
  *             properties:
- *               userDetails:
- *                 type: object
- *                 properties:
- *                   username: 
- *                     type: string
- *                   password:
- *                     type: string
  *               question:
  *                 type: object
  *                 properties:
@@ -101,7 +91,7 @@ router.post('/', verifyUserInfo, (req, res) => {
  */
 router.post('/:questionId/answer', verifyUserInfo, (req, res) => {
     const {questionId} = req.params;
-    const {username} = req.body.userDetails;
+    const {username} = req.user;
     const {answer} = req.body.question;
     questionHandler.answerQuestion(questionId, username, answer)
         .then(data => {
@@ -121,6 +111,8 @@ router.post('/:questionId/answer', verifyUserInfo, (req, res) => {
  *     tags:
  *       - questions
  *     summary: Edit an answer to a question
+ *     security:
+ *       - BearerAuth: []
  *     description: post an answer to a question
  *     parameters:
  *       - in: path
@@ -129,7 +121,6 @@ router.post('/:questionId/answer', verifyUserInfo, (req, res) => {
  *           type: string
  *         required: true
  *         description: Question id
-
  *     produces:
  *       - application/json
  *     responses:
@@ -148,13 +139,6 @@ router.post('/:questionId/answer', verifyUserInfo, (req, res) => {
  *           schema:
  *             type: object
  *             properties:
- *               userDetails:
- *                 type: object
- *                 properties:
- *                   username: 
- *                     type: string
- *                   password:
- *                     type: string
  *               question:
  *                 type: object
  *                 properties:
@@ -163,7 +147,7 @@ router.post('/:questionId/answer', verifyUserInfo, (req, res) => {
  */
 router.put('/:questionId/answer', verifyUserInfo, (req, res) => {
     const {questionId} = req.params;
-    const {username} = req.body.userDetails;
+    const {username} = req.user;
     const {answer} = req.body.question;
     questionHandler.updateAnswer(questionId, username, answer)
         .then(data => {
@@ -184,6 +168,8 @@ router.put('/:questionId/answer', verifyUserInfo, (req, res) => {
  *     tags: 
  *       - questions
  *     summary: Get All questions with answers
+ *     security:
+ *        - BearerAuth: []
  *     produces:
  *       - application/json
  *     responses:

@@ -1,16 +1,19 @@
 const {userHandler} = require('../handlers');
 
+const iJwtWrapper = require('../wrappers/jwtWrapper');
+const jwtWrapper = new iJwtWrapper();
+
 module.exports = async (req, res, next) => {
     try {
-        let {username, password} = req.body.userDetails;
-        let result = await userHandler.login(username, password);
-        if(!result.success) {
-            const {success, status, ...otherInfo} = result;
-            return res.status(status).json(otherInfo);
+        let header = req.headers.authorization;
+        if(!header) {
+            return res.status(401).json({message: "Invalid JWT"});
         }
+        let token = header.split(' ')[1];
+        let user = await jwtWrapper.verifyToken(token);
+        req.user = user;
         next();
     } catch(err) {
-        const {success, status, ...otherInfo} = err;
-        return res.status(status).json(otherInfo);
+        return res.status(401).json({message: "Invalid JWT"});
     }
 }

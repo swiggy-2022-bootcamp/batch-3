@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 const iQuestionHandler = require('../handlers/questionHandler');
 const QuestionsInMemoryDbWrapper = require('../db-wrappers/questions_inMemoryDbWrapper');
 

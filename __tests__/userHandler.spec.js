@@ -1,8 +1,11 @@
+require("dotenv").config()
+
 const iUserHandler = require('../handlers/userHandler');
 const UsersInMemoryDbWrapper = require('../db-wrappers/users_inMemoryDbWrapper');
 const bcryptWrapper = require('../wrappers/bcryptWrapper');
+const JWTWrapper = require('../wrappers/jwtWrapper');
 
-const userHandler = new iUserHandler(new UsersInMemoryDbWrapper(), new bcryptWrapper());
+const userHandler = new iUserHandler(new UsersInMemoryDbWrapper(), new bcryptWrapper(), new JWTWrapper());
 
 test('should register a user successfully', async () => {
     let username = "abcd@gmail.com";

@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt');
 class BcryptWrapper {
 
     async hashPassword(password) {
-        const hash = await bcrypt.hash(password, process.env.BCRYPT_ROUNDS);
+        const hash = await bcrypt.hash(password,parseInt(process.env.BCRYPT_ROUNDS, 10));
         return hash;
     }
 

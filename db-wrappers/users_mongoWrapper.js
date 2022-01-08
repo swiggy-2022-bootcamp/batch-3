@@ -10,9 +10,9 @@ class UsersMongoWrapper {
         return newUser;
     }
 
-    async verifyUserExists(username, password) {
-        const user = await User.findOne({username, password}).exec();
-        return user !== null;
+    async findUserByUsername(username) {
+        const user = await User.findOne({username}).exec();
+        return user;
     }
 
     async verifyUniqueUser(username) {

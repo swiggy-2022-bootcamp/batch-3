@@ -82,3 +82,47 @@ The Case Study / project will be evaluated on the following criteria:
   - Filter answers:
     - Sort by highest upvotes
     - Sort by latest
+
+## Given Stuff:
+
+1. Login: </br>
+   Case 1: Valid Credentials </br>
+
+```JSON
+{
+  "username": "<valid_username>",
+  "password": "<valid_password>"
+}
+
+Response:
+
+{
+  "message": "user Logged in successfully"
+}
+
+Status: 201 --> Resource Created
+Method Type: POST
+```
+
+</br>
+
+Case 2: In-Valid Credentials </br>
+
+````JSON
+{
+"username": "<in/valid_username>",
+"password": "<in/valid_password>"
+}
+
+    Response:
+
+    {
+      "message": "Sorry Invalid Credentials"
+    }
+
+    Headers: JWT Token
+    Status: 401 --> Request failed
+    Method Type: POST
+    Endpoint @: /login
+    ```
+````

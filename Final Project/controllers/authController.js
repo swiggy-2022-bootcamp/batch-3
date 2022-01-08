@@ -66,12 +66,15 @@ exports.login = catchAsync(async (req, res, next) => {
 exports.protect = catchAsync(async (req, res, next) => {
     // Getting token and check of it's exists
     let token;
+    if (req.cookies.jwt) {
+      token = req.cookies.jwt;
+    }else
     if (
       req.headers.authorization &&
       req.headers.authorization.startsWith('Bearer')
     ) {
       token = req.headers.authorization.split(' ')[1];
-    }
+    } 
     if (!token || token === 'null') {
       return next(
         new AppError('You are not logged in! Please log in to get access.', 401)
@@ -117,7 +120,7 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
     // If so, update password
     user.password = req.body.password;
     await user.save();
-    // User.findByIdAndUpdate will NOT work as intended!
+
   
     // Log user in, send JWT
     createSendToken(user, 201, res);
@@ -134,3 +137,12 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
       next();
     };
   };
+
+exports.logout = (req, res) => {
+    res.cookie('jwt', 'loggedout', {
+      expires: new Date(Date.now() + 10 * 1000),
+      httpOnly: true
+    });
+    res.status(200).json({ status: 'success' });
+  };
+  

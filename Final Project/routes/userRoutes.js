@@ -7,6 +7,7 @@ const route=express.Router()
 
 route.post('/register',authController.signup);
 route.post('/login',authController.login);
+route.get('/logout', authController.logout);
 
 // Protect all routes after this middleware
 route.use(authController.protect);

@@ -1,8 +1,4 @@
-const catchAsync = require('../utils/catchAsync');
-const AppError = require('../utils/appError');
+const Question = require('../models/questionModel')
+const handler =require('./handlerController')
 
-exports.create=catchAsync(async(req,res,next)=>{
-    res.status(201).json({
-        data:"done"
-    })
-})
+exports.create=handler.createOne(Question);

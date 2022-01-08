@@ -25,7 +25,7 @@ class MeetModel {
         body.creator = email;
         let m: IMeetModel = new Meet(body);
         await m.save();
-        return { meetingId: m._id };
+        return { meetingId: m._id }; 
     }
 
     public async fetchAllMeets(email: string) {

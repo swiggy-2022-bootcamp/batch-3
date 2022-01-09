@@ -21,6 +21,9 @@ class MeetModel {
         if (!this.checkValidTime(body.startTime) || !this.checkValidTime(body.endTime)) {
             throw new HTTP401Error('Invalid Time Format')
         }
+        if(body.endTime <= body.startTime){
+            throw new HTTP401Error('End Time can not be before or equal to start time')
+        }
         body.attendees.push(email);
         body.creator = email;
         let m: IMeetModel = new Meet(body);

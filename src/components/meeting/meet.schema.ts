@@ -36,9 +36,6 @@ MeetSchema.methods.checkDoubleBooking = async (date: string, startTime: string, 
                 $and: [{ startTime: { $lt: endTime } }, { endTime: { $gte: endTime } }]
             },
             {
-                $and: [{ startTime: { $lt: startTime } }, { endTime: { $gt: endTime } }]
-            },
-            {
                 $and: [{ startTime: { $gte: startTime } }, { endTime: { $lte: endTime } }]
             }]
         }]

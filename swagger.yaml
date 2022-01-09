@@ -465,4 +465,57 @@ paths:
         '501':
           description: 'Internal Server Error'
 
+  /question/all:
+    get:
+      summary: All questions asked by user
+      tags:
+        - User
+        - Question
+      security:
+        - bearerAuth: []
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: 'Ok'
+        '201':
+          description: 'Created'
+        '401':
+          description: 'Unauthorized'
+        '406':
+          description: 'Not Acceptable'
+        '501':
+          description: 'Internal Server Error'
+
+  /question/{answerId}/answers:
+    get:
+      summary: All answers of a particular question
+      tags:
+        - Answer
+      security:
+        - bearerAuth: []
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: answerId
+          required:
+            - answerId
+          properties:
+            answerId:
+              type: integer
+      responses:
+        '200':
+          description: 'Ok'
+        '201':
+          description: 'Created'
+        '401':
+          description: 'Unauthorized'
+        '406':
+          description: 'Not Acceptable'
+        '501':
+          description: 'Internal Server Error'
+
+
+
 

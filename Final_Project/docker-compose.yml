@@ -1,0 +1,17 @@
+version: '3'
+services:
+  stackunderflow-postgres:
+    working_dir: /home/models
+    image: postgres:11.3-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=stackunderflow
+    ports:
+      - "5432:5432"
+    volumes:
+      # This is very important step as this will help
+      # in persisting data in database.
+      - ./pgdata:/var/lib/postgresql/data
+      - ./models:/home/models

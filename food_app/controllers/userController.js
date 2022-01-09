@@ -19,7 +19,10 @@ exports.createUser = async (req, res) => {
     var newUser = new user({ ...req.body, password: await hash(req.body.password, 9) });
 
     await newUser.save((err, user) => {
-        if (err) {
+        if (err.code === 11000) {
+            // duplicate username
+            res.status(409).json({ status: 'error', error: 'Username already exists' })
+        } else if (err) {
             res.status(409).json({ message: err.message });
         }
 

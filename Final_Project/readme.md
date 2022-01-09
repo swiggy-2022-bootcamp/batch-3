@@ -1,7 +1,7 @@
 # Selected Problem Statement - Problem Statement 3(stack-overflow)
 # Name of the Project - Question, Answer & Vote
 
-The app is a functional, backend-only, implementation of the Stackoverflow website and as the name suggests, it allows the user to ask, answer and vote.
+The app is a functional, backend-only, implementation of the Stackoverflow website and as the name suggests, it allows the user to ask questions, answer the questions and vote.
 
 ## Required Actions
 

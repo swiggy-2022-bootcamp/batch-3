@@ -58,7 +58,7 @@ export class Login extends React.Component {
   render() {
     return (
       <>
-        <Row justify="center">
+        <Row justify="center" style={{ marginTop: "50px" }}>
           <Col>
             <h1>
               <b>{this.props.renderLogin ? "LogIn" : "Register"}</b>

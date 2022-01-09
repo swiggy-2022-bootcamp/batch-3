@@ -10,6 +10,8 @@ const createQuestion = async (title, body, userId) => {
     throw createError(400, "All input is required");
   }
 
+  console.log("tile", title);
+
   const isQuestionExist = await checkIfQuestionExist(title, userId);
 
   if (isQuestionExist === true) {
@@ -29,7 +31,11 @@ const createQuestion = async (title, body, userId) => {
 
   const questionId = response.insertId;
 
-  return { questionId, message: "Question posted successfully!" };
+  return {
+    success: true,
+    questionId,
+    message: "Question posted successfully!",
+  };
 };
 
 const checkIfQuestionExist = async (title, userId) => {

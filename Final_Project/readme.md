@@ -4,13 +4,6 @@
 The app is a functional, backend-only, implementation of the Stackoverflow website and as the name suggests, it allows the user to ask, answer and vote.
 
 
-
-
-
-- Type some Markdown on the left
-- See HTML in the right
-- ✨Magic ✨
-
 ## Features
 
 - Authentication for all the possible actions is done using JWT.

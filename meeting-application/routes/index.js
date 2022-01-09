@@ -1,6 +1,9 @@
 var express = require('express');
 var router = express.Router();
 var axios = require('axios')
+var User = require("../models/user");
+var bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
 /* GET home page. */
 router.get('/', async (req, res, next) => {
@@ -11,13 +14,25 @@ router.get('/', async (req, res, next) => {
   });
 });
 
-var userids = ['ram@success.com'] //THIS IS TEMPORARY, THIS WILL COME FROM DB
-router.post('/login', (req, res, next) => {
+/* GET route to login */
+router.post('/login', async (req, res, next) => {
   const {userid, password} = req.body
   console.log(userid, password)
+  var userExist = await User.findOne({ userid });
+  
+  if (!userExist) {
+    res.status(401).send({ "message" : "User is Not Registered" });
+    return;
+  }
 
-  if(userids.findIndex(element => element == userid) >= 0){ //THIS IS TEMPORARY, MAKE DB CALL TO CHECK
-    res.status(201).send({"message" : "Logged In Successfully"})
+  var validpass = await bcrypt.compare(req.body.password, userExist.password);
+
+  if(validpass){ 
+    const token = jwt.sign({ userid }, "somesecret");
+    res.status(201).send({
+      "message" : "Logged In Successfully",
+      "token" : token
+    })
   } else {
     res.status(401).send({"message" : "Invalid Userid or Password"})
   }

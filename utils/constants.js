@@ -11,5 +11,9 @@ module.exports = {
     ANSWER_VOTED_SUCCESS: 'Answer Voted Successfully',
     ANSWER_DOWNVOTED_SUCCESS: 'Answer DownVoted Successfully',
     ANSWER_ALREADY_LIKED: 'You have already liked the answer.',
-    ANSWER_NOT_LIKED: 'You havn\'t liked the answer.'
+    ANSWER_NOT_LIKED: 'You havn\'t liked the answer.',
+    QUESTION_ALREADY_LIKED: 'You have already liked the question',
+    QUESTION_NOT_LIKED: 'You havn\'t liked the question',
+    QUESTION_VOTED_SUCCESS: 'Question upVoted Successfully',
+    QUESTION_DOWNVOTED_SUCCESS: 'Question DownVoted Successfully.'
 }

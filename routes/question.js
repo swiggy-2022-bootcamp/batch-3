@@ -11,6 +11,8 @@ const {
   ANSWER_UPDATED_SUCCESS,
   ANSWER_VOTED_SUCCESS,
   ANSWER_DOWNVOTED_SUCCESS,
+  QUESTION_VOTED_SUCCESS,
+  QUESTION_DOWNVOTED_SUCCESS,
 } = require("../utils/constants");
 const { hasAnswered } = require('../middlewares/hasAnswered');
 const { isAuthorized } = require('../middlewares/isAuthorized');
@@ -176,6 +178,60 @@ router.put('/:question_id/answer/:answer_id/downvote',
     next(error);
   }
 
+})
+
+
+
+/**
+ * PUT: Route for up voting an question
+ * parameters: question_id, answer_id
+ */
+router.put('/:question_id/upvote',
+  loginRequired,
+  isAuthorized,
+  async (req, res, next) => {
+  const question_id = req.params.question_id;
+  const questionObj = await Question.findByPk(question_id)
+  const user = req.user;
+  try {
+    await questionObj.upVote(user.id);
+    await questionObj.save();
+    return res.status(201).json({
+      message: QUESTION_VOTED_SUCCESS,
+      "question-id": questionObj.question_id
+    })
+  }
+  catch(error) {
+    error.status = 401;
+    next(error);
+  }
+})
+
+
+
+/**
+ * PUT: Route for down voting an question
+ * parameters: question_id
+ */
+router.put('/:question_id/downvote',
+  loginRequired,
+  isAuthorized,
+  async (req, res, next) => {
+  const question_id = req.params.question_id;
+  const questionObj = await Question.findByPk(question_id)
+  const user = req.user;
+  try {
+    await questionObj.downVote(user.id);
+    await questionObj.save();
+    return res.status(201).json({
+      message: QUESTION_DOWNVOTED_SUCCESS,
+      "question-id": questionObj.question_id
+    })
+  }
+  catch(error) {
+    error.status = 401;
+    next(error);
+  }
 })
 
 

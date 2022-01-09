@@ -8,6 +8,7 @@ const { udpateBadge } = require('../utils/updateBadge');
 /* Define the User class */
 class User extends Model {
 
+    /* Create Json Web Tokens */
     static async generateJWT ( username ) {
         const SECRET = process.env.JWT_SECRET;
         const token = await jwt.sign(
@@ -18,7 +19,7 @@ class User extends Model {
         return token;
     }
 
-    // Static Method to Verify Password
+    /* Static Method to Verify Password */
     static async checkPassword (username, password) {
         const user = await User.findOne({ where: { username: username }});
         if(user) {
@@ -27,7 +28,7 @@ class User extends Model {
         return false;
     }
 
-    // Method for matching password
+    /* Method for matching password */
     async isMatched (password) {
         return bcrypt.compareSync(password, this.password);
     }

@@ -11,7 +11,7 @@ Users unlock new privileges with an increase in reputation like the ability to v
 edit other people's posts
 
 ### Features Covered
-- [x] The application has option to login to system.
+- [x] The application has option to login to system (JWT Integrated).
 - [x] Allows to register.
 - [x] Allows to ask a question.
 - [x] Allows answer the question.

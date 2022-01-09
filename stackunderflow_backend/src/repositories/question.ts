@@ -12,13 +12,12 @@ export const postQuestion = async (title :string, body :string, userId :number) 
   });
 };
 
-export const postAnswer = async (questionId :number, answer :string) => {
+export const postAnswer = async (userPk: number, questionId: number, answer: string) :Promise<Answers> => {
   console.log("Inside the user repository")
   const answerRepository = getRepository(Answers);
-  await answerRepository.save({
+  return await answerRepository.save({
       answer: answer, 
-      title: questionId, 
-      userPK: 1,
-      questionPK: 2,
+      userPK: userPk,
+      questionPK: questionId,
   });
 };

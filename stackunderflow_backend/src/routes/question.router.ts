@@ -14,11 +14,11 @@ questionRouter.post("/", auth, async (req, res, next) => {
 });
 
 // Route: /question/{questionId}/answer: To answer the question with given question id
-questionRouter.post("/:questionid/answer", auth, async (_req, res) => {   
+questionRouter.post("/:questionid/answer", auth, async (req, res) => {   
   console.log("Inside question router !");
-  console.log(_req.body);
+  console.log(req.body);
   const controller = new QuestionController();
-  await controller.postAnswer(_req.body.question.question_id, _req.body.question.answer);
+  await controller.postAnswer(req, res);
   
 });
 

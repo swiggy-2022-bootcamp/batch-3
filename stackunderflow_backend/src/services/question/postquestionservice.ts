@@ -1,11 +1,8 @@
 import { Users } from "../../entities";
-import {
-  findUserByUsername,
-} from "../../repositories/user";
-import {
-  postQuestion
-} from "../../repositories/question";
+import { findUserByPk } from "../../repositories/user";
+import { postQuestion } from "../../repositories/question";
 import { Questions } from "../../entities/question";
+import { getUserPkFromToken } from "../../utils/common/getUserPkFromToken";
 
 class UserDetails {
     username: string;
@@ -18,7 +15,7 @@ class QuestionDetails {
 }
 
 interface ValidateRequestParameters {
-    userDetails: UserDetails;
+    token: string;
     questionDetails: QuestionDetails;
 }
 
@@ -27,21 +24,20 @@ interface ProcessRequestParameters {
     questionDetails: QuestionDetails;
 }
 
-export const ValidateRequest = async ({userDetails, questionDetails} : ValidateRequestParameters) :Promise<Users> => {
-    const username: String = userDetails.username;
-    const title: String = questionDetails.title;
-    const body: String = questionDetails.body;
+export const ValidateRequest = async ({token, questionDetails} : ValidateRequestParameters) :Promise<Users> => {
+    const userId: number = getUserPkFromToken(token);
+    const title: string = questionDetails.title;
+    const body: string = questionDetails.body;
 
-    console.log("username ", username);
-    console.log("title ", title);
-    if (username == "") {
-        throw new Error("username is empty")
+    console.log("ValidateRequest UserId: ", userId);
+
+    const user = await findUserByPk(userId);
+    if (!user) {
+        throw new Error("user not found");
     }
 
-    const user = await findUserByUsername(username);
-    if (user === undefined) {
-        console.log("User not found");
-        throw new Error("user not found");
+    if (!title || !body) {
+        throw new Error("question details not found")
     }
 
     console.log(user);

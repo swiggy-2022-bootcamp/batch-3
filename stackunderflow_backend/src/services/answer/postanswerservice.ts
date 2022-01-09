@@ -10,10 +10,10 @@ interface PostAnswerServiceParameters {
 }
 
 export const PostAnswerService = async ({userId, questionId, answer}: PostAnswerServiceParameters): Promise<Answers>=> {
-    if (!questionId && !answer) {
+    if (!(questionId && answer)) {
         throw new CustomError("all parameters required", 400);
     }
-    
+
     const question = await findQuestionByPk(questionId);
     if (!question) {
         throw new CustomError("question not found", 404);

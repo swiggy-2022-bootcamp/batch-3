@@ -3,6 +3,14 @@
 
 The app is a functional, backend-only, implementation of the Stackoverflow website and as the name suggests, it allows the user to ask, answer and vote.
 
+## Required Actions
+
+- The application should have option to login to system.
+- The application should allow to register.
+- The application should allow to ask a question.
+- The application should allow the user to answer the question.
+- The application should show answers for the particular question
+
 
 ## Features
 
@@ -51,12 +59,13 @@ npm install
 npm start
 ```
 
-## API CALLS AND RESULTS(TEST CASES)
+## API CALLS AND RESULTS(TEST CASES) - Tested Using Postman
 
 1. Register: {endpoint : /register} "POST request"
 Scenario 1: All the values are present and email and username unique
 
 ```JSON
+Input:
 {
   "email": "<unique_email>",
   "username": "<unique_username>",
@@ -72,6 +81,7 @@ Response:
 Scenario 2: Duplicate username or email
 
 ```JSON
+Input:
 {
   "email": "<duplicate_email>",
   "username": "<duplicate_username>",
@@ -87,6 +97,7 @@ Response:
 Scenario 3: Either missing email/username or a duplicate entry
 Case 1:
 ```JSON
+Input:
 {
   "username": "<username>",
   "password": "<password>"
@@ -99,6 +110,7 @@ Response:
 ```
 Case 2:
 ```JSON
+Input:
 {
   "email": "<duplicate_email>",
   "username": "<duplicate_username>",
@@ -115,6 +127,7 @@ Response:
 Scenario 1: Valid Credentials
 
 ```JSON
+Input:
 {
   "email": "<email>",
   "password": "<password>"
@@ -130,6 +143,7 @@ Response:
 Scenario 2: Invalid Credentials
 
 ```JSON
+Input:
 {
   "email": "<email>",
   "password": "<password>"
@@ -147,6 +161,7 @@ Response:
 Scenario 1: Valid details
 
 ```JSON
+Input:
 {
   "title": "<title of the question>",
   "body": "<body of the question>",
@@ -163,6 +178,7 @@ Response:
 Scenario 2: Missing Parameters
 Case 1: Missing title or body
 ```JSON
+Input:
 {
   "title": "<title of the question>",
   "token": "<JWT_token>"
@@ -176,6 +192,7 @@ Response:
 
 Case 2: Missing JWT token 
 ```JSON
+Input:
 {
   "title": "<title of the question>",
   "body": "<body of the question>",
@@ -188,6 +205,7 @@ Response:
 ```
 4. Posting an Answer {endpoint: /answer} "POST request"
 ```JSON
+Input:
 {
   "_id": "<Question_id>",
   "answer": "<answer>",
@@ -203,6 +221,7 @@ Response:
 
 5. Logout {endpoint: /logout} "POST request"
 ```JSON
+Input:
 {
   "token": "<JWT_token>"
 }
@@ -214,6 +233,7 @@ Response:
 ```
 6. Upvoting a Question {endpoint: /question/upvote} "POST request"
 ```JSON
+Input:
 {
   "_id": "<Question_id",
   "token": "<JWT_token>"
@@ -227,6 +247,9 @@ Response:
 
 7. Get All Questions {endpoint: /question/getall} "GET request"
 
+```JSON
+
+Input:
 No parameters required 
 
 ```JSON
@@ -240,6 +263,7 @@ Response:
 8. Get All Answers For A Question {endpoint: /answer/getall} "GET request"
 
 ```JSON
+Input:
 {
   "_id": "<Question_id",
 }

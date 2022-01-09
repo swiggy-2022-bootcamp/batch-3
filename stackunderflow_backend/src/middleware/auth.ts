@@ -40,10 +40,10 @@ const verifyToken = async (req :any, res :any, next :any) => {
         const userId = decoded.id;
 
         const user = await findUserByPk(userId);
-        console.log(user);
-        if (req.body.username && req.body.username !== user.username) {
+
+        if (!user) {
             return res.status(403).json({
-                error: `user with username ${req.body.username} does not exist`
+                error: "user does not exist"
             })
         } else {
             next();

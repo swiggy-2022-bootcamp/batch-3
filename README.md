@@ -252,7 +252,7 @@ Example
       "userId": 1,
       "coupon": "FLAT50"
 }
-
+```
   
 Get Review for a food item: 
 {

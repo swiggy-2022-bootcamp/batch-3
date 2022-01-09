@@ -1,7 +1,7 @@
-import mongoose, { Schema } from 'mongoose';
+import { model, Schema } from 'mongoose';
 
 /* Create database schema for users */
-const UserSchema = new Schema({
+const UserSchema = Schema({
     username: {
         type: String,
         required: true,
@@ -28,4 +28,4 @@ const UserSchema = new Schema({
     }
 });
 
-export default mongoose.model('User', UserSchema);
+export default model('User', UserSchema);

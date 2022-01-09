@@ -46,7 +46,7 @@ food_app/
 2. `POST /api/authenticate` - for authenticating existing user
 3. `GET /api/users` - to get data of all users
 4. `GET /api/users/:userID` - to get data of user with userID
-5. `PUT /api/users/:userID` - to update data of user with userID
+5. `PATCH /api/users/:userID` - to update data of user with userID
 6. `DELETE /api/users/:userID` - to delete data of user with userID
 7. `POST /api/food` - for creating new food
 8. `GET /api/food/:foodID` - to get details of food with foodID

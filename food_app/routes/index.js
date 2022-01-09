@@ -1,24 +1,24 @@
-import user from '../controllers/userController';
-import food from '../controllers/foodController';
+import { createUser, authenticateUser, getAllUsers, getUser, updateUser, deleteUser } from '../controllers/userController';
+import { createFood, getFood } from '../controllers/foodController';
 
 export default (app) => {
     app.route('/api/register')
-        .post(user.createUser);
+        .post(createUser);
 
     app.route('/api/authenticate')
-        .post(user.authenticateUser);
-        
+        .post(authenticateUser);
+
     app.route('/api/users')
-        .get(user.getAllUsers);
-        
+        .get(getAllUsers);
+
     app.route('/api/users/:userID')
-        .get(user.getUser)
-        .put(user.updateUser)
-        .delete(user.deleteUser);
+        .get(getUser)
+        .patch(updateUser)
+        .delete(deleteUser);
 
     app.route('/api/food')
-        .post(food.createFood);
+        .post(createFood);
 
     app.route('/api/food/:foodID')
-        .get(food.getFood);
+        .get(getFood);
 };

@@ -1,7 +1,7 @@
-import mongoose, { Schema } from 'mongoose';
+import { model, Schema } from 'mongoose';
 
 /* Create database schema for foods */
-const FoodSchema = new Schema({
+const FoodSchema = Schema({
     foodID: Number,
     foodName: {
         type: String,
@@ -17,4 +17,4 @@ const FoodSchema = new Schema({
     },
 });
 
-export default mongoose.model('Food', FoodSchema);
+export default model('Food', FoodSchema);

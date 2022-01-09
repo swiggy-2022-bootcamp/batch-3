@@ -73,6 +73,13 @@ definitions:
         type: integer
       answer:
         type: string
+  QuestionID:
+    type: object
+    required:
+      - question-id
+    properties:
+      question-id:
+        type: integer
 
 tags:
 - name: "User"
@@ -218,4 +225,244 @@ paths:
           description: Not Acceptable
         '500':
           description: Internal Server Error
+
+  /question/{questionID}/answer:
+    put:
+      summary: Edit an answer
+      tags:
+        - Answer
+      security:
+        - bearerAuth: []
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - in: path
+          name: questionID
+          schema:
+            type: integer
+        - in: body
+          name: body
+          schema:
+            type: object
+            properties:
+              user-details:
+                $ref: '#/definitions/UserDetails'
+              question:
+                $ref: '#/definitions/Answer'
+      responses:
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '406':
+          description: Not Acceptable
+        '500':
+          description: Internal Server Error
+
+
+  /question/{questionId}:
+    put:
+      tags:
+        - Question
+      summary: Edit a question
+      security:
+        - bearerAuth: []
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - in: path
+          name: questionId
+          schema:
+            required:
+              - questionId
+            properties:
+              questionId:
+                type: integer
+        - in: body
+          name: body
+          schema:
+            type: body
+            properties:
+              user-details:
+                $ref: '#/definitions/UserDetails'
+              question:
+                $ref: '#/definitions/Question'
+      responses:
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '406':
+          description: Not Acceptable
+        '500':
+          description: Internal Server Error
+
+  /question/{questionId}/answer/{answerId}/upvote:
+    put:
+      tags:
+        - Answer
+      summary: UpVote an answer
+      security:
+        - bearerAuth: []
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - in: path
+          name: questionId
+          schema:
+            required:
+              - questionId
+            properties:
+              questionId:
+                type: integer
+        - in: path
+          name: answerId
+          schema:
+            required:
+              - answerId
+            properties:
+              answerId:
+                type: integer
+        - in: body
+          name: body
+          schema:
+            type: object
+            properties:
+              user-details:
+                $ref: '#/definitions/UserDetails'
+              question:
+                $ref: '#/definitions/QuestionID'
+      responses:
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '406':
+          description: Not Acceptable
+        '500':
+          description: Internal Server Error
+
+  /question/{questionId}/answer/{answerId}/downvote:
+    put:
+      tags:
+        - Answer
+      summary: DownVote an answer
+      security:
+        - bearerAuth: []
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - in: path
+          name: questionId
+          schema:
+            required:
+              - questionId
+            questionId:
+              type: integer
+        - in: path
+          name: answerId
+          schema:
+            required:
+              - answerId
+            answerId:
+              type: integer
+        - in: body
+          name: body
+          schema:
+            type: object
+            properties:
+              user-details:
+                $ref: '#/definitions/UserDetails'
+              question:
+                $ref: '#/definitions/QuestionID'
+      responses:
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '406':
+          description: Not Acceptable
+        '500':
+          description: Internal Server Error
+
+  /question/{answerId}/upvote:
+    put:
+      summary: Upvote a question
+      tags:
+        - Question
+      security:
+        - bearerAuth: []
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - in: path
+          name: answerId
+          required:
+            - answerId
+          schema:
+            answerId:
+              type: integer
+        - in: body
+          name: body
+          schema:
+            type: object
+            properties:
+              user-details:
+                $ref: '#/definitions/UserDetails'
+      responses:
+        '201':
+          description: 'Created'
+        '401':
+          description: 'Unauthorized'
+        '406':
+          description: 'Not Acceptable'
+        '501':
+          description: 'Internal Server Error'
+
+  /question/{answerId}/downvote:
+    put:
+      summary: DownVote a question
+      tags:
+        - Question
+      security:
+        - bearerAuth: []
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - in: path
+          name: answerId
+          required:
+            - answerId
+          schema:
+            answerId:
+              type: integer
+        - in: body
+          name: body
+          schema:
+            type: object
+            properties:
+              user-details:
+                $ref: '#/definitions/UserDetails'
+      responses:
+        '201':
+          description: 'Created'
+        '401':
+          description: 'Unauthorized'
+        '406':
+          description: 'Not Acceptable'
+        '501':
+          description: 'Internal Server Error'
+
 

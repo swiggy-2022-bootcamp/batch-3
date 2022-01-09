@@ -1,5 +1,6 @@
 import { Post, Route } from "tsoa";
 import { UserLoginService } from "../services/login/userloginservice";
+import { responseHandler } from "../utils/common/ResponseHandler";
 
 @Route("login")
 export default class LoginController {
@@ -10,13 +11,14 @@ export default class LoginController {
 
       try {
         const token = await UserLoginService({username: username, password: password});
-        res.status(200);
-        res.json({
+        responseHandler(res, {
           token: token
-        });
+        }, 200);
       } catch (e) {
         console.log(e);
-        res.status(500).send("Internal Server Error");
+        responseHandler(res, {
+          error: e.message
+        }, e.statusCode);
       }
   }
 }

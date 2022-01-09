@@ -1,4 +1,5 @@
 import { findUserByUsername } from "../../repositories/user";
+import { CustomError } from "../../utils/common/CustomError";
 
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
@@ -15,19 +16,18 @@ interface UserLoginParameters {
 // Login -> username and password
 export const UserLoginService = async ({username, password} :UserLoginParameters): Promise<string> => {
     if (!(username && password)) {
-        throw new Error("All parameters needed!");
+        throw new CustomError("all parameters needed", 401);
     }
 
     // Check if user exists in the database
     const user = await findUserByUsername(username);
     if (user === undefined) {
-        // TODO: set the error code to 409
-        throw new Error("User does not exist. Please SignUP!");
+        throw new CustomError("user does not exist", 404);
     }
     
     // Check if the password is correct
     if (await bcrypt.compare(password, user.password) === false) {
-        throw new Error("Password incorrect!");
+        throw new CustomError("invalid credentials", 401);
     }
 
     // Create jwt token

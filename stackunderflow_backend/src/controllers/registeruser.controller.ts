@@ -1,5 +1,6 @@
 import { Post, Route } from "tsoa";
 import { RegisterUserService } from "../services/register/registeruserservice";
+import { responseHandler } from "../utils/common/ResponseHandler";
 
 
 @Route("register")
@@ -12,10 +13,14 @@ export default class RegisterController {
     
       try {
         await RegisterUserService({registrationName: registrationName, username: username, password: password});
-        res.status(200).send("User registered!")
+        responseHandler(res, {
+          message: "user registered"
+        }, 200);
       } catch(e) {
         console.log(e);
-        res.status(500).send("Internal Server Error while logging!");
+        responseHandler(res, {
+          error: e.message
+        }, e.statusCode);
       }
   }
 }

@@ -1,4 +1,5 @@
 import { findUserByUsername, createUser } from "../../repositories/user";
+import { CustomError } from "../../utils/common/CustomError";
 
 const bcrypt = require("bcryptjs");
 
@@ -10,19 +11,22 @@ interface RegisterUserParameters {
 
 export const RegisterUserService = async ({registrationName, username, password} :RegisterUserParameters) => {
     if (!(registrationName && username && password)) {
-        throw new Error("All parameters needed!");
+        throw new CustomError("all parameters needed", 401);
     }
 
     // Check if user already exists in the database
     const user = await findUserByUsername(username);
     if (user !== undefined) {
-        // TODO: set the error code to 409
-        throw new Error("User Already Exist. Please Login");
+        throw new CustomError("user already exists", 409);
     }
 
-    // Encrypt user password
-    const encryptPassword = await bcrypt.hash(password, 10);
-
-    // Create new user in the database
-    createUser(registrationName, username, encryptPassword);
+    try {
+        // Encrypt user password
+        const encryptPassword = await bcrypt.hash(password, 10);
+        // Create new user in the database
+        createUser(registrationName, username, encryptPassword);
+    } catch(e) {
+        console.log(e);
+        throw new CustomError("an error occured", 500)
+    }
 } 

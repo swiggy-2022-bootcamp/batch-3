@@ -1,5 +1,7 @@
 import { Answers } from "../../entities/answer";
 import { postAnswer } from "../../repositories/question"
+import { CustomError } from "../../utils/common/CustomError";
+import { UNIQUE_KEY_ALREADY_PRESENT } from "../../utils/errorcodes/dberrorcodes";
 
 interface PostAnswerServiceParameters {
     userId: number,
@@ -12,7 +14,11 @@ export const PostAnswerService = async ({userId, questionId, answer}: PostAnswer
         console.log("Post QUESTIONID: ", questionId);
         return await postAnswer(userId, questionId, answer);
     } catch (e) {
+        if (e.code && e.code == UNIQUE_KEY_ALREADY_PRESENT) {
+            console.log("error code :", e.code);
+            throw new CustomError("answer already posted by you on this question", 400);
+        } 
         console.log("PostAnswer: ", e);
-        throw new Error("error while posting answer")
+        throw new CustomError("an error occurred while posting answer", 500);
     }
 }

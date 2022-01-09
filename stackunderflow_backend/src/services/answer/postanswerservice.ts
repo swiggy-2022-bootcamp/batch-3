@@ -1,5 +1,5 @@
 import { Answers } from "../../entities/answer";
-import { postAnswer } from "../../repositories/question"
+import { findQuestionByPk, postAnswer } from "../../repositories/question"
 import { CustomError } from "../../utils/common/CustomError";
 import { UNIQUE_KEY_ALREADY_PRESENT } from "../../utils/errorcodes/dberrorcodes";
 
@@ -10,6 +10,11 @@ interface PostAnswerServiceParameters {
 }
 
 export const PostAnswerService = async ({userId, questionId, answer}: PostAnswerServiceParameters): Promise<Answers>=> {
+    const question = await findQuestionByPk(questionId);
+    if (!question) {
+        throw new CustomError("question not found", 404);
+    }
+
     try {
         console.log("Post QUESTIONID: ", questionId);
         return await postAnswer(userId, questionId, answer);

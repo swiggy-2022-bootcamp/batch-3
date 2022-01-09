@@ -1,0 +1,3 @@
+export const REQUIRED_DOWNVOTE_REPUTATION: number = 10;
+
+export const REQUIRED_EDIT_QUESTION_REPUTATION: number = 100;

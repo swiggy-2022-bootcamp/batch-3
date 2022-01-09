@@ -22,7 +22,7 @@ router.post('/', async (req, res, next) => {
         console.log(meeting);
         
 
-        var savedmeeting = await meetingmodel.save();
+        await meetingmodel.save();
 
         res.status(201).send({
             'message' : 'Meeting Created Successfully',
@@ -30,11 +30,8 @@ router.post('/', async (req, res, next) => {
         });
 
     } catch (err) {
-        res.status(400).send({
-            'message' : 'Something went wrong'
-        });
+        res.status(400).send({'message' : 'Something went wrong'});
     }
 });
-
 
 module.exports = router;

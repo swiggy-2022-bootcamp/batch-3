@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 
+//Schema to represent Food in DB
 var foodSchema=mongoose.Schema({
     foodId:{
         type:Number,

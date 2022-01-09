@@ -27,6 +27,12 @@ questionRouter.get("/:questionId/upvote", auth, async (req, res) => {
   await controller.upvoteQuestion(req, res);
 });
 
+questionRouter.get("/:questionId/downvote", auth, async (req, res) => {   
+  console.log("Inside question router !");
+  const controller = new QuestionController();
+  await controller.downvoteQuestion(req, res);
+});
+
 questionRouter.put("/:questionId/answer", auth, async (req, res) => {
   console.log("Inside the question router")
   console.log(req.body);

@@ -9,6 +9,7 @@ import { findQuestionByPk } from "../repositories/question";
 import { responseHandler } from "../utils/common/ResponseHandler";
 import { UpdateAnswerService } from "../services/answer/updateanswerservice";
 import { UpvoteQuestionService } from "../services/question/upvotequestionservice";
+import { DownvoteQuestionService } from "../services/question/downvotequestionservice";
 
 @Route("question")
 export default class QuestionController {
@@ -79,6 +80,25 @@ export default class QuestionController {
       const userId: number = getUserPkFromToken(token);
       const questionId: number = req.params.questionId;
       const message = await UpvoteQuestionService(userId, questionId);
+      responseHandler(res, {
+        message: message
+      }, 200);
+    } catch(e) {
+      responseHandler(res, {
+        error: e.message
+      }, e.statusCode);
+    }
+  }
+
+  @Get("/{questionId}/downvote")
+  public async downvoteQuestion (req :any, res: any) {
+    console.log("Inside downvote question");
+    console.log(req.params.questionId);
+    try {
+      const token = getTokenFromHeaders(req);
+      const userId: number = getUserPkFromToken(token);
+      const questionId: number = req.params.questionId;
+      const message = await DownvoteQuestionService(userId, questionId);
       responseHandler(res, {
         message: message
       }, 200);

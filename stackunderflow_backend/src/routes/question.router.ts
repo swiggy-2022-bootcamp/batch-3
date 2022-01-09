@@ -14,20 +14,27 @@ questionRouter.post("/", auth, async (req, res, next) => {
 });
 
 // Route: /question/{questionId}/answer: To answer the question with given question id
-questionRouter.post("/:questionid/answer", auth, async (req, res) => {   
+questionRouter.post("/:questionId/answer", auth, async (req, res) => {   
   console.log("Inside question router !");
   console.log(req.body);
   const controller = new QuestionController();
   await controller.postAnswer(req, res);
-  
+});
+
+
+questionRouter.put("/:questionId/answer", auth, async (req, res) => {
+  console.log("Inside the question router")
+  console.log(req.body);
+  const controller = new QuestionController();
+  await controller.updateAnswer(req, res);
 });
 
 // Route: /question/{questionId}: To get answers for given question id
 questionRouter.get("/:questionId/answer/all", auth, async (req, res) => {
   console.log("Inside question router");
+  console.log("TYPEEE: ", typeof(req))
   const controller = new QuestionController();
   await controller.getAllAnswerForQuestion(req, res);
 })
-
 
 export default questionRouter;

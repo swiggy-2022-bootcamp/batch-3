@@ -6,11 +6,8 @@ import { getUserPkFromToken } from "../utils/common/getUserPkFromToken";
 import { Answers } from "../entities/answer";
 import { getAllAnswerForQuestionService } from "../services/answer/getallanswerservice";
 import { findQuestionByPk } from "../repositories/question";
-
-interface Answer {
-  questionId: number,
-  answer: string
-}
+import { responseHandler } from "../utils/common/ResponseHandler";
+import { UpdateAnswerService } from "../services/answer/updateanswerservice";
 
 @Route("question")
 export default class QuestionController {
@@ -40,7 +37,7 @@ export default class QuestionController {
         const token = getTokenFromHeaders(req);
         const userId: number = getUserPkFromToken(token);
         console.log(answer);
-        const  a: Answers = await PostAnswerService({userId: userId, questionId: answer["question-id"], answer: answer["answer"]})
+        const  a: Answers = await PostAnswerService({userId: userId, questionId: req.params.questionId, answer: answer["answer"]})
         responseHandler(res, {
           message: "answer posted successfully",
           questionId: answer.questionId,
@@ -48,8 +45,8 @@ export default class QuestionController {
         }, 200);
       } catch (e) {
         responseHandler(res, {
-          message: "an error occurred while posting the answer"
-        }, 500);
+          message: e.message
+        }, e.statusCode);
       }
   }
 
@@ -67,13 +64,25 @@ export default class QuestionController {
         }, 200);
     } catch(e) {
       responseHandler(res, {
-        message: "an error occurred while posting the answer"
-      }, 500);
+        error: e.message
+      }, e.statusCode);
+    }
+  }
+
+  public async updateAnswer(req :any, res :any) {
+    console.log("Update the answer for the question");
+    try {
+      const token = getTokenFromHeaders(req);
+      const userId: number = getUserPkFromToken(token);
+      await UpdateAnswerService(req.params.questionId, userId, req.body["answer"]);
+      responseHandler(res, {
+        message: "answer updated successfully"
+      }, 200);
+    } catch(e) {
+      console.log("ooooooooo :", e);
+      responseHandler(res, {
+        error: e.message
+      }, e.statusCode);
     }
   }
 }
-
-const responseHandler = (res: any, body: any, code: number) => {
-  res.status(code);
-  res.json(body);
-};

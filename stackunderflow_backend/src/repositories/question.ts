@@ -31,6 +31,25 @@ export const postAnswer = async (userPk: number, questionId: number, answer: str
   });
 };
 
+export const updateAnswer = async (answerPk: number, userPk: number, questionId: number, answer: string) :Promise<Answers> => {
+  console.log("Inside the user repository")
+  const answerRepository = getRepository(Answers);
+  return await answerRepository.save({
+      pk: answerPk,
+      answer: answer, 
+      userPK: userPk,
+      questionPK: questionId,
+  });
+};
+
+export const getAnswer = async (questionId: number, userId: number): Promise<Answers> => {
+  console.log("Inside get all answer function - question repository");
+  const answerRepository = getRepository(Answers);
+  return await answerRepository.findOne({
+    where: {questionPK: questionId, userPK: userId}
+  });
+}
+
 export const getAllAnswer = async (questionId: number): Promise<Answers[]> => {
   console.log("Inside get all answer function - question repository");
   const answerRepository = getRepository(Answers);

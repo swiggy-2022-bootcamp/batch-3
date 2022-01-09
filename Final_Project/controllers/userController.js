@@ -5,21 +5,16 @@ var bcrypt = require("bcryptjs");
 exports.register = async function (req, res, next) {
 	var User = new user_models.UserModel();
 	User.email = req.body.email;
-    User.userName = req.body.username;
-    if(!User.email || !User.userName){
-        res.json({msg: "email and username are required"});
-    }
-    else{
+	User.userName = req.body.username;
 	const salt = await bcrypt.genSalt(10);
 	const hashedPassword = await bcrypt.hash(req.body.password, salt);
 	User.password = hashedPassword;
 	try {
-		var saveduser = await User.save();
-		res.json({ msg: "User Added Successfully", user: saveduser.username });
+		await User.save();
+		res.json({ msg: "User Added Successfully"});
 	} catch (error) {
-		res.json({ msg: "User Already Exists" });
+		res.json({ msg: "User Already Exists or Some of the input parameters are missing" });
 	}
-}
 }
 
 exports.login = async function (req, res){
@@ -33,7 +28,7 @@ exports.login = async function (req, res){
 			var token = jwt.sign({email}, "secret");
 			await user_models.TokenModel.updateOne({}, {email: req.body.email, token: token}, 
 				{upsert: true, setDefaultsOnInsert: true});
-            res.json({status : 200, message : "User logged in successfully", token: token})
+            res.json({status : 201, message : "User logged in successfully", token: token})
         }
         else {
 			res.json({status : 401, message : "Invalid Username/Password"})

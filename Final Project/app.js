@@ -9,7 +9,9 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
 var app = express();
-var DB_URL = "mongodb+srv://food_app_super_user:YummyFoods@cluster0.h6s8s.mongodb.net/Food_App_DB?retryWrites=true&w=majority" //Link to MongoDB Atlas instance
+
+//MongoDB Atlas URL
+var DB_URL = "mongodb+srv://food_app_super_user:YummyFoods@cluster0.h6s8s.mongodb.net/Food_App_DB?retryWrites=true&w=majority" 
 
 
 // view engine setup
@@ -28,7 +30,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/api', usersRouter);
+app.use('/api', usersRouter); //User Route 
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

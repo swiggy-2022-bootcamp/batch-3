@@ -1,5 +1,7 @@
 var express = require('express');
 var router = express.Router();
+var bcrypt = require("bcryptjs");
+var User = require("../models/user");
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
@@ -7,17 +9,31 @@ router.get('/', function(req, res, next) {
 });
 
 /* POST users route to register user*/
-router.post('/', (req, res, next) => {
+router.post('/', async (req, res, next) => {
+  try {
+    const {userid,password} = req.body
+    const registrationName = req.body["registration-name"]
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
 
-  const {userid,password} = req.body
-  const registrationName = req.body["registration-name"]
+    console.log(registrationName, userid, password, hashedPassword)
 
-  console.log(registrationName, userid, password)
+    var user = new User({ registrationName, userid, password: hashedPassword});
+  
+    var userExist = await User.findOne({ userid });
+    if (userExist) {
+      return res.json({ msg: "User is Already Exist" });
+    }
+    var saveduser = await user.save();
+    res.status(201).send({
+      'message' : 'User Registered Successfully',
+      'registration-name' : registrationName
+    })
 
-  res.status(201).send({
-    'message' : 'User Registered Successfully',
-    'registration-name' : `${registrationName}`
-  })
+  } catch (error) {
+      res.json({ msg: "Some thing is wrong " });
+      console.log(error);
+  }
 });
 
 var meetings = [

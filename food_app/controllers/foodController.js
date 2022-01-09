@@ -9,12 +9,12 @@ To add a new food to the system.
     foodType: Indian/Chinese/Mexican
 }
 */
-exports.createFood = (req, res) => {
+exports.createFood = async (req, res) => {
     const newFood = new food(req.body);
 
-    newFood.save((err, food) => {
+    await newFood.save((err, food) => {
         if (err) {
-            res.send(err);
+            res.status(409).json({ message: err.message });
         }
 
         res.status(201).json(food);
@@ -22,8 +22,8 @@ exports.createFood = (req, res) => {
 };
 
 // To return a food item specified with :foodID
-exports.getFood = (req, res) => {
-    food.findById(req.params.foodID, (err, food) => {
+exports.getFood = async (req, res) => {
+    await food.findById(req.params.foodID, (err, food) => {
         if (err) {
             res.status(500).json({
                 message: `Sorry Food Not Found`

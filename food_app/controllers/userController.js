@@ -16,12 +16,12 @@ To register the user with basic details
     }
 }
 */
-exports.createUser = (req, res) => {
+exports.createUser = async (req, res) => {
     const newUser = new user(req.body);
 
-    newUser.save((err, user) => {
+    await newUser.save((err, user) => {
         if (err) {
-            res.send(err);
+            res.status(409).json({ message: err.message });
         }
 
         res.status(201).json(user);
@@ -34,10 +34,10 @@ exports.authenticateUser = (req, res) => {
 };
 
 // To get all the users who are registered to the system, the end point should return an array,
-exports.getAllUsers = (req, res) => {
-    user.find({}, (err, users) => {
+exports.getAllUsers = async (req, res) => {
+    await user.find({}, (err, users) => {
         if (err) {
-            res.send(err);
+            res.status(404).json({ message: err.message });
         }
 
         res.status(200).json(users);
@@ -45,8 +45,8 @@ exports.getAllUsers = (req, res) => {
 };
 
 // To return user by specifying :userID
-exports.getUser = (req, res) => {
-    user.findById(req.params.userID, (err, user) => {
+exports.getUser = async (req, res) => {
+    await user.findById(req.params.userID, (err, user) => {
         if (err) {
             res.status(500).json({
                 message: `Sorry user With ${req.params.userID} not found`
@@ -62,42 +62,35 @@ exports.getUser = (req, res) => {
 };
 
 // Should update the user specified in the payload which shall match the ID and updated the existing user with the new details.
-exports.updateUser = (req, res) => {
-    user.findOneAndUpdate({
-        _id: req.params.userID
-    }, req.body,
-        (err, user) => {
-            if (err) {
-                res.status(500).json({
-                    message: `Sorry user With ${req.params.userID} not found`
-                });
-            } else if (!user) {
-                res.status(404).json({
-                    message: `Sorry user With ${req.params.userID} not found`
-                });
-            } else {
-                // TODO
-                // Should return new value = req.body or original value user?
-                res.status(200).json(user);
-            }
-        });
-};
-
-// TODO
-// When Id not found: {
-//     Message:”Sorry user With <ID> not found”
-// }
-exports.deleteUser = (req, res) => {
-    user.findOneAndDelete({
-        _id: req.params.userID,
-        _id: { $ne: null }
-    }, (err) => {
+exports.updateUser = async (req, res) => {
+    await user.findByIdAndUpdate(req.params.userID, req.body, (err, user) => {
         if (err) {
-            res.status(200).json({
+            res.status(500).json({
+                message: `Sorry user With ${req.params.userID} not found`
+            });
+        } else if (!user) {
+            res.status(404).json({
                 message: `Sorry user With ${req.params.userID} not found`
             });
         } else {
+            // Return updated value
+            res.status(200).json(req.body);
+        }
+    });
+};
 
+// Should delete the user which is specified in the :userID
+exports.deleteUser = async (req, res) => {
+    await user.findByIdAndDelete(req.params.userID, (err, user) => {
+        if (err) {
+            res.status(500).json({
+                message: `Sorry user With ${req.params.userID} not found`
+            });
+        } else if (!user) {
+            res.status(404).json({
+                message: `Sorry user With ${req.params.userID} not found`
+            });
+        } else {
             res.status(200).json({
                 message: `User Deleted Successfully`
             });

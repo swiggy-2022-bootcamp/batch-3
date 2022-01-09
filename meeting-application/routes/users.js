@@ -3,6 +3,8 @@ var router = express.Router();
 var bcrypt = require("bcryptjs");
 var User = require("../models/user");
 var Meeting = require("../models/meetings");
+var luxon = require('luxon');
+const { SystemZone } = require('luxon');
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
@@ -26,7 +28,9 @@ router.post('/', async (req, res, next) => {
     if (userExist) {
       return res.json({ msg: "User is Already Exist" });
     }
-    var saveduser = await user.save();
+    
+    await user.save();
+
     res.status(201).send({
       'message' : 'User Registered Successfully',
       'registration-name' : registrationName
@@ -44,18 +48,18 @@ router.post('/', async (req, res, next) => {
 */
 router.get('/meetings', async (req, res, next) => {
   try{
-    const {userid} = req.body
+    const {userid, password} = req.body
     const meetingId = req.body["meeting-id"]
 
     if (meetingId != undefined){ 
-      var meeting = await Meeting.findOne({ meetingId });
+      var meeting = await Meeting.findOne({ meetingId }).select(['-__v','-_id'])
       if(meeting != undefined){
         res.status(200).send(meeting)
       } else {
-        res.status(400).send({"message" : "Meeting id doesn’t exist"});
+        res.status(400).send({"message" : "Meeting id doesn’t exist"})
       }
     } else { 
-      var meetings = await Meeting.find({ emailidsofattendees: {$regex : userid}})
+      var meetings = await Meeting.find({ emailidsofattendees: {$regex : userid}}).select(['-__v','-_id'])
       res.status(200).send(meetings)
     }
   }catch (err) {
@@ -76,9 +80,15 @@ router.delete("/:userId/meetings/:meetingId", async (req, res, next) => {
     if(meeting == undefined){
       res.status(400).send({"message" : "Meeting id doesn’t exist"})
       return;
-    }
+    } 
 
     var old_emailidsofattendees = meeting.emailidsofattendees.split(",");
+
+    if(old_emailidsofattendees.filter(email => email == userId).length == 0){
+      res.status(200).send({"message" : "User is not already not part of the meeting"})
+      return;
+    }
+
     var new_emailidsofattendees = old_emailidsofattendees.filter(email => email != userId).toString()
 
     await Meeting.updateOne(
@@ -89,6 +99,30 @@ router.delete("/:userId/meetings/:meetingId", async (req, res, next) => {
     res.status(200).send({"message" : "You are dropped off from the meeting"})
   } catch(err) {
     res.status(400).send({"message" : "Something went wrong"})
+  }
+});
+
+/* GET route to find upcoming for user meetings (withing next hour) */
+router.get('/get-upcoming-meetings', async (req, res, next) => {
+  try {
+    const {userid} = req.body
+
+    var meetings = await Meeting.find({ emailidsofattendees: {$regex : userid}}).select(['-__v','-_id'])
+
+    var currentDateTime = luxon.DateTime.local()
+    var targetDateTime = luxon.DateTime.local().plus({ hours: 1 })
+
+    meetings = meetings.filter(meeting => {
+      var meetingDateTime = luxon.DateTime.fromISO(meeting.dateofmeeting + "T" + meeting.starttime)
+      console.log("comparing : " + meetingDateTime.toISO() + " and " + targetDateTime.toISO())
+      return currentDateTime <= meetingDateTime && meetingDateTime <= targetDateTime;
+    })
+
+    res.status(200).send(meetings)
+
+  } catch (err) {
+      res.status(400).send({"message" : "Something went wrong"})
+      console.log(err)
   }
 });
 

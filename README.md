@@ -29,7 +29,7 @@ It is known fact that in today’s work-from-home world, people prefer ordering 
 
 ## API Description
 
-Register: 
+1. Register: 
 {
   endpoint: /api/register
   method: POST
@@ -53,7 +53,7 @@ Example
 
 ```
 
-Login: 
+2. Login: 
 {
   endpoint: /api/authenticate
   method: POST
@@ -69,7 +69,7 @@ Example
 
 ```
 
-Get All Users: 
+3. Get All Users: 
 {
   endpoint: /api/users
   method: GET
@@ -80,7 +80,7 @@ Get All Users:
 
 
 
-Get Single User: 
+4. Get Single User: 
 {
   endpoint: /api/users/<userid>
   method: GET
@@ -90,7 +90,7 @@ Get Single User:
 } 
 
 
-Update User: 
+5. Update User: 
 {
   endpoint: /api/users/<userid>
   method: PUT
@@ -110,7 +110,7 @@ Example
 
 ```
   
-Delete User: 
+6. Delete User: 
 {
   endpoint: /api/users/<userid>
   method: DELETE
@@ -120,7 +120,7 @@ Delete User:
 } 
 
   
-Get ALL Food Item: 
+7. Get ALL Food Item: 
 {
   endpoint: /api/food/
   method: GET
@@ -130,7 +130,7 @@ Get ALL Food Item:
 } 
   
   
-Get Single Food Item: 
+8. Get Single Food Item: 
 {
   endpoint: /api/food/<foodid>
   method: GET
@@ -140,7 +140,7 @@ Get Single Food Item:
 } 
   
 
-Post Food Item: 
+9. Post Food Item: 
 {
   endpoint: /api/food/
   method: POSTT
@@ -161,7 +161,7 @@ Example
 
 ```
   
-Get User's Cart Details: 
+10. Get User's Cart Details: 
 {
   endpoint: /api/cart/
   method: GET
@@ -179,7 +179,7 @@ Example
 
 ```  
 
-Add Item to Cart: 
+11. Add Item to Cart: 
 {
   endpoint: /api/cart/
   method: POST
@@ -198,7 +198,7 @@ Example
 
 ```  
   
-Delete Item from Cart: 
+12. Delete Item from Cart: 
 {
   endpoint: /api/cart/
   method: DELETE
@@ -218,7 +218,7 @@ Example
 ```  
   
   
-Get User's Order History: 
+13. Get User's Order History: 
 {
   endpoint: /api/orders
   method: GET
@@ -236,7 +236,7 @@ Example
 
 ```  
   
-Place Order: 
+14. Place Order: 
 {
   endpoint: /api/orders
   method: POST
@@ -254,7 +254,7 @@ Example
 }
 ```
   
-Get Review for a food item: 
+15. Get Review for a food item: 
 {
   endpoint: /api/reviews
   method: GET
@@ -271,7 +271,7 @@ Example
 }
 ```  
   
-Post Review for a food item: 
+16. Post Review for a food item: 
 {
   endpoint: /api/reviews
   method: POST
@@ -291,7 +291,7 @@ Example
 }
 ```  
 
-Post Review for a food item: 
+17 .Post Review for a food item: 
 {
   endpoint: /api/reviews
   method: GET

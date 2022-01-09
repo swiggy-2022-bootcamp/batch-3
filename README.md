@@ -32,3 +32,8 @@ Stackunderflow supported features/APIs:
 7. Run `npm install` to install packages from `package.json` or `npm ci` to install from `package-lock.json`.
 8. Run `npm run start` to start the server at `localhost:8000`.
 
+## API Documentation
+You can visit the document related to APIs in the root folder of stackunderflow named as `APIs.jpeg`.
+
+![API Document](APIs.jpeg)
+

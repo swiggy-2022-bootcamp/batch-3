@@ -4,13 +4,13 @@ var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 
-var indexRouter = require("./routes/index");
-var usersRouter = require("./routes/users");
+var usersRouter = require("./routes/usersRoute");
+var questionsRouter = require("./routes/questionsRoute");
 
 // database dependency
 var mongoose = require("mongoose");
 let db_url =
-  "mongodb+srv://yogirajgutte:yogirajgutte@cluster0.y4mvw.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+  "mongodb+srv://yogirajgutte:yogirajgutte@cluster0.y4mvw.mongodb.net/StackOverflow?retryWrites=true&w=majority";
 
 var app = express();
 
@@ -29,8 +29,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
-app.use("/", indexRouter);
-app.use("/users", usersRouter);
+app.use("/", usersRouter);
+app.use("/question", questionsRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

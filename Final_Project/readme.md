@@ -61,7 +61,8 @@ npm start
 
 ## API Calls And Responses(TEST CASES) - Tested Using Postman
 
-1. Register: {endpoint : /register} "POST request"
+1. Register: {endpoint : /register} "POST request" 
+
 Scenario 1: All the values are present and email and username unique
 
 ```JSON

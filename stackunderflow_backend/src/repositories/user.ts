@@ -29,3 +29,14 @@ export const createUser = async (registrationName :string, username :string, has
   const userRepository = getRepository(Users);
   await userRepository.insert({username: username, registrationName: registrationName, password: hashedPassword});
 }
+
+export const updateUser = async (pk: number, registrationName :String, username :String, hashedPassword :String, reputation: number) => {
+  const userRepository = getRepository(Users);
+  await userRepository.save({
+    pk: pk,
+    username: username,
+    registrationName: registrationName,
+    password: hashedPassword,
+    reputation: reputation
+  });
+}

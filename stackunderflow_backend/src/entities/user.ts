@@ -18,4 +18,7 @@ export class Users {
 
     @Column()
     password: String;
+
+    @Column()
+    reputation: number;
 }

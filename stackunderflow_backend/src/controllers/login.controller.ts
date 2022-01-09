@@ -15,7 +15,6 @@ export default class LoginController {
           token: token
         }, 200);
       } catch (e) {
-        console.log(e);
         responseHandler(res, {
           error: e.message
         }, e.statusCode);

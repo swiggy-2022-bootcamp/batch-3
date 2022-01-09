@@ -20,14 +20,11 @@ export const PostAnswerService = async ({userId, questionId, answer}: PostAnswer
     }
 
     try {
-        console.log("Post QUESTIONID: ", questionId);
         return await postAnswer(userId, questionId, answer);
     } catch (e) {
         if (e.code && e.code == UNIQUE_KEY_ALREADY_PRESENT) {
-            console.log("error code :", e.code);
             throw new CustomError("answer already posted by you on this question", 400);
         } 
-        console.log("PostAnswer: ", e);
         throw new CustomError("an error occurred while posting answer", 500);
     }
 }

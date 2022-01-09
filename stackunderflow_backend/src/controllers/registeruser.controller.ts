@@ -2,7 +2,6 @@ import { Post, Route } from "tsoa";
 import { RegisterUserService } from "../services/register/registeruserservice";
 import { responseHandler } from "../utils/common/ResponseHandler";
 
-
 @Route("register")
 export default class RegisterController {
   @Post("/")
@@ -17,7 +16,6 @@ export default class RegisterController {
           message: "user registered"
         }, 200);
       } catch(e) {
-        console.log(e);
         responseHandler(res, {
           error: e.message
         }, e.statusCode);

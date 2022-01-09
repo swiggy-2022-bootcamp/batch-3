@@ -6,7 +6,6 @@ export const UpdateAnswerService = async (questionId: number, userId: number, an
     if (!(questionId && answer)) {
         throw new CustomError("all parameters needed", 400);
     }
-    console.log("Post QUESTIONID: ", questionId);
     const oldAnswer :Answers = await getAnswer(questionId, userId);
     if (!oldAnswer) {
         throw new CustomError("no answer by you found for this question", 404);
@@ -15,7 +14,6 @@ export const UpdateAnswerService = async (questionId: number, userId: number, an
     try {
         await updateAnswer(oldAnswer.pk, userId, questionId, answer, oldAnswer.votes);
     } catch (e) {
-        console.log(e);
         throw new CustomError("an error occurred while updating the answer", 500);
     }
 }

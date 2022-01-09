@@ -10,8 +10,6 @@ export default class QuestionController {
 
   @Get("/{answerId}/upvote")
   public async upvoteAnswer (req :any, res: any) {
-    console.log("Inside upvote answer");
-    console.log(req.params.questionId);
     try {
       const token = getTokenFromHeaders(req);
       const userId: number = getUserPkFromToken(token);
@@ -29,8 +27,6 @@ export default class QuestionController {
 
   @Get("/{answerId}/downvote")
   public async downvoteAnswer (req :any, res: any) {
-    console.log("Inside downvote answer");
-    console.log(req.params.questionId);
     try {
       const token = getTokenFromHeaders(req);
       const userId: number = getUserPkFromToken(token);

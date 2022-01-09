@@ -2,24 +2,19 @@ import { getRepository } from "typeorm";
 import { Users } from "../entities/user";
 
 export const getUsers = async (): Promise<Array<Users>> => {
-  console.log("Inside the user repository")
   const userRepository = getRepository(Users);
   return userRepository.find();
 };
 
 export const findUserByPk = async (pk: number) :Promise<Users> => {
-  console.log("Inside find user by username")
   const userRepository = getRepository(Users);
-  console.log(pk);
   return await userRepository.findOne({
     where: {pk: pk}
   });
 } 
 
 export const findUserByUsername = async (name :String) :Promise<Users> => {
-  console.log("Inside find user by username")
   const userRepository = getRepository(Users);
-  console.log(name);
   return await userRepository.findOne({
     where: {username: name}
   });

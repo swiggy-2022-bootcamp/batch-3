@@ -34,12 +34,10 @@ export default class QuestionController {
   // req.body.question.question_id, req.body.question.answer
   @Post("/{questionId}/answer")
   public async postAnswer(req: any, res: any) {
-      console.log("Inside question controllers!");
       try {
         const answer = req.body["question"];
         const token = getTokenFromHeaders(req);
         const userId: number = getUserPkFromToken(token);
-        console.log(answer);
         const  a: Answers = await PostAnswerService({userId: userId, questionId: req.params.questionId, answer: answer["answer"]})
         responseHandler(res, {
           message: "answer posted successfully",
@@ -55,8 +53,6 @@ export default class QuestionController {
 
   @Get("/{questionId}/answer/all")
   public async getAllAnswerForQuestion(req :any, res: any) {
-    console.log("Inside get all answer for question");
-    console.log(req.params.questionId);
     try {
       const questionId: number = req.params.questionId;
       const answers = await getAllAnswerForQuestionService(questionId);
@@ -74,8 +70,6 @@ export default class QuestionController {
 
   @Get("/{questionId}/upvote")
   public async upvoteQuestion (req :any, res: any) {
-    console.log("Inside upvote question");
-    console.log(req.params.questionId);
     try {
       const token = getTokenFromHeaders(req);
       const userId: number = getUserPkFromToken(token);
@@ -93,8 +87,6 @@ export default class QuestionController {
 
   @Get("/{questionId}/downvote")
   public async downvoteQuestion (req :any, res: any) {
-    console.log("Inside downvote question");
-    console.log(req.params.questionId);
     try {
       const token = getTokenFromHeaders(req);
       const userId: number = getUserPkFromToken(token);
@@ -111,7 +103,6 @@ export default class QuestionController {
   }
 
   public async updateAnswer(req :any, res :any) {
-    console.log("Update the answer for the question");
     try {
       const token = getTokenFromHeaders(req);
       const userId: number = getUserPkFromToken(token);
@@ -120,7 +111,6 @@ export default class QuestionController {
         message: "answer updated successfully"
       }, 200);
     } catch(e) {
-      console.log("ooooooooo :", e);
       responseHandler(res, {
         error: e.message
       }, e.statusCode);
@@ -128,7 +118,6 @@ export default class QuestionController {
   }
 
   public async editQuestion(req :any, res :any) {
-    console.log("edit the question for the question");
     try {
       const token = getTokenFromHeaders(req);
       const userId: number = getUserPkFromToken(token);
@@ -137,7 +126,6 @@ export default class QuestionController {
         message: "edited question successfully"
       }, 200);
     } catch(e) {
-      console.log("ooooooooo :", e);
       responseHandler(res, {
         error: e.message
       }, e.statusCode);
@@ -145,7 +133,6 @@ export default class QuestionController {
   }
 
   public async updateQuestion(req :any, res :any) {
-    console.log("edit the question for the question");
     try {
       const token = getTokenFromHeaders(req);
       const userId: number = getUserPkFromToken(token);
@@ -154,7 +141,6 @@ export default class QuestionController {
         message: "updated question successfully"
       }, 200);
     } catch(e) {
-      console.log("ooooooooo :", e);
       responseHandler(res, {
         error: e.message
       }, e.statusCode);

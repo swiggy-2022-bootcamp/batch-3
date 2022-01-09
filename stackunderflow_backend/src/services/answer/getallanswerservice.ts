@@ -7,7 +7,6 @@ export const getAllAnswerForQuestionService = async (questionId: number): Promis
         const answers = await getAllAnswer(questionId);
         return answers
     } catch (e) {
-        console.log(e);
         throw new CustomError("error while getting all answers", 500)
     }
 }

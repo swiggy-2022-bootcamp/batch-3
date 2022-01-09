@@ -26,7 +26,6 @@ export const RegisterUserService = async ({registrationName, username, password}
         // Create new user in the database
         createUser(registrationName, username, encryptPassword);
     } catch(e) {
-        console.log(e);
         throw new CustomError("an error occured", 500)
     }
 } 

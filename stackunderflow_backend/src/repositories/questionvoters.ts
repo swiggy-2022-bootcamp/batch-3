@@ -2,7 +2,6 @@ import { getRepository } from "typeorm";
 import { QuestionVoters } from "../entities/questionvoters";
 
 export const addQuestionVoter = async (questionId: number, userId :number, vote: number) => {
-  console.log("Inside the upvote repository")
   const repository = getRepository(QuestionVoters);
   await repository.save({
     userPk: userId,
@@ -12,7 +11,6 @@ export const addQuestionVoter = async (questionId: number, userId :number, vote:
 };
 
 export const updateQuestionVoter = async (pk: number, questionId: number, userId :number, vote: number) => {
-  console.log("Inside the upvote repository")
   const repository = getRepository(QuestionVoters);
   await repository.save({
     pk: pk,
@@ -23,13 +21,11 @@ export const updateQuestionVoter = async (pk: number, questionId: number, userId
 };
 
 export const removeQuestionVoter = async (userId: number, questionId: number) => {
-  console.log("Inside the upvote repository")
   const repository = getRepository(QuestionVoters);
   return await repository.delete({userPk: userId, questionPk: questionId});
 };
 
 export const findQuestionVoter = async (questionId: number, userId :number): Promise<QuestionVoters> => {
-  console.log("Inside the upvote repository")
   const repository = getRepository(QuestionVoters);
   return await repository.findOne({
       where: {questionPk: questionId, userPk: userId}

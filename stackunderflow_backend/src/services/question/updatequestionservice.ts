@@ -29,7 +29,6 @@ export const UpdateQuestionService = async (userId: number, questionId: number, 
     try {
         await updateQuestion(oldQuestion.pk, oldQuestion.userPK, updatedTitle, updatedBody, oldQuestion.votes);
     } catch (e) {
-        console.log("Error: ", e);
         throw new CustomError("an error occurred while editing the question", 500);
     }
 }

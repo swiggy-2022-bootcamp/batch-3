@@ -39,6 +39,5 @@ export const UserLoginService = async ({username, password} :UserLoginParameters
         }
     );
     
-    console.log("Token type: ", typeof(token));
     return token;
 }

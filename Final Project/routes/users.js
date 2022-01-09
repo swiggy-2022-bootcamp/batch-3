@@ -56,6 +56,16 @@ router.post("/authenticate", async function (req, res, next) {
   }
 });
 
+router.get("/users",async function (req, res, next) {
+  try {
+    var userinfo = await User.find({});
+    res.status(200).json(userinfo);
+  } catch (error) {
+    console.log(error)
+    res.json({msg:"Failed to return all users." })
+  }
+});
+
 
 
 module.exports = router;

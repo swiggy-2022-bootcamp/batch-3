@@ -8,7 +8,7 @@ const verifyToken = async (req :any, res :any, next :any) => {
     let token;
     const authHeader = req.headers["authorization"];
     if (!authHeader) {
-        return res.status(401).json({
+        return res.status(403).json({
             error: "user not logged in"
         });
     }
@@ -22,14 +22,14 @@ const verifyToken = async (req :any, res :any, next :any) => {
         console.log(token);
     } else {
         // Error handling when the token doesn't start with "Bearer"
-        return res.status(401).json({
+        return res.status(403).json({
             error: "invalid token"
         });
     }
 
     if (!token) {
         console.log(token);
-        return res.status(401).json({
+        return res.status(403).json({
             error: "user is not logged in"
         });
     }
@@ -42,7 +42,7 @@ const verifyToken = async (req :any, res :any, next :any) => {
         const user = await findUserByPk(userId);
         console.log(user);
         if (req.body.username && req.body.username !== user.username) {
-            return res.status(401).json({
+            return res.status(403).json({
                 error: `user with username ${req.body.username} does not exist`
             })
         } else {

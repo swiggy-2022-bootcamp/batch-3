@@ -12,4 +12,10 @@ answerRouter.get("/:answerId/upvote", auth, async (req, res) => {
   await controller.upvoteAnswer(req, res);
 });
 
+answerRouter.get("/:answerId/downvote", auth, async (req, res) => {   
+  console.log("Inside question router !");
+  const controller = new AnswerController();
+  await controller.downvoteAnswer(req, res);
+});
+
 export default answerRouter;

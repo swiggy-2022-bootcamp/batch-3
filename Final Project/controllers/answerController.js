@@ -15,7 +15,7 @@ exports.update=catchAsync(async (req, res, next) => {
         body:req.body.body
     }
     const verify = await Answer.findById(req.body.id);
-    if(verify.owner.id!=req.user.id){
+    if(verify.owner!=req.user.id){
       return next(new AppError('No Access to this document', 404));
     }
     const doc = await Answer.findByIdAndUpdate(req.body.id, filterBody, {

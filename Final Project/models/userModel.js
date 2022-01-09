@@ -27,12 +27,12 @@ const userSchema = new mongoose.Schema({
     select: false
   },
   photo: String,
-  upVotes:{
+  upVote:{
       type: Number,
       default: 0
 
   },
-  downVotes:{
+  downVote:{
       type: Number,
       default: 0
   },

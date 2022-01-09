@@ -4,6 +4,7 @@ var bcrypt = require("bcrypt");
 var User = require("../models/user");
 const Mongoose = require('mongoose');
 var jwt = require("jsonwebtoken");
+var Food= require("../models/food")
 
 const maxAge = 3 * 24 * 60 * 60;
 
@@ -92,5 +93,33 @@ router.delete("/users/:userID",async function(req,res,next){
     res.json({message:"Sorry, user with Id "+delUser+" not found."});
   }
 });
+
+router.post("/food",async (req,res,next)=>{
+  let {foodId,foodName, foodCost,foodType}=req.body;
+  //console.log({foodId,foodName, foodCost,foodType});
+  let food=new Food({foodId,foodName, foodCost,foodType});
+  try{
+    var idExist=await Food.findOne({foodId});
+    if(idExist){
+      return res.json({message:"Food id already used."});
+    }
+    var savedFood=await food.save();
+    res.status(201).json(savedFood);
+   }
+  catch(error){
+     res.json({ msg: "Failed to add new food!", error });
+ }
+})
+
+router.get("/food/:foodID",async (req,res,next)=>{
+  let findFood=req.params.foodID;
+  let checkFood=await Food.findOne({foodId:findFood});
+  if(checkFood){
+    return res.status(200).json(checkFood);
+  }
+  else{
+    res.json({message:"Sorry, food not found."});
+  }
+})
 
 module.exports = router;

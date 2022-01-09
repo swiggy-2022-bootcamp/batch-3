@@ -16,6 +16,10 @@ interface PostQuestionParameters {
 }
 
 export const PostQuestionService = async ({token, questionDetails} : PostQuestionParameters) :Promise<Questions> => {
+    if (!questionDetails.title || !questionDetails.body) {
+        throw new CustomError("all parameters needed", 400)
+    }
+
     const userId: number = getUserPkFromToken(token);
     const title: string = questionDetails.title;
     const body: string = questionDetails.body;

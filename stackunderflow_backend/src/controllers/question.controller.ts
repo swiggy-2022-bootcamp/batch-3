@@ -24,7 +24,7 @@ export default class QuestionController {
         responseHandler(res, {
           message: "Question posted",
           questionId: question.pk
-        }, 200);
+        }, 201);
       } catch (e) {
         responseHandler(res, {
           message: "an error occurred while posting the question"
@@ -46,7 +46,7 @@ export default class QuestionController {
           message: "answer posted successfully",
           questionId: answer.questionId,
           answerId: a.pk,
-        }, 200);
+        }, 201);
       } catch (e) {
         responseHandler(res, {
           message: e.message

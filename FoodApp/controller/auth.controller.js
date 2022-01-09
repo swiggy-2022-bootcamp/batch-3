@@ -2,6 +2,7 @@ var bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../model/user.model");
 
+/* To register user */
 async function register(req, res) {
   try {
     const {
@@ -16,6 +17,7 @@ async function register(req, res) {
       state,
       zip,
     } = req.body;
+    // all these fields should be provided
     if (
       !(
         firstname &&
@@ -39,7 +41,9 @@ async function register(req, res) {
       return res.status(409).send("User Already Exist. Please Login");
     }
 
+    //hash the password
     const encryptedPassword = bcrypt.hashSync(password, 10);
+    //add user to database
     const user = await User.create({
       firstname,
       lastname,
@@ -61,10 +65,12 @@ async function register(req, res) {
   }
 }
 
+/* To authenticate user */
 async function login(req, res) {
   try {
     const { username, password } = req.body;
 
+    // all these fields should be provided
     if (!(username && password)) {
       res.status(400).send("All input is required");
     }
@@ -72,6 +78,7 @@ async function login(req, res) {
     const user = await User.findOne({ username });
 
     if (user && (await bcrypt.compare(password, user.password))) {
+      //username and password are valid, create JWT
       const token = jwt.sign(
         { user_id: user._id, username },
         process.env.TOKEN_KEY,
@@ -90,6 +97,7 @@ async function login(req, res) {
 
       res.status(200).json(obj);
     } else {
+      //username and password are invalid
       res.status(403).send("Invalid Credentials");
     }
   } catch (err) {

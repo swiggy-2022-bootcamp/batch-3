@@ -1,5 +1,6 @@
 const foodQuery = require("../query/food.query");
 
+/* To add food item */
 async function addFoodItem(req, res) {
   try {
     const { foodId, foodName, foodCost, foodType } = req.body;
@@ -16,6 +17,7 @@ async function addFoodItem(req, res) {
   }
 }
 
+/* To get a single food item */
 async function getFoodItemById(req, res) {
   try {
     let { foodId } = req.params;
@@ -30,6 +32,7 @@ async function getFoodItemById(req, res) {
   }
 }
 
+/* To get all the food items */
 async function getFoodItems(req, res) {
   try {
     let foodItems = await foodQuery.getFoodItems();

@@ -1,9 +1,10 @@
 const Cart = require("../model/cart.model");
 
+/* To add a single quantity of an item to cart for a particular user */
 const addCartItem = async (payload) => {
   let { userId, foodItem } = payload;
   userId = parseInt(userId);
-  let cart = await getCartItemByUserId(userId); //gets cart object in an array
+  let cart = await getCartDetailsByUserId(userId); //gets cart object in an array
   if (cart.length == 0) {
     //cart does not exit, create new cart
     const cartData = {
@@ -20,7 +21,7 @@ const addCartItem = async (payload) => {
     return newCartItem;
   } else {
     //cart already exits, add item
-    cart = cart[0];
+    cart = cart[0]; //extract cart details from the array
     let itemsList = cart.items;
     let itemIndex = itemsList.findIndex((el) => el.foodId == foodItem.foodId);
     if (itemIndex == -1) {
@@ -40,22 +41,24 @@ const addCartItem = async (payload) => {
   }
 };
 
-const getCartItemByUserId = async (userId) => {
+/* To get cart details for a particular user */
+const getCartDetailsByUserId = async (userId) => {
   userId = parseInt(userId);
   const cart = await Cart.find({ userId: userId });
   return cart;
 };
 
+/* To remove a single quantity of an item to cart for a particular user */
 const deleteCartItem = async (payload) => {
   let { userId, foodItem } = payload;
   userId = parseInt(userId);
-  let cart = await getCartItemByUserId(userId); //gets cart object in an array
+  let cart = await getCartDetailsByUserId(userId); //gets cart object in an array
   if (cart.length == 0) {
     //cart does not exist
     return "cart does not exist";
   } else {
     //cart already exits, check if item exists
-    cart = cart[0];
+    cart = cart[0]; //extract cart details from the array
     let itemsList = cart.items;
     let itemIndex = itemsList.findIndex((el) => el.foodId == foodItem.foodId);
     if (itemIndex == -1) {
@@ -81,6 +84,7 @@ const deleteCartItem = async (payload) => {
   }
 };
 
+/* To update the cart with new data */
 const updateCart = async (payload) => {
   const updatedCart = await Cart.findOneAndUpdate(
     { userId: payload.userId },
@@ -92,4 +96,4 @@ const updateCart = async (payload) => {
   return updatedCart;
 };
 
-module.exports = { addCartItem, getCartItemByUserId, deleteCartItem };
+module.exports = { addCartItem, getCartDetailsByUserId, deleteCartItem };

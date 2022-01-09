@@ -16,10 +16,10 @@ const app = express();
 app.use(express.json());
 
 app.use("/api", authRouter);
-app.use("/api/users", userRouter);
-app.use("/api/food", foodRouter);
-app.use("/api/cart", cartRouter);
-app.use("/api/orders", orderRouter);
-app.use("/api/review", reviewRouter);
+app.use("/api/users", auth, userRouter);
+app.use("/api/food", auth, foodRouter);
+app.use("/api/cart", auth, cartRouter);
+app.use("/api/orders", auth, orderRouter);
+app.use("/api/reviews", auth, reviewRouter);
 
 module.exports = app;

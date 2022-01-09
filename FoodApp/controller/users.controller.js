@@ -1,5 +1,6 @@
 const userQuery = require("../query/users.query");
 
+/* Get all the registered users */
 async function getUsers(req, res) {
   try {
     var userinfo = await userQuery.getUsers();
@@ -10,6 +11,7 @@ async function getUsers(req, res) {
   }
 }
 
+/* Get single user by id */
 async function getUserById(req, res) {
   try {
     const { userId } = req.params;
@@ -23,6 +25,7 @@ async function getUserById(req, res) {
   }
 }
 
+/* Update the user details */
 async function updateUser(req, res) {
   try {
     const { userId } = req.params;
@@ -37,6 +40,7 @@ async function updateUser(req, res) {
   }
 }
 
+/* Remove user */
 async function deleteUser(req, res) {
   try {
     const { userId } = req.params;

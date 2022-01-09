@@ -3,6 +3,7 @@ const orderQuery = require("../query/order.query");
 
 const COUPON_CODE = "FLAT50";
 
+/* To get all the orders for a particular user */
 async function getOrdersbyUserId(req, res) {
   try {
     let { userId } = req.body;
@@ -18,6 +19,7 @@ async function getOrdersbyUserId(req, res) {
   }
 }
 
+/* To place an order */
 async function addOrder(req, res) {
   try {
     let { userId, coupon } = req.body;

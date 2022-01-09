@@ -253,7 +253,6 @@ Response:
 Input:
 No parameters required 
 
-```JSON
 
 Response:
 {

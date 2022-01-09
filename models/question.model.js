@@ -98,9 +98,7 @@ Question.init(
         sequelize,
         modelName: 'Question',
         tableName: 'Questions',
-        timestamps: true,
-        createdAt: 'postedTimeStamp',
-        updatedAt: 'updatedTimeStamp'
+        timestamps: false,
     }
 );
 

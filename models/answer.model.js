@@ -95,9 +95,7 @@ Answer.init(
         sequelize,
         modelName: 'Answer',
         tableName: 'Answers',
-        timestamps: true,
-        createdAt: 'postedTimeStamp',
-        updatedAt: 'updatedTimeStamp'
+        timestamps: false
     }
 );
 

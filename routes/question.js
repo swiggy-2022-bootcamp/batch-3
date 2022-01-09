@@ -20,7 +20,7 @@ const {
   QUESTION_UPDATED_FAILED,
   QUESTION_FETCHED_SUCCESS,
 } = require("../utils/constants");
-const { OPEN_READWRITE } = require('sqlite3');
+
 
 
 /**
@@ -47,6 +47,8 @@ router.post("/ask",
     });
   }
 });
+
+
 
 /**
  * PUT: Route for updating a question
@@ -76,35 +78,6 @@ router.put("/:question_id",
 
 
 /**
- * POST: Route getting all answers (temp)
- */
-// router.post("/all",
-//   loginRequired,
-//   isAuthorized,
-//   async (req, res) => {
-//   const user = req.user;
-//   try {
-
-//     const askedQues = await Question.findAll({
-//       include: Answer,
-//     });
-//     const response = {
-//       msg: "Successfull Fetch Questions",
-//       question: askedQues,
-//     };
-//     return res.json({
-//       response,
-//     });
-//   }
-//   catch (err) {
-//     console.log(err)
-//     res.json({msg: err.message})
-//   }
-// });
-
-
-
-/**
  * POST: Route for answering a question
  * parameters: question_id, answer_id
  */
@@ -113,10 +86,9 @@ router.post("/:question_id/answer",
   isAuthorized,
   hasNotAnswered,
   async (req, res) => {
-    const question_id = req.params.question_id;
-    const { _, answer } = req.body.question;
-
     try {
+      const question_id = req.params.question_id;
+      const { _, answer } = req.body.question;
       const question = await Question.findByPk(question_id);
       await question.createAnswer({
         answer: answer,
@@ -129,7 +101,6 @@ router.post("/:question_id/answer",
       });
     }
     catch (error) {
-      console.log(error.message)
       return res.status(401).json({
         message: ANSWER_POSTED_FAILED,
     });
@@ -147,12 +118,17 @@ router.put("/:question_id/answer",
   isAuthorized,
   hasAnswered,
   async (req, res) => {
-    const { _, answer } = req.body.question;
-    req.answerObj.answer = answer;
-    req.answerObj.save();
-    return res.status(201).json({
-      message: ANSWER_UPDATED_SUCCESS
-  })
+    try{
+      const { _, answer } = req.body.question;
+      req.answerObj.answer = answer;
+      req.answerObj.save();
+      return res.status(201).json({
+        message: ANSWER_UPDATED_SUCCESS
+      });
+    }
+    catch(error) {
+      next(error);
+    }
 });
 
 
@@ -165,10 +141,10 @@ router.put('/:question_id/answer/:answer_id/upvote',
   loginRequired,
   isAuthorized,
   async (req, res, next) => {
-  const answer_id = req.params.answer_id;
-  const answerObj = await Answer.findByPk(answer_id);
-  const user = req.user;
   try {
+    const answer_id = req.params.answer_id;
+    const answerObj = await Answer.findByPk(answer_id);
+    const user = req.user;
     await answerObj.upVote(user.id);
     await answerObj.save();
     return res.status(201).json({
@@ -193,10 +169,10 @@ router.put('/:question_id/answer/:answer_id/downvote',
   loginRequired,
   isAuthorized,
   async (req, res, next) => {
-  const answer_id = req.params.answer_id;
-  const answerObj = await Answer.findByPk(answer_id);
-  const user = req.user;
   try {
+    const answer_id = req.params.answer_id;
+    const answerObj = await Answer.findByPk(answer_id);
+    const user = req.user;
     await answerObj.downVote(user.id);
     await answerObj.save();
     return res.status(201).json({
@@ -221,10 +197,10 @@ router.put('/:question_id/upvote',
   loginRequired,
   isAuthorized,
   async (req, res, next) => {
-  const question_id = req.params.question_id;
-  const questionObj = await Question.findByPk(question_id)
-  const user = req.user;
   try {
+    const question_id = req.params.question_id;
+    const questionObj = await Question.findByPk(question_id)
+    const user = req.user;
     await questionObj.upVote(user.id);
     await questionObj.save();
     return res.status(201).json({
@@ -248,10 +224,10 @@ router.put('/:question_id/downvote',
   loginRequired,
   isAuthorized,
   async (req, res, next) => {
-  const question_id = req.params.question_id;
-  const questionObj = await Question.findByPk(question_id)
-  const user = req.user;
   try {
+    const question_id = req.params.question_id;
+    const questionObj = await Question.findByPk(question_id)
+    const user = req.user;
     await questionObj.downVote(user.id);
     await questionObj.save();
     return res.status(201).json({
@@ -264,6 +240,9 @@ router.put('/:question_id/downvote',
     next(error);
   }
 })
+
+
+
 
 /**
  * GET: Route for getting all que asked by a user

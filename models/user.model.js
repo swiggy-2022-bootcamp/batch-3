@@ -95,28 +95,18 @@ User.init(
     },
     {
         sequelize,
-        timestamps: true,
+        timestamps: false,
         modelName: 'User',
         tableName: 'Users',
-        createdAt: 'createdTimeStamp',
-        updatedAt: 'updatedTimeStamp'
     }
 )
 
-/*
+/**
  * Hook for Updating badge according fto reputation_point.
  */
 User.addHook('afterUpdate', async (user, options) => {
     await udpateBadge(user, options)
 })
 
-
-/*
- * Hook for factoring Date types.
- */
-User.addHook('beforeCreate', (user, options) => {
-    user.dataValues.createdAt = new Date().toISOString().replace(/T/, ' '). replace(/\.. + /g, '');
-    user.dataValues.updatedAt = new Date().toISOString().replace(/T/, ' '). replace(/\.. + /g, '');
-});
 
 module.exports = { User }

@@ -12,7 +12,7 @@ async function getCartItemByUserId(req, res) {
       res.json(cart);
     }
   } catch (err) {
-    console.log(err);
+    res.json({error:err})
   }
 }
 
@@ -25,7 +25,7 @@ async function addCartItem(req, res) {
     userId = parseInt(userId);
 
     //getting food item details
-    let foodItem = await foodQuery.foodItemById(foodId); //returns array of food item
+    let foodItem = await foodQuery.getFoodItemById(foodId); //returns array of food item
     if (foodItem.length == 0) {
       res.status(404).json(`Sorry user with food item ${foodId} not found`);
     }
@@ -40,7 +40,7 @@ async function addCartItem(req, res) {
     const updatedCart = await cartQuery.addCartItem(payload);
     res.status(201).json(updatedCart);
   } catch (err) {
-    console.log(err);
+    res.json({error:err})
   }
 }
 
@@ -49,7 +49,7 @@ async function deleteCartItem(req, res) {
     let { foodId, userId } = req.body;
     foodId = parseInt(foodId);
     userId = parseInt(userId);
-    let foodItem = await foodQuery.foodItemById(foodId); //returns array of food item
+    let foodItem = await foodQuery.getFoodItemById(foodId); //returns array of food item
     if (foodItem.length == 0) {
       res.status(404).json(`Sorry user with food item ${foodId} not found`);
     }
@@ -62,7 +62,7 @@ async function deleteCartItem(req, res) {
     let updatedCart = await cartQuery.deleteCartItem(payload);
     res.json(updatedCart);
   } catch (err) {
-    console.log(err);
+    res.json({error:err})
   }
 }
 

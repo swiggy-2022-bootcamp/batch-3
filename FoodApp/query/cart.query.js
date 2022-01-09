@@ -3,7 +3,7 @@ const Cart = require("../model/cart.model");
 const addCartItem = async (payload) => {
   let { userId, foodItem } = payload;
   userId = parseInt(userId);
-  let cart = await cartbyUserId(userId); //gets cart object in an array
+  let cart = await getCartItemByUserId(userId); //gets cart object in an array
   if (cart.length == 0) {
     //cart does not exit, create new cart
     const cartData = {

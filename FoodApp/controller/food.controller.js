@@ -22,7 +22,7 @@ async function getSingleFoodItem(req, res) {
     foodId = parseInt(foodId);
     let foodItem = await foodQuery.foodItemById(foodId);
     if (foodItem.length == 0) {
-      res.status(404).json(`Sorry user with userid ${userId} not found`);
+      res.status(404).json(`Sorry user with food item ${foodId} not found`);
     }
     res.status(200).json(foodItem[0]);
   } catch (err) {

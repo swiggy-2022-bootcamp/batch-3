@@ -55,4 +55,11 @@ questionRouter.put("/:questionId/edit", auth, async (req, res) => {
   await controller.editQuestion(req, res);
 });
 
+questionRouter.put("/:questionId", auth, async (req, res) => {
+  console.log("Inside question router");
+  console.log("TYPEEE: ", typeof(req))
+  const controller = new QuestionController();
+  await controller.updateQuestion(req, res);
+});
+
 export default questionRouter;

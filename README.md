@@ -6,11 +6,13 @@ Stackunderflow supported features/APIs:
 4. Ask Question
 5. Update Question
 6. Edit other's question - If reputation of editing user is meeting standard for this task.
-7. Get all answer for a given question
-8. Post Answer
-9. Update Answer
-10. Upvote Answer
-11. Downvote Answer 
+7. Upvote Question
+8. Downvote Question
+9. Get all answer for a given question
+10. Post Answer
+11. Update Answer
+12. Upvote Answer
+13. Downvote Answer 
 
 ## Setting up project locally
 

@@ -15,12 +15,3 @@ services:
       # in persisting data in database.
       - ./pgdata:/var/lib/postgresql/data
       - ./models:/home/models
-  # stackunderflow-backend:
-  #   build:
-  #     context: .
-  #     dockerfile: Dockerfile.dev
-  #   restart: always
-  #   ports:
-  #     - "8080:8080"
-  #   volumes:
-  #     - .:.

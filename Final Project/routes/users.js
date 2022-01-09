@@ -66,6 +66,20 @@ router.get("/users",async function (req, res, next) {
   }
 });
 
+router.get("/users/:userID",async function(req,res,next){
+  //console.log(req.params.userID);
+  let findUser=req.params.userID;
+  //console.log(findUser);
+  let checkUser=await User.findById(findUser);
+  //console.log(checkUser);
+  if(checkUser){
+    return res.status(200).json(checkUser);
+  }
+  else{
+    res.json({message:"Sorry, user with Id "+findUser+" not found."});
+  }
+});
+
 
 
 module.exports = router;

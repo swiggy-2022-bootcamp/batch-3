@@ -4,20 +4,92 @@ info:
   title: StackOverFlow Project APIs
   description: Batch 3 - Case Study Project API documentation
   version: 1.0
+  termsOfService: 'https://swagger.io/terms/'
   contact:
     email: sachinsom743@gmail.com
-  liscence:
+  license:
     name: Apache 2.0
-    url: 'https://www.apache.org/liscences/LIS'
+    url: 'https://www.apache.org/license/LIS'
   servers:
     -url: http:/localhost:3000
     description: Local Development Server
 
-schemes: [https, http]
+schemes: [http, https]
+
+securityDefinitions:
+  # Authorization For JWT
+  bearerAuth:
+    type: apiKey
+    name: Authorization
+    sheme: bearer
+    bearerFormat: JWT
+
+definitions:
+  NewUser:
+    type: object
+    required:
+      - name
+      - username
+      - email
+      - password
+    properties:
+      name:
+        type: string
+      username:
+        type: string
+      email:
+        type: string
+      password:
+        type: string
+
+  UserDetails:
+    type: object
+    required:
+      - username
+      - password
+    properties:
+      username:
+        type: string
+      password:
+        type: string
+
+  Question:
+    type: object
+    required:
+      - title
+      - body
+    properties:
+      title:
+        type: string
+      body:
+        type: string
+  Answer:
+    type: object
+    required:
+      - question-id
+      - answer
+    properties:
+      question-id:
+        type: integer
+      answer:
+        type: string
+
+tags:
+- name: "User"
+  description: "APIs Related to User"
+- name: "Question"
+  description: "APIs related to Questions."
+- name: "Answer"
+  description: "APIs related to Answer."
+schemes:
+- "http"
+- "https"
 
 paths:
   /users/registration:
     post:
+      tags:
+        - "User"
       summary: Creates a new user
       produces:
         - application/json
@@ -27,21 +99,7 @@ paths:
         - in: body
           name: body
           schema:
-            type: object
-            required:
-              - name
-              - username
-              - email
-              - password
-            properties:
-              name:
-                type: string
-              username:
-                type: string
-              email:
-                type: string
-              password:
-                type: string
+            $ref: '#/definitions/NewUser'
       responses:
         '201':
           description: Created
@@ -52,29 +110,18 @@ paths:
 
   /users/login:
     post:
+      tags:
+        - "User"
       summary: Login User
       produces:
         - application/json
       consumes:
         - application/json
       parameters:
-        # - in: headers
-        #   name: Authorization
-        #   schema:
-        #     type: string
-        #   required: true
         - in: body
           name: body
           schema:
-            type: object
-            required:
-              - username
-              - password
-            properties:
-              username:
-                type: string
-              password:
-                type: string
+            $ref: '#/definitions/UserDetails'
       responses:
         '201':
           description: Created
@@ -82,3 +129,93 @@ paths:
           description: Not Acceptable
         '500':
           description: Internal Server Error
+
+  /users:
+    get:
+      tags:
+        - "User"
+      security:
+        - bearerAuth: []
+      summary: Get User Profile
+      produces:
+        - application/json
+      security:
+        - bearerAuth : []
+      responses:
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '406':
+          description: Not Acceptable
+        '500':
+          description: Internal Server Error
+
+
+  /question/ask:
+    post:
+      tags:
+        - Question
+      summary: Ask Question
+      security:
+        - bearerAuth: []
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          schema:
+            type: body
+            properties:
+              user-details:
+                $ref: '#/definitions/UserDetails'
+              question:
+                $ref: '#/definitions/Question'
+      responses:
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '406':
+          description: Not Acceptable
+        '500':
+          description: Internal Server Error
+
+
+  /question/{questionId}/answer:
+    post:
+      summary: Add Answer of a Question
+      tags:
+        - Answer
+      security:
+        - bearerAuth: []
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - in: path
+          name: questionId
+          schema:
+            type: integer
+        - in: body
+          name: body
+          schema:
+            type: object
+            properties:
+              user-details:
+                $ref: '#/definitions/UserDetails'
+              question:
+                $ref: '#/definitions/Answer'
+      responses:
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '406':
+          description: Not Acceptable
+        '500':
+          description: Internal Server Error
+

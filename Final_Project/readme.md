@@ -11,30 +11,45 @@ The app is a functional, backend-only, implementation of the Stackoverflow websi
 - All the passwords are hashed and compared while logging in using the bcryptjs module
 - Upvote and Downvote Features are implemented for both, the questions and the answers.
 
-## FOLDER STRUCTURE
+## Folder Structure
 
 authChecker: This folder contains the middleware handling function "isAuthorised" stored in the file Authorisation.js
 
 controllers: This folder has js files with all the method definitions to perform all the CRUD operations
-      answerController.js: This file has method definitions for the answer related operations.
-      questionController.js: This file has method definitions for the question related operations.
-      userController.js: This file has method definitions for the user related operations.
+- answerController.js: This file has method definitions for the answer related operations.
+- questionController.js: This file has method definitions for the question related operations.
+- userController.js: This file has method definitions for the user related operations.
 
 models: This folder has all the Schema related information to store the data in the database. In all of the models, I'm using Schema's object id which is created for every record, as the main id to store all the information about the relating element and using it's reference to get other data.
-      answerModel.js: This file has Schema defined for all the elements present in the answer object
-      questionModel.js: This file has Schema defined for all the elements present in the question object
-      userModel.js: This file has Schema defined for all the elements present in the user object
+- answerModel.js: This file has Schema defined for all the elements present in the answer object
+- questionModel.js: This file has Schema defined for all the elements present in the question object
+- userModel.js: This file has Schema defined for all the elements present in the user object
 
 routes: Thisfolder has js files with endpoints defined for each action. These endpoints are used to get and post the information.
-      answerRoute.js: This file has all the answer related routes.
-      questionRoute.js: This file has all the question related routes.
-      userRoute.js: This file has all the user related routes.
+- answerRoute.js: This file has all the answer related routes.
+- questionRoute.js: This file has all the question related routes.
+- userRoute.js: This file has all the user related routes.
 
 index.js: This is the main file that starts the application when npm start executes. It has info about all the modules present and how interaction needs to take place.
 
 Miscellaneous: 
-      node_modules: These are the module files that are added when node modules are installed. These are the dependencies that are required to run the application.
-      package.json & package-lock.son: These files have information about the dependencies and also the tree in which they need to be installed in order to have a proper execution.
+- node_modules: These are the module files that are added when node modules are installed. These are the dependencies that are required to run the application.
+- package.json & package-lock.son: These files have information about the dependencies and also the tree in which they need to be installed in order to have a proper execution.
+- .gitignore: Has path of the files that need to be ignored while commiting.
+
+## Running the Application
+
+#### Install NPM Packages
+
+```
+npm install
+```
+
+#### Start Server
+
+```
+npm start
+```
 
 ## API CALLS AND RESULTS(TEST CASES)
 

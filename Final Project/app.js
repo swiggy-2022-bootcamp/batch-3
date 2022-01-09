@@ -10,10 +10,11 @@ const cookieParser = require('cookie-parser');
 // import routes
 const userRoute = require('./routes/userRoutes');
 const questionRoute = require('./routes/questionRoutes');
+const generalRoute = require('./routes/generalRoutes');
 const errorHandler = require('./controllers/errorController');
 const AppError = require('./utils/appError');
 
-//app
+// app
 const app = express();
 // Global Middleware------------------------------------------------
 
@@ -47,16 +48,17 @@ app.use(mongoSanitize());
 // Data sanitization against XSS
 app.use(xss());
 
-//Routes
+// Routes
 app.use('/', userRoute);
 app.use('/question', questionRoute);
+app.use('/api', generalRoute);
 
-//Handling remaining routes that doesn't exsists --- 404 Not Found
+// Handling remaining routes that doesn't exsists --- 404 Not Found
 app.all('*', (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
 });
 
-//global error handler
+// global error handler
 app.use(errorHandler);
 
 module.exports = app;

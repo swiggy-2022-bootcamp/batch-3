@@ -42,6 +42,16 @@ const questionSchema = new mongoose.Schema(
     localField:'_id'
   })
 
+  questionSchema.pre(/^find/,function(next){
+    this.populate({
+      path:'owner',
+      select:'name photo'
+    })
+    next()
+  })
+
+
+
   const Question= mongoose.model('Question',questionSchema);
 
   module.exports=Question;

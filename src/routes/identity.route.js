@@ -15,7 +15,8 @@
  */
 
 const express = require('express');
-const { body } = require('express-validator');
+const { body, header, param } = require('express-validator');
+const authenticate = require('../controllers/auth.controller')
 const identityController = require('../controllers/identity.controller');
 
 const router = express.Router();
@@ -49,6 +50,28 @@ router.post(
             .isAlpha('en-US', {ignore: ' '}).withMessage('Name can only be composed of letters and spaces')        
     ],
     identityController.register
+)
+
+router.get(
+    '/user/:userId',
+    [
+        header('authorization')            
+            .custom(val => {
+                if (!val) {
+                    throw new Error('Required');
+                }
+
+                const arr = val.split(' ');                
+                if (!val.toLowerCase().startsWith("bearer") || !(arr.length == 2)) {
+                    throw new Error('Auhtorization token is invalid');
+                }
+                return true;
+            }),
+        param('userId')
+            .isInt({ min: 1 }), 
+    ], 
+    authenticate, 
+    identityController.getUserProfile
 )
 
 module.exports = router;

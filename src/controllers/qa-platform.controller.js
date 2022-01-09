@@ -16,6 +16,7 @@
 
 const Question = require('../models/question.model');
 const Answer = require('../models/answer.model');
+const User = require('../models/user.model');
 const ServerError = require('../error/server.error');
 
 exports.addQuestion = (req, res) => {
@@ -213,7 +214,7 @@ exports.getQuestion = async (req, res) => {
     let question;
     try {
         question = await Question.findOne({ id: questionId })
-                                    .select("title body answers.answer -_id")
+                                    .select("title body answers.answer answers.upvotesCount -_id")
                                     .exec();
     } catch(err) {
         throw new ServerError(err);
@@ -270,18 +271,43 @@ exports.upvoteAnswer = async (req, res) => {
                         {
                             id: questionId,
                             'answers.id': answerId,
-                            'answers.createdBy': { '$ne': user }
+                            'answers.createdBy': { '$ne': user },
+                            'answers.upvotes': { '$ne': user }
                         },
                         {
-                            '$push': { 'answers.$.upvotes': user }
+                            '$push': { 'answers.$.upvotes': user },
+                            '$inc': { 'answers.$.upvotesCount': 1 }
                         }
-                    )
+                    );
     } catch(err) {
         throw new ServerError(err);
     }
 
     if (!question) {
-        return res.status(404).json({ message: 'Did not find any relevant answer to upvote' });
+        return res.status(404).json({ message: 'Did not find any relevant answer to upvote or user has already voted for the answer.' });
+    }
+
+    let desAnswerId;
+    for (let i = 0; i < question.answers.length; i++) {
+        if (question.answers[i].id == answerId) {
+            desAnswerId = question.answers[i]._id;
+            break;
+        }
+    }
+
+    console.log(desAnswerId);
+
+    try {
+        await User.findOneAndUpdate(
+            {
+                answers: desAnswerId
+            },
+            {
+                '$inc': { 'reputations': 10 }
+            }
+        )
+    } catch(err) {
+        throw new ServerError(err);
     }
              
     /* #swagger.responses[200] = { 

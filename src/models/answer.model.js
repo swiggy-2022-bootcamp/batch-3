@@ -21,8 +21,9 @@ const Schema = mongoose.Schema;
 const autoIncrement = require('mongoose-auto-increment')
 
 const answerSchema = new Schema({
-    id: { type: Number, index: false },
+    id: { type: Number },
     answer: { type: String, required: true },
+    upvotesCount: { type: Number, default: 0 },
     upvotes: {
         type: [Schema.Types.ObjectId],
         ref: 'User',

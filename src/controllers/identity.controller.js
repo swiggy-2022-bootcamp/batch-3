@@ -152,3 +152,22 @@ exports.register = async (req, res) => {
         "registration-name": savedUser.fullName
     });
 }
+
+exports.getUserProfile = async (req, res) => {
+    // #swagger.tags = ['User']
+    // #swagger.description = 'Get profile of a user.'
+
+    // #swagger.parameters['userId'] = { description: 'User ID' }
+    const userId = req.params.userId;
+
+    const user = await User.findOne({ id: userId })
+                            .select("id fullName username reputations -_id")
+                            .exec();
+
+    if (!user) {
+        return res.status(404).json({ message: `User with id ${questionId} not found` });
+    }
+
+
+    return res.status(200).json(user);
+}

@@ -38,6 +38,7 @@ const userSchema = new Schema({
         default: [],
         ref: 'Answer'
     },
+    reputations: { type: Number, default: 0 },
     createdBy: { type: Schema.Types.ObjectId, ref: 'User'},
     updatedBy: { type: Schema.Types.ObjectId, ref: 'User'}
 }, {timestamps: true})

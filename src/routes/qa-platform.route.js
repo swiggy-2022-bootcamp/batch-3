@@ -152,6 +152,27 @@ router.get(
 
 router.delete('/question/:questionId', authenticate, qaPlatformController.deleteQuestion)
 
-router.post('/question/:questionId/answer/:answerId', authenticate, qaPlatformController.upvoteAnswer)
+router.post(
+    '/question/:questionId/answer/:answerId', 
+    [
+        header('authorization')            
+            .custom(val => {
+                if (!val) {
+                    throw new Error('Required');
+                }
+
+                const arr = val.split(' ');                
+                if (!val.toLowerCase().startsWith("bearer") || !(arr.length == 2)) {
+                    throw new Error('Auhtorization token is invalid');
+                }
+                return true;
+            }),
+        param('questionId')
+            .isInt({ min: 1 }), 
+        param('answerId')
+            .isInt({ min: 1 })
+    ],
+    authenticate, 
+    qaPlatformController.upvoteAnswer)
 
 module.exports = router;

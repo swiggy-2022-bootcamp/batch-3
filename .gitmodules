@@ -1,0 +1,3 @@
+[submodule "fakestackoverflowapi"]
+	path = fakestackoverflowapi
+	url = https://github.com/suhassuhas/fakestackoverflowapi.git

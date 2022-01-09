@@ -1,4 +1,5 @@
 const Restaurant=require("./../Model/restaurants.js")
+const logger=require("./../config/logger.js");
 
 module.exports.getRestaurantByID=async (req,res)=>{
     try{
@@ -9,6 +10,7 @@ module.exports.getRestaurantByID=async (req,res)=>{
     }
     catch(err)
     {
+        logger.error("Error while getting restaurant by ID")
         return res.send(404);
     }
 }
@@ -20,6 +22,7 @@ module.exports.getAllRestaurants=async (req,res)=>{
    }
    catch(err)
    {
+       logger.error("Getting all restaurants")
        return res.send(404);
    }
 }
@@ -32,6 +35,7 @@ module.exports.getLocalRestaurants=async (req,res)=>{
     }
     catch(err)
     {
+        logger.error("getting location by restaurants")
         return res.send(404);
     }
 }
@@ -45,6 +49,7 @@ module.exports.addNewRestaurant=async (req,res)=>{
    }
    catch(err)
    {
+       logger.error("adding new restaurant");
        return res.send(404);
    }
 }

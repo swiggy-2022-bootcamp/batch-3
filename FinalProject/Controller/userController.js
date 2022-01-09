@@ -1,5 +1,5 @@
-
 const User=require("./../Model/userSchema.js");
+const logger=require("./../config/logger.js");
 
 module.exports.getUserByID=async (req,res)=>{
    try{
@@ -8,6 +8,7 @@ module.exports.getUserByID=async (req,res)=>{
         return res.send(user,200);
    }
    catch(err){
+       logger.error("Get User by ID");
        return res.send({"message":"Error while sending user by ID","error":err.message},400);
    }
 }
@@ -25,6 +26,7 @@ module.exports.deleteUserByID=async (req,res)=>{
     }
     catch(err)
     {
+        logger.error("Delete User by ID");
         return res.send({"message":"Error while deleting users","error":err.message},400);
     }
 }
@@ -35,6 +37,7 @@ module.exports.getAllUsers=async (req,res)=>{
         return res.send(users);
     }
     catch(err){
+        logger.error("Get all Users");
         return res.send({"message":"Error while sending all users","error":err.message},400);
     }
 }

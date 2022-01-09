@@ -1,5 +1,6 @@
 const Food=require("./../Model/itemSchema.js");
 const Restaurant=require("./../Model/restaurants.js");
+const logger=require("./../config/logger.js");
 
 
 module.exports.addReview=async (req,res)=>{
@@ -15,6 +16,7 @@ module.exports.addReview=async (req,res)=>{
     }
     catch(err)
         {
+            logger.error("Adding review");
             return res.send(404);
         }
 }
@@ -30,12 +32,14 @@ module.exports.getFoodItemByID=async (req,res)=>{
     }
     catch(err)
     {
+        logger.error("Error while fetching food items");
         return res.send(404);
     }
 }
 
 
 module.exports.addFoodItem=async (req,res)=>{
+   try{
     const restaurant = await Restaurant.findById(req.body.restaurant)
     if(restaurant==null || err!=null)
             return res.send(404);
@@ -45,6 +49,12 @@ module.exports.addFoodItem=async (req,res)=>{
     restaurant[food.foodCategory].push(food._id);
     restaurant.save();
     return res.send(food,200);   
+   }
+   catch(err)
+   {
+       logger.error("Error adding food item");
+       res.send(404);
+   }
 }
 
 

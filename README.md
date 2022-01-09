@@ -58,6 +58,54 @@ Users unlock new privileges with an increase in reputation like the ability to v
 
 ![Folder Structure](./images/folder-structure.png)
 
+## Getting started
+
+### Pre-requisites
+
+1. [NodeJs](https://nodejs.org/en/)
+2. [MongoDB](https://www.mongodb.com/)
+3. [Postman](https://www.postman.com/)(optional)
+4. Any web browser
+
+### Setup instructions
+
+* Clone the repository and checkout branch `debdyut-hajra`.
+
+```bash
+git clone https://github.com/swiggy-2022-bootcamp/batch-3.git
+cd <project-folder>
+git switch debdyut-hajra
+```
+* Enter the project folder and create a `data` directory.
+
+```bash
+mkdir data
+```
+
+* Start MongoDB server using powershell
+
+```bash
+.\start-mongo.ps1
+```
+
+* Install node dependencies
+
+```bash
+npm i
+npm i -g nodemon
+```
+
+* Start the application
+
+```bash
+nodemon
+```
+
+* Import the postman collection in your local postman and try the APIs: <br/> 
+[QA-Platform.postman_collection.json](https://raw.githubusercontent.com/swiggy-2022-bootcamp/batch-3/debdyut-hajra/QA-Platform.postman_collection.json)
+
+* Open any browser in your local machine and go to `http://localhost:4000/doc` to access the Swagger-UI.
+
 ## License
 
 ```

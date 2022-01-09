@@ -4,11 +4,6 @@ import { postQuestion } from "../../repositories/question";
 import { Questions } from "../../entities/question";
 import { getUserPkFromToken } from "../../utils/common/getUserPkFromToken";
 
-class UserDetails {
-    username: string;
-    password: string;
-}
-
 class QuestionDetails {
     title: string;
     body: string;

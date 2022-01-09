@@ -10,6 +10,7 @@ import { responseHandler } from "../utils/common/ResponseHandler";
 import { UpdateAnswerService } from "../services/answer/updateanswerservice";
 import { UpvoteQuestionService } from "../services/question/upvotequestionservice";
 import { DownvoteQuestionService } from "../services/question/downvotequestionservice";
+import { EditQuestionService } from "../services/question/editquestionservice";
 
 @Route("question")
 export default class QuestionController {
@@ -117,6 +118,23 @@ export default class QuestionController {
       await UpdateAnswerService(req.params.questionId, userId, req.body["answer"]);
       responseHandler(res, {
         message: "answer updated successfully"
+      }, 200);
+    } catch(e) {
+      console.log("ooooooooo :", e);
+      responseHandler(res, {
+        error: e.message
+      }, e.statusCode);
+    }
+  }
+
+  public async editQuestion(req :any, res :any) {
+    console.log("edit the question for the question");
+    try {
+      const token = getTokenFromHeaders(req);
+      const userId: number = getUserPkFromToken(token);
+      await EditQuestionService(userId, req.params.questionId, req.body["title"], req.body["body"]);
+      responseHandler(res, {
+        message: "edited question successfully"
       }, 200);
     } catch(e) {
       console.log("ooooooooo :", e);

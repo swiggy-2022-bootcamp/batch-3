@@ -68,7 +68,7 @@ export const getAllAnswer = async (questionId: number): Promise<Answers[]> => {
 }
 
 export const updateQuestion = async (questionPk: number, userPk: number, title: string, body: string, votes: number) :Promise<Questions> => {
-  console.log("Inside the question repository")
+  console.log("Inside the question repository");
   const repository = getRepository(Questions);
   console.log("UPVOTE QUESTION REPOO - ", userPk);
   return await repository.save({

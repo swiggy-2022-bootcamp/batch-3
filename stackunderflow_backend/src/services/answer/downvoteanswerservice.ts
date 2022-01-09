@@ -3,7 +3,7 @@ import { addAnswerVoter, findAnswerVoter, removeAnswerVoter, updateAnswerVoter }
 import { getAnswerByPk, updateAnswer } from "../../repositories/question";
 import { findUserByPk, updateUser } from "../../repositories/user";
 import { CustomError } from "../../utils/common/CustomError";
-import { REQUIRED_DOWNVOTE_REPUTATION } from "../../utils/constants/required_downvote_reputation";
+import { REQUIRED_DOWNVOTE_REPUTATION } from "../../utils/constants/reputation_constants";
 
 export const DownvoteAnswerService = async (userId: number, answerId: number): Promise<string> => {
     const answer: Answers = await getAnswerByPk(answerId);

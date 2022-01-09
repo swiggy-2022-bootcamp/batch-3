@@ -66,6 +66,23 @@ const checkIfValidQuestionId = async (questionId) => {
   return !!response.length;
 };
 
+const checkIfValidAnswerId = async (answerId) => {
+  const checkIfValidAnswerIdQuery = `
+  SELECT answerId
+  FROM answers
+  WHERE answerId = ? 
+  `;
+
+  const checkIfValidAnswerIdQueryParams = [answerId];
+
+  const response = await query(
+    checkIfValidAnswerIdQuery,
+    checkIfValidAnswerIdQueryParams
+  );
+
+  return !!response.length;
+};
+
 const createAnswer = async (questionId, answer, req) => {
   const isValidQuestion = await checkIfValidQuestionId(questionId);
 
@@ -107,4 +124,6 @@ module.exports = {
   createQuestion,
   createAnswer,
   getAnswers,
+  checkIfValidAnswerId,
+  checkIfValidQuestionId,
 };

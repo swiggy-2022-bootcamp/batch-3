@@ -1,9 +1,11 @@
-import { Post, Route } from "tsoa";
+import { Get, Post, Route } from "tsoa";
 import { ValidateRequest, ProcessRequest } from "../services/question/postquestionservice";
 import { getTokenFromHeaders } from "../utils/common/getTokenFromHeader";
 import { PostAnswerService } from "../services/answer/postanswerservice";
 import { getUserPkFromToken } from "../utils/common/getUserPkFromToken";
 import { Answers } from "../entities/answer";
+import { getAllAnswerForQuestionService } from "../services/answer/getallanswerservice";
+import { findQuestionByPk } from "../repositories/question";
 
 interface Answer {
   questionId: number,
@@ -49,6 +51,25 @@ export default class QuestionController {
           message: "an error occurred while posting the answer"
         }, 500);
       }
+  }
+
+  @Get("/{questionId}/answer/all")
+  public async getAllAnswerForQuestion(req :any, res: any) {
+    console.log("Inside get all answer for question");
+    console.log(req.params.questionId);
+    try {
+      const questionId: number = req.params.questionId;
+      const answers = await getAllAnswerForQuestionService(questionId);
+      const questionDetails = await findQuestionByPk(questionId);
+      responseHandler(res, {
+          question: questionDetails,
+          answers: answers.map((ans) => ({ answer: ans.answer }))
+        }, 200);
+    } catch(e) {
+      responseHandler(res, {
+        message: "an error occurred while posting the answer"
+      }, 500);
+    }
   }
 }
 

@@ -22,7 +22,12 @@ questionRouter.post("/:questionid/answer", auth, async (req, res) => {
   
 });
 
-// Route: /question/{questionId}: To get answers for all questions
+// Route: /question/{questionId}: To get answers for given question id
+questionRouter.get("/:questionId/answer/all", auth, async (req, res) => {
+  console.log("Inside question router");
+  const controller = new QuestionController();
+  await controller.getAllAnswerForQuestion(req, res);
+})
 
 
 export default questionRouter;

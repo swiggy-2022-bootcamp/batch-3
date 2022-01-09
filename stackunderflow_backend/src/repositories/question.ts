@@ -12,6 +12,15 @@ export const postQuestion = async (title :string, body :string, userId :number) 
   });
 };
 
+export const findQuestionByPk = async (pk: number) :Promise<Questions> => {
+  console.log("Inside find question by username")
+  const questionRepository = getRepository(Questions);
+  console.log(pk);
+  return await questionRepository.findOne({
+    where: {pk: pk}
+  });
+} 
+
 export const postAnswer = async (userPk: number, questionId: number, answer: string) :Promise<Answers> => {
   console.log("Inside the user repository")
   const answerRepository = getRepository(Answers);
@@ -21,3 +30,11 @@ export const postAnswer = async (userPk: number, questionId: number, answer: str
       questionPK: questionId,
   });
 };
+
+export const getAllAnswer = async (questionId: number): Promise<Answers[]> => {
+  console.log("Inside get all answer function - question repository");
+  const answerRepository = getRepository(Answers);
+  return await answerRepository.find({
+    where: {questionPK: questionId}
+  });
+}

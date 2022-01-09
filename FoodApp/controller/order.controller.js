@@ -1,4 +1,3 @@
-const foodQuery = require("../query/food.query");
 const cartQuery = require("../query/cart.query");
 const orderQuery = require("../query/order.query");
 

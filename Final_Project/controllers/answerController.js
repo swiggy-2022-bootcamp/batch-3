@@ -34,7 +34,7 @@ exports.answer = (req, res)=>{
 										if(err) {
 											res.send(err);
 										} else {
-											res.json({message: 'Answer Created'});
+											res.json({message: 'Answer Created', _id: Answer._id});
 										}
 									});
 								}

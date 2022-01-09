@@ -17,6 +17,7 @@ async function getCartDetailsByUserId(req, res) {
   }
 }
 
+
 /* To add a single item to cart */
 async function addCartItem(req, res) {
   try {

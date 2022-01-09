@@ -19,7 +19,9 @@ async function getUserById(req, res) {
     if (user.length == 0) {
       res.status(404).json(`Sorry user with userid ${userId} not found`);
     }
-    res.status(200).json(user[0]);
+    else{
+      res.status(404).json(`Sorry user with userid ${userId} not found`);
+    }
   } catch (err) {
     res.json({error:err})
   }
@@ -34,7 +36,9 @@ async function updateUser(req, res) {
     if (updatedUser) {
       res.status(200).json(updatedUser);
     }
-    res.status(404).json(`Sorry user with userid ${userId} not found`);
+    else{
+      res.status(404).json(`Sorry user with userid ${userId} not found`);
+    }
   } catch (err) {
     res.json({error:err})
   }
@@ -48,7 +52,9 @@ async function deleteUser(req, res) {
     if(user){
       res.status(200).json("User Deleted Successfully");
     }
-    res.status(404).json(`Sorry user with ${userId} not found`);
+    else{
+      res.status(404).json(`Sorry user with ${userId} not found`);
+    }
   } catch (err) {
     res.json({error:err})
   }

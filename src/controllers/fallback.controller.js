@@ -36,6 +36,7 @@ exports.get404 = (req, res, next) => {
 exports.errorHandler = (err, req, res, next) => {
 
     console.error(err);
+    req.error = err;
 
     if (err.name === 'ValidationError') {
       /* #swagger.responses[400] = { 

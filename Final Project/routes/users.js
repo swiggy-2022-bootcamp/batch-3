@@ -80,6 +80,17 @@ router.get("/users/:userID",async function(req,res,next){
   }
 });
 
-
+router.delete("/users/:userID",async function(req,res,next){
+  let delUser=req.params.userID;
+  let checkUser=await User.findById(delUser);
+  //console.log(delUser)
+  if(checkUser){
+    await User.deleteOne({_id:delUser});
+    res.json({message:"User deleted successfully!"});
+  }
+  else{
+    res.json({message:"Sorry, user with Id "+delUser+" not found."});
+  }
+});
 
 module.exports = router;

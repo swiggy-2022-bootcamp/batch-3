@@ -9,9 +9,9 @@ exports.question = (req, res)=>{
 		Question.questionBody = req.body.body;
     	Question.save((err) => {
 	       if (err) {
-	       	res.send(err);
+	       	res.json({message: "Some of the parameters might be missing, please check and try again!"});
 	       } else {
-	        res.json({ message: 'Question posted successfully', _id: Question._id });    
+	        res.json({ message: 'Question posted successfully', Question_id: Question._id });    
 	       }
 	    });
     } else {

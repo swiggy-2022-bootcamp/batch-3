@@ -20,7 +20,7 @@ edit other people's posts.
 - [x] Upvote and Downvote a question and answe (Additional)
 - [x] Create comment on a particular question and answer (Additional)
 - [x] UI for Register, Login and create question (Additional)
-- []  Implememnt user reputation points for interaction. (Additional)
+- [x]  Implememnt user reputation points for interaction. (Additional)
  
 
 ### Project Setup Steps

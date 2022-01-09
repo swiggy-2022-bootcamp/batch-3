@@ -1,18 +1,10 @@
 const mongoose = require('mongoose');
 
-const answerSchema = new mongoose.Schema(
+const commentSchema = new mongoose.Schema(
     {
       body: {
         type: String,
         required: [true, 'A body of answer is required']
-      },
-      upVote:{
-          type: Number,
-          default: 0
-      },
-      downVote:{
-        type: Number,
-        default: 0
       },
       createDate: Date,
       owner: 
@@ -21,9 +13,9 @@ const answerSchema = new mongoose.Schema(
           ref: 'User',
           required: [true, 'Answer must belong to a user']
         },
-        question:{
+        answer:{
             type:mongoose.Schema.ObjectId,
-            ref:'Question',
+            ref:'Answer',
             required:[true,'Answer must have a question']
         }
     },
@@ -33,13 +25,8 @@ const answerSchema = new mongoose.Schema(
     }
   );
 
-  answerSchema.virtual('comments',{
-    ref:'Comment',
-    foreignField:'answer',
-    localField:'_id'
-  })
-  answerSchema.index({ owner: 1, question: 1 }, { unique: true });
+  commentSchema.index({ owner: 1, answer: 1 }, { unique: true });
 
-  const Answer= mongoose.model('Answer',answerSchema);
+  const Comment= mongoose.model('Comment',commentSchema);
 
-  module.exports=Answer;
+  module.exports=Comment;

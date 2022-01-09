@@ -1,15 +1,21 @@
 const Answer = require('../models/aswerModel')
+const Comment = require('../models/commentModel')
 const handler =require('./handlerController')
 const catchAsync = require('./../utils/catchAsync');
 const AppError = require('./../utils/appError');
 
+// Set user in request before going to Model
 exports.setUserId=(req,res,next)=>{
     if (!req.body.user) req.body.owner = req.user.id;
     if(!req.body.questionid) req.body.question=req.params.id
     req.body.createDate=new Date(Date.now())
   next();
 }
+// Create new answer
 exports.create=handler.createOne(Answer,'body','owner','question','createDate');
+// Get Answer
+exports.get=handler.getOne(Answer,'comments')
+//Update answer
 exports.update=catchAsync(async (req, res, next) => {
     filterBody={
         body:req.body.body
@@ -34,3 +40,6 @@ exports.update=catchAsync(async (req, res, next) => {
       }
     });
 });
+
+// Create comment on a answer
+exports.comment=handler.createOne(Comment,'body','owner','answer','createDate')

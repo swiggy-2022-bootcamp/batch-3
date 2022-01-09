@@ -6,6 +6,8 @@ const answerController = require('../controllers/answerController')
 
 const route=express.Router({mergeParams:true})
 route.route('/:id').get(questionController.getQuestion)
+
+// Protected routes from here on
 route.use(authController.protect);
 //answer routes
 route.route('/:id/answer').post(answerController.setUserId,answerController.create)

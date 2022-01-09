@@ -14,7 +14,8 @@ export const DownvoteQuestionService = async (userId: number, questionId: number
 
     const questionUser = await findUserByPk(question.userPK);
     
-    if (questionUser.reputation < REQUIRED_DOWNVOTE_REPUTATION) {
+    const user = await findUserByPk(userId);
+    if (user.reputation < REQUIRED_DOWNVOTE_REPUTATION) {
         throw new CustomError("you don't have the required reputation to downvote", 401);
     }
 

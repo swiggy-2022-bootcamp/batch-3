@@ -13,13 +13,13 @@ export const DownvoteAnswerService = async (userId: number, answerId: number): P
     }
 
     const answerUser = await findUserByPk(answer.userPK);
-    
     // User can not downvote his/her own answer
     if (answer.userPK == userId) {
         throw new CustomError("you cannot downvote your own answer", 400);
     }
 
-    if (answerUser.reputation < REQUIRED_DOWNVOTE_REPUTATION) {
+    const user = await findUserByPk(userId);
+    if (user.reputation < REQUIRED_DOWNVOTE_REPUTATION) {
         throw new CustomError("you don't have the required reputation to downvote", 401);
     }
 

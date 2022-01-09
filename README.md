@@ -14,8 +14,9 @@ Users unlock new privileges with an increase in reputation like the ability to v
 2. The user may login to the system to access the platform features.
 3. The user may ask a question to the community.
 4. The user may answer a question asked by a fellow platform user.
-5. The user may browse through the questions on the platform.
-6. The user may see the answers for a question on the platform.
+5. The user may update an answer to a question.
+6. The user may browse through the questions on the platform.
+7. The user may see the answers for a question on the platform.
 
 ## Additional features
 

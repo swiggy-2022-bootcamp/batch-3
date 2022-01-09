@@ -1,10 +1,10 @@
 const User=require("./../Model/userSchema.js");
 const logger=require("./../config/logger.js");
 
+// Fetching user by ID
 module.exports.getUserByID=async (req,res)=>{
    try{
         const user=await User.findById(req.params.id);
-        console.log("foudn user",req.params.id,user);
         return res.send(user,200);
    }
    catch(err){
@@ -13,16 +13,16 @@ module.exports.getUserByID=async (req,res)=>{
    }
 }
 
+// Deleting user by ID
 module.exports.deleteUserByID=async (req,res)=>{
     try{
+        // checking whether the user has the permission to delete the user
         if(req.user.id!=req.params.id)
         {
             return res.send({"message":"You are not athorized to delete the user"})
         }
         const user=await User.deleteOne({id:req.params.id});
-        if(err)
-            return res.send(404);
-        return res.send({"message":"Deleted the User"});
+        return res.send({"message":"Deleted the User"},200);
     }
     catch(err)
     {
@@ -31,9 +31,11 @@ module.exports.deleteUserByID=async (req,res)=>{
     }
 }
 
+// Fetching all the users in the database;
 module.exports.getAllUsers=async (req,res)=>{
     try{
         const users = await User.find({});
+        console.log(users,"-----------------------------------------------")
         return res.send(users);
     }
     catch(err){

@@ -14,10 +14,40 @@ their needs.
 ### Scope of work
 
 You have been asked to build the backend system for the following:
+```
 • Registration
 • Login and
 • Display the list of Food items 
+```
 
 ### Documentation
 
 https://documenter.getpostman.com/view/6563779/UVXesdWr
+
+### Getting Started
+
+#### Clone Repository
+
+```
+git clone https://github.com/swiggy-2022-bootcamp/batch-3.git
+```
+
+#### Add Environment Variables
+
+```
+MONGO_URI=
+PORT=
+JWT_SECRET=
+```
+
+#### Install NPM Packages
+
+```
+npm install
+```
+
+#### Start Server
+
+```
+npm start
+```

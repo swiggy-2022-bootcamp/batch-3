@@ -3,10 +3,17 @@ const jwt = require("jsonwebtoken");
 const createError = require("http-errors");
 
 const { query } = require("../models/db");
+const {
+  BAD_REQUEST_HTTP_STATUS_CODE,
+  UNAUTHORIZED_HTTP_STATUS_CODE,
+} = require("../utils/constant");
 
 const createUser = async (name, email, password) => {
   if (!(email && password && name)) {
-    throw createError(400, "Please provide valid input!");
+    throw createError(
+      BAD_REQUEST_HTTP_STATUS_CODE,
+      "Please provide valid input!"
+    );
   }
 
   const checkIfUserExistQuery = `
@@ -20,7 +27,7 @@ const createUser = async (name, email, password) => {
   const oldUser = await query(checkIfUserExistQuery, checkIfUserExistParams);
 
   if (oldUser.length > 0) {
-    throw createError(400, "Email already taken!");
+    throw createError(BAD_REQUEST_HTTP_STATUS_CODE, "Email already taken!");
   }
 
   const encryptedPassword = await bcrypt.hash(password, 10);
@@ -49,7 +56,7 @@ const createUser = async (name, email, password) => {
 
 const logInUser = async (email, password) => {
   if (!(email && password)) {
-    throw createError(400, "All input is required");
+    throw createError(BAD_REQUEST_HTTP_STATUS_CODE, "All input is required");
   }
 
   const findUserQuery = `
@@ -62,6 +69,10 @@ const logInUser = async (email, password) => {
 
   const user = await query(findUserQuery, findUserQueryParams);
 
+  if (user.length === 0) {
+    throw createError(UNAUTHORIZED_HTTP_STATUS_CODE, "Invalid Credentials");
+  }
+
   const userId = user[0].userId;
 
   if (user && (await bcrypt.compare(password, user[0].password))) {
@@ -71,11 +82,10 @@ const logInUser = async (email, password) => {
     return { userId, email, password, token };
   }
 
-  throw createError(401, "Invalid Credentials");
+  throw createError(UNAUTHORIZED_HTTP_STATUS_CODE, "Invalid Credentials");
 };
 
 module.exports = {
   createUser,
   logInUser,
 };
-

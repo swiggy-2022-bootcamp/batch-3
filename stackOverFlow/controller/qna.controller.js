@@ -3,43 +3,48 @@ const {
   createAnswer,
   getAnswers,
 } = require("../service/qna.service");
+const {
+  CREATED_HTTP_STATUS_CODE,
+  UNAUTHORIZED_HTTP_STATUS_CODE,
+} = require("../utils/constant");
 
 const createQuestionController = async (req, res, next) => {
   try {
     const { question } = req.body;
     const { title, body } = question;
 
-    const questionId = await createQuestion(title, body, req);
-    res.status(201).json({
-      questionId,
-      message: "Question posted successfully!",
+    const userId = req.user.userId;
+
+    const response = await createQuestion(title, body, userId);
+    res.status(CREATED_HTTP_STATUS_CODE).json({
+      ...response,
     });
   } catch (e) {
     // console.error(e);
-    return res.json({ ...e });
+    return res.status(UNAUTHORIZED_HTTP_STATUS_CODE).json({ ...e });
   }
 };
 
 const createAnswerController = async (req, res, next) => {
   try {
     const { question } = req.body;
-    const { questionId, answer } = question;
+    const { answer } = question;
+    const { questionId } = req.params;
 
     const response = await createAnswer(questionId, answer, req);
-    res.status(201).json({
-      questionId,
-      message: "Answer posted successfully!",
+    res.status(CREATED_HTTP_STATUS_CODE).json({
+      ...response,
     });
   } catch (e) {
     // console.error(e);
-    return res.json({ ...e });
+    return res.status(UNAUTHORIZED_HTTP_STATUS_CODE).json({ ...e });
   }
 };
 
 const getAnswersController = async (req, res, next) => {
   try {
     const response = await getAnswers();
-    res.status(200).json({
+    res.status(CREATED_HTTP_STATUS_CODE).json({
       response,
       message: "Answer fetched successfully!",
     });

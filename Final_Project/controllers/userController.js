@@ -31,10 +31,10 @@ exports.login = async function (req, res){
             res.json({status : 201, message : "User logged in successfully", token: token})
         }
         else {
-			res.json({status : 401, message : "Invalid Username/Password"})
+			res.json({status : 401, message : "Invalid Email/Password"})
         };
     }else {
-		res.json({status : 404, message : "User doesn't exist"})
+		res.json({status : 401, message : "Invalid Email/Password"})
     }
 }
 

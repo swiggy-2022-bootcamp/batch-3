@@ -6,7 +6,7 @@ var logger = require("morgan");
 
 var usersRouter = require("./routes/usersRoute");
 var questionsRouter = require("./routes/questionsRoute");
-
+var answersRouter = require("./routes/answersRoute");
 // database dependency
 var mongoose = require("mongoose");
 let db_url =
@@ -31,6 +31,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", usersRouter);
 app.use("/question", questionsRouter);
+app.use("/answer", answersRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

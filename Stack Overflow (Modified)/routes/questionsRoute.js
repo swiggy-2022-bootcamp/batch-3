@@ -154,7 +154,7 @@ router.patch("/:questionID/answer", userAuthentication, async (req, res) => {
   try {
     await Answer.updateOne({ userID: user._id, questionID }, { body: body });
     return res.status(201).json({
-      message: "Answer Posted Successfully",
+      message: "Answer Updated Successfully",
       questionID,
     });
   } catch (error) {

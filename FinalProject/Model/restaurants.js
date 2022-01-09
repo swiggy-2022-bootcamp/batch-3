@@ -1,18 +1,17 @@
 const mongoose=require('mongoose');  
 var Schema = mongoose.Schema;
 var path=require('path');
- 
-
 var RestaurantSchema = new Schema({
-     // String is shorthand for {type: String}
-    
-    name: {type: String,
-
+    restaurantName: {type: String,
             required:true},
-    
     mobile:{
         type:String,
         required:true
+    },
+    address:{
+        street:{type:String,required:true},
+        city:{type:String, required:true},
+        zip:{type:Number, required:true}
     },
     maincourse:[
         {
@@ -20,23 +19,23 @@ var RestaurantSchema = new Schema({
             ref:'ItemSchema',
         }
     ],
-    drinks:[
-        {
-            type:Schema.Types.ObjectId,
-             ref:'ItemSchema',
-        }
-    ],
-    snacks:[
+    drink:[
         {
             type:Schema.Types.ObjectId,
             ref:'ItemSchema',
         }
-    ] 
-    ,
-    avatar:{
-        type:String
-    }
+    ],
+    starter:[
+        {
+            type:Schema.Types.ObjectId,
+            ref:'ItemSchema',
+        }
+    ],
+    bread:{
+        type:Schema.Types.ObjectId,
+        ref:'ItemSchema',
+    } 
+   
 });
-  
 var Restaurant = mongoose.model('RestaurantSchema', RestaurantSchema);
 module.exports=Restaurant;

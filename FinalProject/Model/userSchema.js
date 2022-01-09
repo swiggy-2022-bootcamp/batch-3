@@ -8,11 +8,13 @@ var userSchema = new Schema({
     username:{type: String,required:true},
     email:{type:String,required:true},
     password:{type:String,required:true},
-    houseno:{type:Number,required:true},
-    street:{type:String,required:true},
-    city:{type:String,required:true},
-    state:{type:String,required:true},
-    zip:{type:String,required:true}
+    address:{
+        houseno:{type:Number,required:true},
+        street:{type:String,required:true},
+        city:{type:String,required:true},
+        state:{type:String,required:true},
+        zip:{type:String,required:true}
+    }
 });
   
 var User = mongoose.model('UserSchema', userSchema);

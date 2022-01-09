@@ -1,8 +1,6 @@
 const mongoose=require('mongoose');  
 var Schema = mongoose.Schema;
 var path=require('path');
- 
-
 var OrderSchema = new Schema({    
     list: [{
         type:Schema.Types.ObjectId,
@@ -29,6 +27,6 @@ var OrderSchema = new Schema({
         type:String,
     }
 },{timestamps:true});
-  
+
 var Order = mongoose.model('OrderSchema', OrderSchema);
 module.exports=Order;

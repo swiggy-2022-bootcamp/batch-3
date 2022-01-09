@@ -33,7 +33,7 @@ class Question extends Model {
         this.votes -= 1;
         this.removeVoter(userID);
         const askedByUser = await User.findByPk(this.UserId);
-        await askedByUser.addUpvotePoints();
+        await askedByUser.removeUpvotePoints();
     }
 
     /* Check If Any Particular user liked or not. */

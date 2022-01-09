@@ -34,12 +34,12 @@ class User extends Model {
     }
 
     async addUpvotePoints() {
-        this.reputation_point += 100;
+        this.reputation_point += 10;
         await this.save();
     }
 
     async removeUpvotePoints() {
-        this.reputation_point -= 100;
+        this.reputation_point -= 10;
         await this.save();
     }
 };

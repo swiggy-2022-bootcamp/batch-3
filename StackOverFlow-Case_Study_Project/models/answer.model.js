@@ -19,7 +19,6 @@ class Answer extends Model {
         this.votes += 1;
         this.addVoter(userID);
         const answeredUser = await User.findByPk(this.UserId);
-        console.log(answeredUser)
         await answeredUser.addUpvotePoints();
     }
 
@@ -34,8 +33,7 @@ class Answer extends Model {
         this.votes -= 1;
         this.removeVoter(userID);
         const answeredUser = await User.findByPk(this.UserId);
-        console.log(answeredUser)
-        await answeredUser.addUpvotePoints();
+        await answeredUser.removeUpvotePoints();
     }
 
     /* Check If Any Particular user liked or not. */

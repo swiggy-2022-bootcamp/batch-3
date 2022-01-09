@@ -1,9 +1,8 @@
 import user from '../models/userModel.js';
-
+import { hash } from 'bcryptjs';
 /*
 To register the user with basic details
 {
-    id: Number,
     username: String,
     email: String,
     password: String
@@ -17,7 +16,7 @@ To register the user with basic details
 }
 */
 exports.createUser = async (req, res) => {
-    const newUser = new user(req.body);
+    var newUser = new user({ ...req.body, password: await hash(req.body.password, 9) });
 
     await newUser.save((err, user) => {
         if (err) {

@@ -1,5 +1,6 @@
 var express = require('express');
 const { hasNotVoted } = require('../middlewares/hasNotVoted');
+const { isAuthorized } = require('../middlewares/isAuthorized');
 const { User } = require('../models/user.model');
 const { USER_REGISTERATION_SUCCESS, USER_LOGIN_SUCCESS, USER_LOGIN_FAILED } = require('../utils/constants');
 var router = express.Router();
@@ -76,4 +77,12 @@ router.put('/update', hasNotVoted , async (req, res) => {
     return res.json({ msg: e.message })
   }
 })
+
+
+router.get('/', isAuthorized, (req, res) => {
+  const user = req.user;
+  return res.json({user})
+})
+
+
 module.exports = router;

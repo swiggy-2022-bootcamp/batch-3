@@ -32,6 +32,15 @@ class User extends Model {
         return bcrypt.compareSync(password, this.password);
     }
 
+    async addUpvotePoints() {
+        this.reputation_point += 100;
+        await this.save();
+    }
+
+    async removeUpvotePoints() {
+        this.reputation_point -= 100;
+        await this.save();
+    }
 };
 
 /* Initialize User Model */

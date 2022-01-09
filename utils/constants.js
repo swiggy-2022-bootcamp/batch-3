@@ -8,5 +8,8 @@ module.exports = {
     ANSWER_POSTED_SUCCESS: 'Answer Posted Succesfully',
     ANSWER_POSTED_FAILED: 'Answer Not Posted',
     ANSWER_UPDATED_SUCCESS: 'Answer Updated Successfully',
-    ANSWER_VOTED_SUCCESS: 'Answer Voted Successfully'
+    ANSWER_VOTED_SUCCESS: 'Answer Voted Successfully',
+    ANSWER_DOWNVOTED_SUCCESS: 'Answer DownVoted Successfully',
+    ANSWER_ALREADY_LIKED: 'You have already liked the answer.',
+    ANSWER_NOT_LIKED: 'You havn\'t liked the answer.'
 }

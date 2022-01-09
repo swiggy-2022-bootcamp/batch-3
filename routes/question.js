@@ -10,13 +10,19 @@ const {
   ANSWER_POSTED_FAILED,
   ANSWER_UPDATED_SUCCESS,
   ANSWER_VOTED_SUCCESS,
+  ANSWER_DOWNVOTED_SUCCESS,
 } = require("../utils/constants");
 const { hasAnswered } = require('../middlewares/hasAnswered');
 const { isAuthorized } = require('../middlewares/isAuthorized');
 
 
-
-router.post("/ask", loginRequired, isAuthorized ,async (req, res) => {
+/**
+ * POST: Route for asking a question
+ */
+router.post("/ask",
+  loginRequired,
+  isAuthorized,
+  async (req, res) => {
   const { title, body } = req.body.question;
   try {
     const question = await req.user.createQuestion({
@@ -36,8 +42,13 @@ router.post("/ask", loginRequired, isAuthorized ,async (req, res) => {
 });
 
 
-
-router.post("/all", loginRequired, isAuthorized,async (req, res) => {
+/**
+ * POST: Route getting all answers (temp)
+ */
+router.post("/all",
+  loginRequired,
+  isAuthorized,
+  async (req, res) => {
   const user = req.user;
   try {
 
@@ -60,7 +71,10 @@ router.post("/all", loginRequired, isAuthorized,async (req, res) => {
 
 
 
-
+/**
+ * POST: Route for answering a question
+ * parameters: question_id, answer_id
+ */
 router.post("/:question_id/answer",
   loginRequired,
   isAuthorized,
@@ -82,6 +96,7 @@ router.post("/:question_id/answer",
       });
     }
     catch (error) {
+      console.log(error.message)
       return res.status(401).json({
         message: ANSWER_POSTED_FAILED,
     });
@@ -90,7 +105,10 @@ router.post("/:question_id/answer",
 
 
 
-
+/**
+ * PUT: Route for updating an answer
+ * parameters: question_id
+ */
 router.put("/:question_id/answer",
   loginRequired,
   isAuthorized,
@@ -105,16 +123,24 @@ router.put("/:question_id/answer",
 });
 
 
-router.put('/:question_id/answer/upvote', loginRequired, isAuthorized, hasAnswered, async (req, res, next) => {
-  const answerObj = req.answerObj;
+
+/**
+ * PUT: Route for up voting an answer
+ * parameters: question_id, answer_id
+ */
+router.put('/:question_id/answer/:answer_id/upvote',
+  loginRequired,
+  isAuthorized,
+  async (req, res, next) => {
+  const answer_id = req.params.answer_id;
+  const answerObj = await Answer.findByPk(answer_id);
   const user = req.user;
   try {
     await answerObj.upVote(user.id);
     await answerObj.save();
     return res.status(201).json({
       message: ANSWER_VOTED_SUCCESS,
-      // "answer-id": answerObj.answer_id
-      answer: answerObj
+      "answer-id": answerObj.answer_id
     })
   }
   catch(error) {
@@ -123,4 +149,34 @@ router.put('/:question_id/answer/upvote', loginRequired, isAuthorized, hasAnswer
   }
 
 })
+
+
+
+/**
+ * PUT: Route for down voting an answer
+ * parameters: question_id, answer_id
+ */
+router.put('/:question_id/answer/:answer_id/downvote',
+  loginRequired,
+  isAuthorized,
+  async (req, res, next) => {
+  const answer_id = req.params.answer_id;
+  const answerObj = await Answer.findByPk(answer_id);
+  const user = req.user;
+  try {
+    await answerObj.downVote(user.id);
+    await answerObj.save();
+    return res.status(201).json({
+      message: ANSWER_DOWNVOTED_SUCCESS,
+      "answer-id": answerObj.answer_id
+    })
+  }
+  catch(error) {
+    error.status = 401;
+    next(error);
+  }
+
+})
+
+
 module.exports = router;

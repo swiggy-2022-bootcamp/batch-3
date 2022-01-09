@@ -21,6 +21,11 @@ questionRouter.post("/:questionId/answer", auth, async (req, res) => {
   await controller.postAnswer(req, res);
 });
 
+questionRouter.get("/:questionId/upvote", auth, async (req, res) => {   
+  console.log("Inside question router !");
+  const controller = new QuestionController();
+  await controller.upvoteQuestion(req, res);
+});
 
 questionRouter.put("/:questionId/answer", auth, async (req, res) => {
   console.log("Inside the question router")

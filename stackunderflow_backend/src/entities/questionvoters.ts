@@ -4,21 +4,18 @@ import {
     PrimaryGeneratedColumn
 } from "typeorm";
 
-@Entity()
-export class  Questions{
-
+@Entity({name: "question_voters"})
+export class QuestionVoters {
+    
     @PrimaryGeneratedColumn()
     pk: number;
 
-    @Column()
-    title: string;
+    @Column({name: "question_pk"})
+    questionPk: number;
 
     @Column({name: "user_pk"})
-    userPK: number;
+    userPk: number;
 
     @Column()
-    body: string;
-
-    @Column()
-    votes: number;
+    vote: number;
 }

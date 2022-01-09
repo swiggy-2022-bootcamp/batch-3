@@ -43,7 +43,7 @@ const verifyToken = async (req :any, res :any, next :any) => {
         console.log(user);
         if (req.body.username && req.body.username !== user.username) {
             return res.status(401).json({
-                error: "user with this username does not exist"
+                error: `user with username ${req.body.username} does not exist`
             })
         } else {
             next();

@@ -4,6 +4,7 @@ import QuestionRouter from "./question.router";
 import HealthcheckController from "../controllers/healthcheck.controller";
 import RegisterController from "../controllers/registeruser.controller";
 import LoginController from "../controllers/login.controller";
+import AnswerRouter from "./answer.router";
 
 const router = express.Router();
 
@@ -26,5 +27,7 @@ router.post("/login", async (req, res) => {
 router.use("/users", UserRouter);
 
 router.use("/question", QuestionRouter);
+
+router.use("/answer", AnswerRouter);
 
 export default router;

@@ -18,4 +18,7 @@ export class Answers{
 
     @Column({name: "question_pk"})
     questionPK: number;
+
+    @Column()
+    votes: number;
 }

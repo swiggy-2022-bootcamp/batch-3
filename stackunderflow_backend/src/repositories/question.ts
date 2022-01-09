@@ -31,7 +31,7 @@ export const postAnswer = async (userPk: number, questionId: number, answer: str
   });
 };
 
-export const updateAnswer = async (answerPk: number, userPk: number, questionId: number, answer: string) :Promise<Answers> => {
+export const updateAnswer = async (answerPk: number, userPk: number, questionId: number, answer: string, votes: number) :Promise<Answers> => {
   console.log("Inside the user repository")
   const answerRepository = getRepository(Answers);
   return await answerRepository.save({
@@ -39,6 +39,7 @@ export const updateAnswer = async (answerPk: number, userPk: number, questionId:
       answer: answer, 
       userPK: userPk,
       questionPK: questionId,
+      votes: votes
   });
 };
 
@@ -50,6 +51,14 @@ export const getAnswer = async (questionId: number, userId: number): Promise<Ans
   });
 }
 
+export const getAnswerByPk = async (answerId: number): Promise<Answers> => {
+  console.log("Inside get all answer function - question repository");
+  const answerRepository = getRepository(Answers);
+  return await answerRepository.findOne({
+    where: {pk: answerId}
+  });
+}
+
 export const getAllAnswer = async (questionId: number): Promise<Answers[]> => {
   console.log("Inside get all answer function - question repository");
   const answerRepository = getRepository(Answers);
@@ -57,3 +66,16 @@ export const getAllAnswer = async (questionId: number): Promise<Answers[]> => {
     where: {questionPK: questionId}
   });
 }
+
+export const updateQuestion = async (questionPk: number, userPk: number, title: string, body: string, votes: number) :Promise<Questions> => {
+  console.log("Inside the question repository")
+  const repository = getRepository(Questions);
+  console.log("UPVOTE QUESTION REPOO - ", userPk);
+  return await repository.save({
+      pk: questionPk,
+      title: title,
+      userPK: userPk,
+      body: body,
+      votes: votes
+  });
+};

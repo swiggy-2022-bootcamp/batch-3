@@ -10,7 +10,7 @@ export const UpdateAnswerService = async (questionId: number, userId: number, an
     }
     
     try {
-        await updateAnswer(oldAnswer.pk, userId, questionId, answer);
+        await updateAnswer(oldAnswer.pk, userId, questionId, answer, oldAnswer.votes);
     } catch (e) {
         console.log(e);
         throw new CustomError("an error occurred while updating the answer", 500);

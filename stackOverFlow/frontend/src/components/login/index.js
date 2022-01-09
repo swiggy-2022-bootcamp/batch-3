@@ -1,6 +1,6 @@
 import React from "react";
-import { Form, Input, Button, Checkbox, Row, Col } from "antd";
-import { handleLoginRequest } from "../../api/index";
+import { Form, Input, Button, Checkbox, Row, Col, notification } from "antd";
+import { handleLoginRequest, handleRegisterRequest } from "../../api/index";
 // import loginImg from "../../login.svg";
 
 export class Login extends React.Component {
@@ -8,16 +8,47 @@ export class Login extends React.Component {
     super(props);
   }
 
+  openNotification = (description = "", type = "success", duration = 5) => {
+    const args = {
+      message: "Notification",
+      description,
+      duration,
+    };
+    notification[type](args);
+  };
+
   handleLoginRequest = async (values) => {
     const { email, password } = values;
 
     const data = { email, password };
 
     const response = await handleLoginRequest(data);
+
+    if (response.success === true) {
+      this.openNotification("Successfully LoggedIn");
+      this.props.handleLogInActive();
+    }
+  };
+
+  handleRegsiterRequest = async (values) => {
+    const { name, email, password } = values;
+
+    const data = { email, password, name };
+
+    const response = await handleRegisterRequest(data);
+
+    if (response.success === true) {
+      this.openNotification("Successfully LoggedIn");
+      this.props.handleLogInActive();
+    }
   };
 
   onFinish = (values) => {
-    this.handleLoginRequest(values);
+    if (this.props.renderLogin === true) {
+      this.handleLoginRequest(values);
+    } else {
+      this.handleRegsiterRequest(values);
+    }
   };
 
   onFinishFailed = (errorInfo) => {
@@ -30,7 +61,7 @@ export class Login extends React.Component {
         <Row justify="center">
           <Col>
             <h1>
-              <b>LogIn</b>
+              <b>{this.props.renderLogin ? "LogIn" : "Register"}</b>
             </h1>
           </Col>
         </Row>
@@ -49,7 +80,7 @@ export class Login extends React.Component {
           onFinishFailed={this.onFinishFailed}
           autoComplete="off"
         >
-          {this.props.isLoginActive === true ? (
+          {this.props.renderLogin === false ? (
             <>
               <Form.Item
                 label="Name"

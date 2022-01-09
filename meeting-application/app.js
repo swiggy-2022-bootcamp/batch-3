@@ -11,13 +11,10 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var meetingRouter = require('./routes/meeting')
 
-let DB_URL = config.DB_URL
-
 var app = express();
 
 // DB Connection
-
-mongoose.connect(DB_URL,()=>{
+mongoose.connect(config.DB_URL,()=>{
   console.log("DB Connected Successfully")
 })
 

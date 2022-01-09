@@ -113,7 +113,6 @@ router.get('/get-upcoming-meetings', async (req, res, next) => {
 
     meetings = meetings.filter(meeting => {
       var meetingDateTime = luxon.DateTime.fromISO(meeting.dateofmeeting + "T" + meeting.starttime)
-      console.log("comparing : " + meetingDateTime.toISO() + " and " + targetDateTime.toISO())
       return currentDateTime <= meetingDateTime && meetingDateTime <= targetDateTime;
     })
 

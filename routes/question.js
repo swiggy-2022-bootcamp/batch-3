@@ -3,6 +3,9 @@ const { Question } = require("../models/question.model");
 const { Answer } = require("../models/answer.model");
 const { loginRequired } = require("../middlewares/loginRequired");
 const { hasNotAnswered } = require('../middlewares/hasNotAnswered');
+const { hasAnswered } = require('../middlewares/hasAnswered');
+const { isAuthorized } = require('../middlewares/isAuthorized');
+const { canEditQuestion } = require('../middlewares/canEditQuestion');
 const {
   QUESTION_POSTED_SUCCESS,
   QUESTION_POSTED_FAILED,
@@ -13,9 +16,9 @@ const {
   ANSWER_DOWNVOTED_SUCCESS,
   QUESTION_VOTED_SUCCESS,
   QUESTION_DOWNVOTED_SUCCESS,
+  QUESTION_UPDATED_SUCCESS,
+  QUESTION_UPDATED_FAILED,
 } = require("../utils/constants");
-const { hasAnswered } = require('../middlewares/hasAnswered');
-const { isAuthorized } = require('../middlewares/isAuthorized');
 
 
 /**
@@ -42,6 +45,32 @@ router.post("/ask",
     });
   }
 });
+
+/**
+ * PUT: Route for updating a question
+ */
+router.put("/:question_id",
+  loginRequired,
+  isAuthorized,
+  canEditQuestion,
+  async (req, res, next) => {
+  try {
+    const { _, title, body } = req.body.question;
+    const question_id = req.params.question_id;
+    const question = await Question.findByPk(question_id);
+    await question.update({ title: title, body: body })
+    return res.status(201).json({
+      message: QUESTION_UPDATED_SUCCESS,
+      "question-id": question.question_id,
+    });
+  } catch (error) {
+    if(error.status && error.status != 500) {
+      error.message = QUESTION_UPDATED_FAILED;
+    }
+    next(err);
+  }
+});
+
 
 
 /**

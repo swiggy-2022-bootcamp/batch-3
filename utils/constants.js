@@ -15,5 +15,7 @@ module.exports = {
     QUESTION_ALREADY_LIKED: 'You have already liked the question',
     QUESTION_NOT_LIKED: 'You havn\'t liked the question',
     QUESTION_VOTED_SUCCESS: 'Question upVoted Successfully',
-    QUESTION_DOWNVOTED_SUCCESS: 'Question DownVoted Successfully.'
+    QUESTION_DOWNVOTED_SUCCESS: 'Question DownVoted Successfully',
+    QUESTION_UPDATED_SUCCESS: 'Question Updated Successfully.',
+    QUESTION_UPDATED_FAILED: 'Question not updated.'
 }

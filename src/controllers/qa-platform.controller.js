@@ -77,6 +77,64 @@ exports.addQuestion = async (req, res) => {
 }
 
 /**
+ * This function helps to add a new question.
+ * 
+ * @param {*} req 
+ * @param {*} res
+ */
+exports.updateQuestion = async (req, res) => {
+    // #swagger.tags = ['QA-Platform']
+    // #swagger.description = 'Endpoint for adding a new question.'
+
+    /* #swagger.parameters['question'] = {
+            in: 'body',
+            description: 'Question details.',
+            required: true,
+            type: 'object',
+            schema: { $ref: "#/definitions/Question" }
+    } */
+
+    // Extract request details
+    const questionId = req.params['questionId'];
+    const questionTitle = req.body['question']['title'];
+    const questionBody = req.body['question']['body'];
+    const user = res.locals.user;
+
+    // Update the question if available
+    let question;
+    try {
+        question = await Question.findOneAndUpdate(
+                                    { 
+                                        id: questionId,
+                                        'createdBy': user
+                                    },
+                                    {
+                                        title: questionTitle,
+                                        body: questionBody
+                                    });
+    } catch(err) {
+        throw new ServerError(err);
+    }
+
+    if (!question) {
+        /* #swagger.responses[404] = { 
+            schema: { $ref: "#/definitions/NotFoundError" },
+            description: 'Not found.' 
+        } */
+        return res.status(404).json({ message: 'No relevant question found to be updated' });
+    }
+
+    /* #swagger.responses[200] = { 
+        schema: { $ref: "#/definitions/QuestionUpdateSuccessResponse" },
+        description: 'Question update successful.' 
+    } */
+    return res.status(200).send({
+            message: 'Question updated successfully.',
+            'question-id': question.id
+        });       
+}
+
+/**
  * This function helps to add an answer to a question.
  * 
  * @param {*} req 
@@ -121,9 +179,9 @@ exports.addAnswer = async (req, res) => {
 
     // If question not found in db
     if (!question) {
-        /* #swagger.responses[404] = { 
-            schema: { $ref: "#/definitions/NotFoundError" },
-            description: 'Not found.' 
+        /* #swagger.responses[400] = { 
+            schema: { $ref: "#/definitions/BadRequestError" },
+            description: 'Bad Request.' 
         } */
         return res.status(400).json({ message: 'Question not found or user has already added an answer to the question' });
     }
@@ -236,7 +294,7 @@ exports.getAllQuestions = (req, res) => {
             return Question.find()
                     .skip((page-1) * limit)
                     .limit(limit)
-                    .select("title body answers.id answers.answer answers.upvotesCount -_id");
+                    .select("title body id answers.id answers.answer answers.upvotesCount -_id");
         })
         .then(questions => {
             /* #swagger.responses[200] = { 
@@ -269,14 +327,13 @@ exports.getQuestion = async (req, res) => {
     // #swagger.tags = ['QA-Platform']
     // #swagger.description = 'Endpoint for fetching a question.'
 
-    // #swagger.parameters['id'] = { description: 'Question ID' }
     const questionId = req.params.questionId;
 
     // Retrieve the question from db
     let question;
     try {
         question = await Question.findOne({ id: questionId })
-                                    .select("title body answers.id answers.answer answers.upvotesCount -_id")
+                                    .select("title body id answers.id answers.answer answers.upvotesCount -_id")
                                     .exec();
     } catch(err) {
         throw new ServerError(err);
@@ -291,40 +348,22 @@ exports.getQuestion = async (req, res) => {
         return res.status(404).json({ message: 'Question with id ' + questionId + ' not found' });
     }
 
+    const resModel = question.toObject();
+    resModel.answers.sort((a, b) => {
+        if (a.upvotesCount > b.upvotesCount) {
+          return -1;
+        }
+        if (a.upvotesCount < b.upvotesCount) {
+          return 1;
+        }
+        return 0;
+      });
+
     /* #swagger.responses[200] = { 
         schema: { $ref: "#/definitions/FetchQuestionSuccessResponse" },
         description: 'Fetch question successful.' 
     } */    
-    res.status(200).send(question);
-}
-
-/**
- * This function helps to delete a question.
- * 
- * @param {*} req 
- * @param {*} res
- */
-exports.deleteQuestion = (req, res) => {
-    // #swagger.tags = ['QA-Platform']
-    // #swagger.description = 'Endpoint for deleting a question.'
-
-    // #swagger.parameters['id'] = { description: 'Question ID' }
-    const questionId = req.params.questionId;
-
-    
-    Question.findOneAndRemove({ id: questionId })
-        .then(q => {
-            /* #swagger.responses[200] = { 
-                schema: { $ref: "#/definitions/FetchQuestionSuccessResponse" },
-                description: 'Fetch question successful.' 
-            } */    
-            res.status(200).send({
-                message: 'Question deleted successfully',            
-            });
-        })
-        .catch(err => {
-            throw new ServerError(err);
-        })  
+    res.status(200).send(resModel);
 }
 
 /**
@@ -366,7 +405,7 @@ exports.upvoteAnswer = async (req, res) => {
 
     // If unable to upvote the answer
     if (!question) {
-        /* #swagger.responses[404] = { 
+        /* #swagger.responses[400] = { 
             schema: { $ref: "#/definitions/BadRequestError" },
             description: 'Bad Request.' 
         } */

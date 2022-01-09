@@ -81,6 +81,42 @@
         }
       }
     },
+    "/user/{userId}": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "description": "Get profile of a user.",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "User ID"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Fetch user successful.",
+            "schema": {
+              "$ref": "#/definitions/FetchUserSuccessResponse"
+            }
+          },
+          "404": {
+            "description": "Not found.",
+            "schema": {
+              "$ref": "#/definitions/NotFoundError"
+            }
+          }
+        }
+      }
+    },
     "/question": {
       "post": {
         "tags": [
@@ -144,6 +180,83 @@
         }
       }
     },
+    "/question/{questionId}": {
+      "put": {
+        "tags": [
+          "QA-Platform"
+        ],
+        "description": "Endpoint for adding a new question.",
+        "parameters": [
+          {
+            "name": "questionId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "question",
+            "in": "body",
+            "description": "Question details.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Question"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Question update successful.",
+            "schema": {
+              "$ref": "#/definitions/QuestionUpdateSuccessResponse"
+            }
+          },
+          "404": {
+            "description": "Not found.",
+            "schema": {
+              "$ref": "#/definitions/NotFoundError"
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "QA-Platform"
+        ],
+        "description": "Endpoint for fetching a question.",
+        "parameters": [
+          {
+            "name": "questionId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Fetch question successful.",
+            "schema": {
+              "$ref": "#/definitions/FetchQuestionSuccessResponse"
+            }
+          },
+          "404": {
+            "description": "Not found.",
+            "schema": {
+              "$ref": "#/definitions/NotFoundError"
+            }
+          }
+        }
+      }
+    },
     "/question/{questionId}/answer": {
       "post": {
         "tags": [
@@ -179,8 +292,11 @@
               "$ref": "#/definitions/AnswerAddSuccessResponse"
             }
           },
-          "404": {
-            "description": "Not Found"
+          "400": {
+            "description": "Bad Request.",
+            "schema": {
+              "$ref": "#/definitions/BadRequestError"
+            }
           }
         }
       },
@@ -219,77 +335,52 @@
             }
           },
           "404": {
-            "description": "Not Found"
+            "description": "Not found.",
+            "schema": {
+              "$ref": "#/definitions/NotFoundError"
+            }
           }
         }
       }
     },
-    "/question/{questionId}": {
-      "get": {
+    "/question/{questionId}/answer/{answerId}": {
+      "post": {
         "tags": [
           "QA-Platform"
         ],
-        "description": "Endpoint for fetching a question.",
+        "description": "Upvote an answer.",
         "parameters": [
           {
             "name": "questionId",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "string",
+            "description": "Question ID"
+          },
+          {
+            "name": "answerId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Answer ID"
           },
           {
             "name": "authorization",
             "in": "header",
             "type": "string"
-          },
-          {
-            "name": "id",
-            "description": "Question ID",
-            "in": "query",
-            "type": "string"
           }
         ],
         "responses": {
           "200": {
-            "description": "Fetch question successful.",
+            "description": "Answer update successful.",
             "schema": {
-              "$ref": "#/definitions/FetchQuestionSuccessResponse"
+              "$ref": "#/definitions/AnswerUpdateSuccessResponse"
             }
           },
-          "404": {
-            "description": "Not Found"
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "QA-Platform"
-        ],
-        "description": "Endpoint for deleting a question.",
-        "parameters": [
-          {
-            "name": "questionId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
-          },
-          {
-            "name": "id",
-            "description": "Question ID",
-            "in": "query",
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Fetch question successful.",
+          "400": {
+            "description": "Bad Request.",
             "schema": {
-              "$ref": "#/definitions/FetchQuestionSuccessResponse"
+              "$ref": "#/definitions/BadRequestError"
             }
           }
         }
@@ -300,19 +391,6 @@
     "Question": {
       "type": "object",
       "properties": {
-        "user-details": {
-          "type": "object",
-          "properties": {
-            "username": {
-              "type": "string",
-              "example": "mail@naveen.com"
-            },
-            "password": {
-              "type": "string",
-              "example": "keepguessing"
-            }
-          }
-        },
         "question": {
           "type": "object",
           "properties": {
@@ -331,25 +409,12 @@
     "Answer": {
       "type": "object",
       "properties": {
-        "user-details": {
-          "type": "object",
-          "properties": {
-            "username": {
-              "type": "string",
-              "example": "mail@naveen.com"
-            },
-            "password": {
-              "type": "string",
-              "example": "keepguessing"
-            }
-          }
-        },
         "question": {
           "type": "object",
           "properties": {
             "question-id": {
-              "type": "string",
-              "example": "38a313eb-428e-479c-a0e2-d1b6b5bab935"
+              "type": "number",
+              "example": 1
             },
             "answer": {
               "type": "string",
@@ -428,8 +493,8 @@
           "example": "answer updated successfully"
         },
         "question-id": {
-          "type": "string",
-          "example": "b0a23ed0-64e9-43d7-9f57-87d88043e116"
+          "type": "number",
+          "example": 1
         }
       }
     },
@@ -441,8 +506,8 @@
           "example": "Question added successfully"
         },
         "question-id": {
-          "type": "string",
-          "example": "b0a23ed0-64e9-43d7-9f57-87d88043e116"
+          "type": "number",
+          "example": 1
         }
       }
     },
@@ -455,6 +520,19 @@
         }
       }
     },
+    "QuestionUpdateSuccessResponse": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Question updated successfully"
+        },
+        "question-id": {
+          "type": "number",
+          "example": 1
+        }
+      }
+    },
     "AnswerAddSuccessResponse": {
       "type": "object",
       "properties": {
@@ -463,8 +541,8 @@
           "example": "answer posted successfully"
         },
         "question-id": {
-          "type": "string",
-          "example": "b0a23ed0-64e9-43d7-9f57-87d88043e116"
+          "type": "number",
+          "example": 1
         }
       }
     },
@@ -474,8 +552,8 @@
         "type": "object",
         "properties": {
           "id": {
-            "type": "string",
-            "example": "38a313eb-428e-479c-a0e2-d1b6b5bab935"
+            "type": "number",
+            "example": 1
           },
           "title": {
             "type": "string",
@@ -485,50 +563,18 @@
             "type": "string",
             "example": "I’m trying to build rest api with node and express js, I get error as express is missing"
           },
-          "createdBy": {
-            "type": "string",
-            "example": "b0a23ed0-64e9-43d7-9f57-87d88043e116"
-          },
-          "updatedBy": {
-            "type": "string",
-            "example": "b0a23ed0-64e9-43d7-9f57-87d88043e116"
-          },
-          "createdTs": {
-            "type": "string",
-            "example": "2022-01-06T09:45:49.787Z"
-          },
-          "updatedTs": {
-            "type": "string",
-            "example": "2022-01-06T09:45:49.787Z"
-          },
           "answers": {
             "type": "array",
             "items": {
               "type": "object",
               "properties": {
                 "id": {
-                  "type": "string",
-                  "example": "672a01a9-dc0c-40ca-a7db-5e3772fc5f6f"
+                  "type": "number",
+                  "example": 1
                 },
                 "answer": {
                   "type": "string",
                   "example": "updated answer"
-                },
-                "createdBy": {
-                  "type": "string",
-                  "example": "b0a23ed0-64e9-43d7-9f57-87d88043e116"
-                },
-                "updatedBy": {
-                  "type": "string",
-                  "example": "b0a23ed0-64e9-43d7-9f57-87d88043e116"
-                },
-                "createdTs": {
-                  "type": "string",
-                  "example": "2022-01-06T09:51:21.218Z"
-                },
-                "updatedTs": {
-                  "type": "string",
-                  "example": "2022-01-06T09:51:21.218Z"
                 }
               }
             }
@@ -540,8 +586,8 @@
       "type": "object",
       "properties": {
         "id": {
-          "type": "string",
-          "example": "38a313eb-428e-479c-a0e2-d1b6b5bab935"
+          "type": "number",
+          "example": 1
         },
         "title": {
           "type": "string",
@@ -551,50 +597,18 @@
           "type": "string",
           "example": "I’m trying to build rest api with node and express js, I get error as express is missing"
         },
-        "createdBy": {
-          "type": "string",
-          "example": "b0a23ed0-64e9-43d7-9f57-87d88043e116"
-        },
-        "updatedBy": {
-          "type": "string",
-          "example": "b0a23ed0-64e9-43d7-9f57-87d88043e116"
-        },
-        "createdTs": {
-          "type": "string",
-          "example": "2022-01-06T09:45:49.787Z"
-        },
-        "updatedTs": {
-          "type": "string",
-          "example": "2022-01-06T09:45:49.787Z"
-        },
         "answers": {
           "type": "array",
           "items": {
             "type": "object",
             "properties": {
               "id": {
-                "type": "string",
-                "example": "672a01a9-dc0c-40ca-a7db-5e3772fc5f6f"
+                "type": "number",
+                "example": 1
               },
               "answer": {
                 "type": "string",
                 "example": "updated answer"
-              },
-              "createdBy": {
-                "type": "string",
-                "example": "b0a23ed0-64e9-43d7-9f57-87d88043e116"
-              },
-              "updatedBy": {
-                "type": "string",
-                "example": "b0a23ed0-64e9-43d7-9f57-87d88043e116"
-              },
-              "createdTs": {
-                "type": "string",
-                "example": "2022-01-06T09:51:21.218Z"
-              },
-              "updatedTs": {
-                "type": "string",
-                "example": "2022-01-06T09:51:21.218Z"
               }
             }
           }
@@ -607,6 +621,27 @@
         "message": {
           "type": "string",
           "example": "Question deleted successfully"
+        }
+      }
+    },
+    "FetchUserSuccessResponse": {
+      "type": "object",
+      "properties": {
+        "fullName": {
+          "type": "string",
+          "example": "UserA"
+        },
+        "username": {
+          "type": "string",
+          "example": "usera@naveen.com"
+        },
+        "reputations": {
+          "type": "number",
+          "example": 20
+        },
+        "id": {
+          "type": "number",
+          "example": 1
         }
       }
     },
@@ -634,12 +669,30 @@
         }
       }
     },
+    "NotFoundError": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Not Found"
+        }
+      }
+    },
     "InternalServerError": {
       "type": "object",
       "properties": {
         "message": {
           "type": "string",
           "example": "Internal Server Error"
+        }
+      }
+    },
+    "BadRequestError": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Bad Request"
         }
       }
     }

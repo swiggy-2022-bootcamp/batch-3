@@ -45,6 +45,31 @@ router.post(
     qaPlatformController.addQuestion
 )
 
+/* Route to add a new question */
+router.put(
+    '/question/:questionId',
+    [ 
+        header('authorization')            
+            .custom(val => {
+                if (!val) {
+                    throw new Error('Required');
+                }
+
+                const arr = val.split(' ');                
+                if (!val.toLowerCase().startsWith("bearer") || !(arr.length == 2)) {
+                    throw new Error('Auhtorization token is invalid');
+                }
+                return true;
+            }),
+        param('questionId')
+            .isInt({ min: 1 }), 
+        body('question.title').notEmpty().withMessage('Question title cannot be empty'),
+        body('question.body').notEmpty().withMessage('Question body cannot be empty')
+    ],
+    authenticate, 
+    qaPlatformController.updateQuestion
+)
+
 /* Route to add an answer to a question */
 router.post(
     '/question/:questionId/answer',
@@ -154,9 +179,6 @@ router.get(
     authenticate, 
     qaPlatformController.getQuestion
 )
-
-/* Route to delete a question */
-router.delete('/question/:questionId', authenticate, qaPlatformController.deleteQuestion)
 
 /* Route to upvote an answer */
 router.post(

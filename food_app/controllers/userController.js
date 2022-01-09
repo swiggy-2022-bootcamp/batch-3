@@ -1,5 +1,7 @@
 import user from '../models/userModel.js';
-import { hash } from 'bcryptjs';
+import { hash, compare } from 'bcryptjs';
+import { sign } from 'jsonwebtoken';
+
 /*
 To register the user with basic details
 {
@@ -30,9 +32,25 @@ exports.createUser = async (req, res) => {
     });
 };
 
-// TODO
-exports.authenticateUser = (req, res) => {
+// To validate the user is registered in the system
+exports.authenticateUser = async (req, res) => {
+    const { username, password } = req.body
+    const foundUser = await user.findOne({ username }).lean()
 
+    if (!foundUser) {
+        res.status(403).json({ message: 'Invalid username/password' })
+    }
+
+    if (await compare(password, foundUser.password)) {
+        const token = sign({
+            id: foundUser._id,
+            username: foundUser.username
+        }, process.env.JWT_SECRET)
+
+        return res.json({ message: token })
+    }
+
+    res.status(403).json({ message: 'Invalid username/password' })
 };
 
 // To get all the users who are registered to the system, the end point should return an array,

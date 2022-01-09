@@ -1,15 +1,15 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
+import dotenv from 'dotenv';
 
 import routes from './routes/index.js';
 
 const app = express();
+dotenv.config();
 
 /* Connect to the database */
-// TODO
-// Will need to move DB_URL to env variable in future
-mongoose.connect('mongodb://localhost:27017/FoodApp', (err) => {
+mongoose.connect(process.env.CONNECTION_URL, (err) => {
     console.log(err ? err : "Successfully connected to DB")
 });
 

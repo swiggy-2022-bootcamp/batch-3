@@ -11,10 +11,11 @@ Backend for Food-App created using Node.js, Express, MongoDB as part of Swiggy's
 ## Steps to run project:
 
 1. Clone this repository
-2. Move to current directory, i.e., the directory where this README.md exists
-3. Run `npm i`
-4. Run `npm start`
-5. Access the project at `localhost:3000/api/[required API endpoint]`
+2. Move to current directory, i.e., the directory where this `README.md` exists
+3. Rename `.env.template` file to `.env` file and fill the required values
+4. Run `npm i`
+5. Run `npm start`
+6. Access the project at `localhost:3000/api/[required API endpoint]`
 
 ## Project's code structure:
 

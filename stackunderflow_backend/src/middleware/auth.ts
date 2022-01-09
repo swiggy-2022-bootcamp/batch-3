@@ -1,8 +1,10 @@
+import { findUserByPk } from "../repositories/user";
+
 const jwt = require("jsonwebtoken");
 
 const config = process.env;
 
-const verifyToken = (req :any, res :any, next :any) => {
+const verifyToken = async (req :any, res :any, next :any) => {
     let token;
     const authHeader = req.headers["authorization"];
     console.log(authHeader);
@@ -27,9 +29,11 @@ const verifyToken = (req :any, res :any, next :any) => {
     // TODO: Check for the JWT token expiration response body
     try {
         const decoded = jwt.verify(token, config.TOKEN_SECRET);
-        const username = decoded.username;
+        const userId = decoded.id;
 
-        if (req.body.username && req.body.username !== username) {
+        const user = await findUserByPk(userId);
+        console.log(user);
+        if (req.body.username && req.body.username !== user.username) {
             throw new Error("Invalid user name");
         } else {
             next();

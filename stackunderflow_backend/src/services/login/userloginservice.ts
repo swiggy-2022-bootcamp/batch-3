@@ -12,6 +12,7 @@ interface UserLoginParameters {
     password :string;
 }
 
+// Login -> username and password
 export const UserLoginService = async ({username, password} :UserLoginParameters): Promise<string> => {
     if (!(username && password)) {
         throw new Error("All parameters needed!");
@@ -31,7 +32,7 @@ export const UserLoginService = async ({username, password} :UserLoginParameters
 
     // Create jwt token
     const token: string = jwt.sign(
-        {id: username},
+        {id: user.pk},
         process.env.TOKEN_SECRET,
         {
             expiresIn: '2h',

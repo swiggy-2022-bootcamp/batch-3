@@ -143,6 +143,12 @@ const doc = {
         QuestionDeleteSuccessResponse: {
             message: 'Question deleted successfully',            
         },
+        FetchUserSuccessResponse: {
+            "fullName": "UserA",
+            "username": "usera@naveen.com",
+            "reputations": 20,
+            "id": 1
+        },
         ValidationErrorResponse: [
             {
                 "value": "string",
@@ -151,8 +157,14 @@ const doc = {
                 "location": "string"
             }
         ],
+        NotFoundError: {
+            message: 'Not Found'
+        },
         InternalServerError: {
             message: 'Internal Server Error'
+        },
+        BadRequestError: {
+            message: 'Bad Request'
         }
     }
 }

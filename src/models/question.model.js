@@ -21,6 +21,9 @@ const Schema = mongoose.Schema;
 
 const autoIncrement = require('mongoose-auto-increment')
 
+/**
+ * Question model definition
+ */
 const questionSchema = new Schema({
     id: { type: Number, unique: true },
     title: { type: String, required: true },

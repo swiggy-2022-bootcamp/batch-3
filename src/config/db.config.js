@@ -16,6 +16,7 @@
 
 const mongoose = require('mongoose');
 
+/* Connect to the backend database */
 mongoose.connect(process.env.MONGODB_URI, {useNewUrlParser: true}, (err) => {
     if (!err) {
         console.log('Connection Success..');

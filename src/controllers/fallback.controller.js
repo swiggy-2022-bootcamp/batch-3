@@ -14,12 +14,29 @@
  * limitations under the License.
  */
 
+ /**
+ * This is a middleware function. It returns a 404 response if no request path matches.
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
 exports.get404 = (req, res, next) => {
     res.status(404).send('404-Page not found');
 };
 
+/**
+ * This is a error middleware function. It intercepts the error from other middlewares and processes the appropriate response.
+ * 
+ * @param {*} err
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
 exports.errorHandler = (err, req, res, next) => {
+
     console.error(err);
+
     if (err.name === 'ValidationError') {
       /* #swagger.responses[400] = { 
            schema: { $ref: "#/definitions/ValidationErrorResponse" },

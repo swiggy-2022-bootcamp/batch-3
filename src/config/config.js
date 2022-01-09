@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+// Load the configurations
 var env = process.env.NODE_ENV || 'dvl';
 var config = require('./properties.json');
 var envConfig = config[env];

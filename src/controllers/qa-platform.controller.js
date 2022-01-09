@@ -19,7 +19,13 @@ const Answer = require('../models/answer.model');
 const User = require('../models/user.model');
 const ServerError = require('../error/server.error');
 
-exports.addQuestion = (req, res) => {
+/**
+ * This function helps to add a new question.
+ * 
+ * @param {*} req 
+ * @param {*} res
+ */
+exports.addQuestion = async (req, res) => {
     // #swagger.tags = ['QA-Platform']
     // #swagger.description = 'Endpoint for adding a new question.'
 
@@ -31,10 +37,12 @@ exports.addQuestion = (req, res) => {
             schema: { $ref: "#/definitions/Question" }
     } */
 
+    // Extract request details
     const questionTitle = req.body['question']['title'];
     const questionBody = req.body['question']['body'];
     const user = res.locals.user;
 
+    // Build the question model
     let question = new Question({ 
         title: questionTitle,
         body: questionBody,            
@@ -42,26 +50,38 @@ exports.addQuestion = (req, res) => {
         updatedBy: user
     });
 
-    question.save()
-        .then(q => {
+    // Save question to db
+    let savedQuestion;
+    try {
+        savedQuestion = await question.save()
+    } catch(err) {
+        throw new ServerError(err);
+    }
+    
+    // Add the question reference to user object
+    user.questions.push(savedQuestion);
+    try {
+        await user.save();
+    } catch(err) {
+        throw new ServerError(err);
+    }
 
-            user.questions.push(q);
-            user.save();
-
-            /* #swagger.responses[201] = { 
-                schema: { $ref: "#/definitions/QuestionAddSuccessResponse" },
-                description: 'Question add successful.' 
-            } */
-            res.status(201).send({
-                message: 'Question posted successfully.',
-                'question-id': q.id
-            });
-        })
-        .catch(err => {
-            throw new ServerError(err);
-        });
+    /* #swagger.responses[201] = { 
+        schema: { $ref: "#/definitions/QuestionAddSuccessResponse" },
+        description: 'Question add successful.' 
+    } */
+    res.status(201).send({
+        message: 'Question posted successfully.',
+        'question-id': savedQuestion.id
+    });       
 }
 
+/**
+ * This function helps to add an answer to a question.
+ * 
+ * @param {*} req 
+ * @param {*} res
+ */
 exports.addAnswer = async (req, res) => {
     // #swagger.tags = ['QA-Platform']
     // #swagger.description = 'Endpoint for adding a new answer for a question.'
@@ -74,30 +94,44 @@ exports.addAnswer = async (req, res) => {
             schema: { $ref: "#/definitions/Answer" }
     } */
 
+    // Extract request details 
     const questionId = req.body['question']['question-id'];
     const answerTxt = req.body['question']['answer'];
     const user = res.locals.user;
 
+    // Prepare the answer model
     const answer = new Answer({
         answer: answerTxt,    
         createdBy: user,
         updatedBy: user
     });
 
-
+    // Retrieve the question from db
     let question;
     try {
-        question = await Question.findOne({ id: questionId }).exec();
+        question = await Question.findOne(
+                                    { 
+                                        id: questionId,
+                                        'answers.createdBy': { '$ne': user }
+                                    })
+                                    .exec();
     } catch(err) {
         throw new ServerError(err);
     }
 
+    // If question not found in db
     if (!question) {
-        return res.status(404).json({ message: 'Question with id ' + questionId + ' not found' });
+        /* #swagger.responses[404] = { 
+            schema: { $ref: "#/definitions/NotFoundError" },
+            description: 'Not found.' 
+        } */
+        return res.status(400).json({ message: 'Question not found or user has already added an answer to the question' });
     }
 
+    // Add answer to the retrieved question model
     question.answers.push(answer);
     
+    // Update the question
     let savedQuestion;
     try {
         savedQuestion = await question.save();
@@ -105,6 +139,7 @@ exports.addAnswer = async (req, res) => {
         throw new ServerError(err);
     }
 
+    // Add answer reference to user model
     user.answers.push(answer);
     try {
         await user.save();
@@ -122,6 +157,12 @@ exports.addAnswer = async (req, res) => {
     });
 }
 
+/**
+ * This function helps to update an answer to a question.
+ * 
+ * @param {*} req 
+ * @param {*} res
+ */
 exports.updateAnswer = async (req, res) => {    
     // #swagger.tags = ['QA-Platform']
     // #swagger.description = 'Endpoint for updating an answer.'
@@ -134,10 +175,12 @@ exports.updateAnswer = async (req, res) => {
             schema: { $ref: "#/definitions/Answer" }
     } */
     
+    // Extract the request details
     const questionId = req.body['question']['question-id'];
     const answerTxt = req.body['question']['answer'];
     const user = res.locals.user;
 
+    // Update the answer if present in system
     let question;
     try {
         question = await  Question.findOneAndUpdate(
@@ -152,7 +195,12 @@ exports.updateAnswer = async (req, res) => {
         throw new ServerError(err);
     }
 
+    // If no such answer present
     if (!question) {
+        /* #swagger.responses[404] = { 
+            schema: { $ref: "#/definitions/NotFoundError" },
+            description: 'Not found.' 
+        } */
         return res.status(404).json({ message: 'Did not find any relevant answer to update' });
     }
              
@@ -166,10 +214,17 @@ exports.updateAnswer = async (req, res) => {
     });
 }
 
+/**
+ * This function helps to retrieve all questions.
+ * 
+ * @param {*} req 
+ * @param {*} res
+ */
 exports.getAllQuestions = (req, res) => {
     // #swagger.tags = ['QA-Platform']
     // #swagger.description = 'Endpoint for fetching all questions.'
 
+    // Extract pagination parametes from request
     const page = req.query.page || 1;
     const limit = req.query.limit || 5;
 
@@ -181,7 +236,7 @@ exports.getAllQuestions = (req, res) => {
             return Question.find()
                     .skip((page-1) * limit)
                     .limit(limit)
-                    .select("title body answers.answer -_id");
+                    .select("title body answers.id answers.answer answers.upvotesCount -_id");
         })
         .then(questions => {
             /* #swagger.responses[200] = { 
@@ -204,6 +259,12 @@ exports.getAllQuestions = (req, res) => {
         });
 }
 
+/**
+ * This function helps to retrieve a question.
+ * 
+ * @param {*} req 
+ * @param {*} res
+ */
 exports.getQuestion = async (req, res) => {
     // #swagger.tags = ['QA-Platform']
     // #swagger.description = 'Endpoint for fetching a question.'
@@ -211,16 +272,22 @@ exports.getQuestion = async (req, res) => {
     // #swagger.parameters['id'] = { description: 'Question ID' }
     const questionId = req.params.questionId;
 
+    // Retrieve the question from db
     let question;
     try {
         question = await Question.findOne({ id: questionId })
-                                    .select("title body answers.answer answers.upvotesCount -_id")
+                                    .select("title body answers.id answers.answer answers.upvotesCount -_id")
                                     .exec();
     } catch(err) {
         throw new ServerError(err);
     }
 
+    // If question was not found
     if (!question) {
+        /* #swagger.responses[404] = { 
+            schema: { $ref: "#/definitions/NotFoundError" },
+            description: 'Not found.' 
+        } */
         return res.status(404).json({ message: 'Question with id ' + questionId + ' not found' });
     }
 
@@ -231,6 +298,12 @@ exports.getQuestion = async (req, res) => {
     res.status(200).send(question);
 }
 
+/**
+ * This function helps to delete a question.
+ * 
+ * @param {*} req 
+ * @param {*} res
+ */
 exports.deleteQuestion = (req, res) => {
     // #swagger.tags = ['QA-Platform']
     // #swagger.description = 'Endpoint for deleting a question.'
@@ -238,6 +311,7 @@ exports.deleteQuestion = (req, res) => {
     // #swagger.parameters['id'] = { description: 'Question ID' }
     const questionId = req.params.questionId;
 
+    
     Question.findOneAndRemove({ id: questionId })
         .then(q => {
             /* #swagger.responses[200] = { 
@@ -253,6 +327,12 @@ exports.deleteQuestion = (req, res) => {
         })  
 }
 
+/**
+ * This function helps a user to upvote an answer.
+ * 
+ * @param {*} req 
+ * @param {*} res
+ */
 exports.upvoteAnswer = async (req, res) => {
     // #swagger.tags = ['QA-Platform']
     // #swagger.description = 'Upvote an answer.'
@@ -265,6 +345,7 @@ exports.upvoteAnswer = async (req, res) => {
 
     const user = res.locals.user;
 
+    // Find and upvote answer if available
     let question;
     try {
         question = await Question.findOneAndUpdate(
@@ -283,10 +364,16 @@ exports.upvoteAnswer = async (req, res) => {
         throw new ServerError(err);
     }
 
+    // If unable to upvote the answer
     if (!question) {
-        return res.status(404).json({ message: 'Did not find any relevant answer to upvote or user has already voted for the answer.' });
+        /* #swagger.responses[404] = { 
+            schema: { $ref: "#/definitions/BadRequestError" },
+            description: 'Bad Request.' 
+        } */
+        return res.status(400).json({ message: 'Did not find any relevant answer to upvote or user has already voted for the answer or attempting to answer one\'s own answer.' });
     }
 
+    // Retrieve the corresponding answer id
     let desAnswerId;
     for (let i = 0; i < question.answers.length; i++) {
         if (question.answers[i].id == answerId) {
@@ -295,8 +382,7 @@ exports.upvoteAnswer = async (req, res) => {
         }
     }
 
-    console.log(desAnswerId);
-
+    // Increase the reputation of the user who had answered the corresponding question
     try {
         await User.findOneAndUpdate(
             {

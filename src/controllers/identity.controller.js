@@ -22,6 +22,12 @@ const IdentityError = require('../error/identity.error');
 const ValidationError = require('../error/validation.error');
 const { validationResult } = require('express-validator');
 
+/**
+ * This function validates user credentials and returns a jwt token for authentication to access business end-points.
+ * 
+ * @param {*} req 
+ * @param {*} res
+ */
 exports.login = async (req, res) => {
     // #swagger.tags = ['User']
     // #swagger.description = 'Endpoint for user login.'
@@ -34,14 +40,18 @@ exports.login = async (req, res) => {
             schema: { $ref: "#/definitions/UserAuthDtls" }
     } */
 
+    // If request is invalid
     const errors = validationResult(req);
-    if (!errors.isEmpty()) {        
+    if (!errors.isEmpty()) {
+        // return validation error response        
         throw new ValidationError(errors.array());   
     }
 
+    // Extract the username and password
     const username = req.body['username'];
     const password = req.body['password'];
  
+    // Find the username in db by provided username
     let user;
     try {
         user = await User.findOne({ username: username }).exec();
@@ -49,10 +59,13 @@ exports.login = async (req, res) => {
         throw new ServerError(err);
     }
 
+    // If no such user is present
     if (!user) {        
+        // return error response
         throw new IdentityError('Sorry invalid credentials', 401);
     }
     
+    // Try to compare the provided password with the one in system
     let doMatch;
     try {
         doMatch = await bcrypt.compare(password, user.password);        
@@ -60,10 +73,13 @@ exports.login = async (req, res) => {
         throw new ServerError(err);
     }
 
+    // If passwords do not match
     if (!doMatch) {
+        // Return error response
         throw new IdentityError('Sorry invalid credentials', 401);
     }
     
+    // Create the JWT token
     const token = jwt.sign(
         { user_id: user._id, email: user.username },
         process.env.JWT_SECRET,
@@ -71,14 +87,6 @@ exports.login = async (req, res) => {
           expiresIn: parseInt(process.env.JWT_EXP),
         }
     );
-
-    // save user token
-    user.token = token;
-    try {
-        await user.save();
-    } catch(err) {
-        throw new ServerError(err);
-    }
 
     /* #swagger.responses[200] = { 
         schema: { $ref: "#/definitions/LoginSuccessResponse" },
@@ -91,6 +99,12 @@ exports.login = async (req, res) => {
     });
 }
 
+/**
+ * This function helps to register a new user in system.
+ * 
+ * @param {*} req 
+ * @param {*} res
+ */
 exports.register = async (req, res) => {
     // #swagger.tags = ['User']
     // #swagger.description = 'Endpoint for user registration.'
@@ -103,22 +117,29 @@ exports.register = async (req, res) => {
             schema: { $ref: "#/definitions/UserDtls" }
     } */
 
+    // If request is invalid
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
+        // return validation error response
         throw new ValidationError(errors.array());        
     }
 
+    // Extract request details
     const fullName = req.body['registration-name'];
     const username = req.body['username'];
     const password = req.body['password'];
 
+    // Check if email is already present in system
     let exisitingUser;
     try {
         exisitingUser = await User.findOne({ username: username });
     } catch(err) {
         throw new ServerError(err);
     }
+
+    // If email is already registered 
     if (exisitingUser) {
+        // return error response
         throw new ValidationError([
             {
                 "value": username,
@@ -129,6 +150,7 @@ exports.register = async (req, res) => {
         ]);
     }
     
+    // Hash the password before storing for security
     const hashedPassword = await bcrypt.hash(password, 12);
     const user = new User({
         fullName: fullName,
@@ -136,6 +158,7 @@ exports.register = async (req, res) => {
         password: hashedPassword
     });
 
+    // Save the new user in db
     let savedUser;
     try {
         savedUser = await user.save();
@@ -153,6 +176,12 @@ exports.register = async (req, res) => {
     });
 }
 
+/**
+ * This function helps to fetch a user profile.
+ * 
+ * @param {*} req 
+ * @param {*} res
+ */
 exports.getUserProfile = async (req, res) => {
     // #swagger.tags = ['User']
     // #swagger.description = 'Get profile of a user.'
@@ -160,14 +189,23 @@ exports.getUserProfile = async (req, res) => {
     // #swagger.parameters['userId'] = { description: 'User ID' }
     const userId = req.params.userId;
 
+    // Retrieve user details from db
     const user = await User.findOne({ id: userId })
                             .select("id fullName username reputations -_id")
                             .exec();
 
+    // If user is not found
     if (!user) {
+        /* #swagger.responses[404] = { 
+            schema: { $ref: "#/definitions/NotFoundError" },
+            description: 'Not found.' 
+        } */
         return res.status(404).json({ message: `User with id ${questionId} not found` });
     }
 
-
+    /* #swagger.responses[200] = {
+        schema: { $ref: "#/definitions/FetchUserSuccessResponse" },
+        description: 'Fetch user successful.' 
+    } */
     return res.status(200).json(user);
 }

@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+ /**
+ * ServerError indicates an application error related to business functionality
+ */ 
 class ServerError extends Error {
     constructor(err) {
       super(err);

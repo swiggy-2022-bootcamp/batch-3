@@ -20,23 +20,39 @@ const { validationResult } = require('express-validator');
 const IdentityError = require('../error/identity.error');
 const ValidationError = require('../error/validation.error');
 
+/**
+ * This is a middleware function. It validates the JWT authentication token in incoming requests.
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
 module.exports = async (req, res, next) => {
 
+    // If request is invalid
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
+        // return validation error response
         throw new ValidationError(errors.array());
     }
 
+    // Extract JWT token from header
     const token = req.headers['authorization'].split(" ")[1];
-    
+
+    // Verify JWT token
     let decoded;
     try {
-        decoded = jwt.verify(token, process.env.JWT_SECRET);        
+        decoded = jwt.verify(token, process.env.JWT_SECRET);
     } catch (err) {
         throw new IdentityError('Invalid token', 401);
     }
 
-    const user = await User.findById(decoded.user_id);
+    // Extract user principal
+    const user = await User.findById(decoded.user_id).select("-password");
+
+    // Load the user principal for use in subsequent middlewares
     res.locals.user = user;
+
+    // Call the next middleware
     next();
 }

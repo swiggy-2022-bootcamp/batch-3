@@ -49,18 +49,26 @@ app.use(morgan('combined', { stream: accessLogStream }))
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+// Define the application port
 const port = process.env.port || 3000;
+
+// Define the application context path
 const contextPath = '/';
 
+// Register the application routes
 app.use(contextPath, identityRoutes);
 app.use(contextPath, qaPlatformRoutes);
 
+// Register the swagger ui path
 app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerFile))
 
+// Register the path not found error response 
 app.use(fallbackController.get404);
 
+// Register the express error middleware
 app.use(fallbackController.errorHandler);
 
+// Listen for incoming requests
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}!`);
+  console.log(`QA-platform app listening on port ${port}!`);
 })

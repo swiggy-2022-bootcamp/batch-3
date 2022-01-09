@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * ValidationError indicates input request related issues.
+ */ 
 class ValidationError extends Error {
     constructor(errors) {
       super('Bad Request');

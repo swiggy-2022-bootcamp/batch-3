@@ -21,6 +21,7 @@ const identityController = require('../controllers/identity.controller');
 
 const router = express.Router();
 
+/* Route to login user and retrieve jwt authentication token */
 router.post(
     '/login', 
     [ 
@@ -35,6 +36,7 @@ router.post(
     identityController.login
 )
 
+/* Route to create a new user in system */
 router.post(
     '/register',
     [ 
@@ -52,6 +54,7 @@ router.post(
     identityController.register
 )
 
+/* Route to fetch user details */
 router.get(
     '/user/:userId',
     [

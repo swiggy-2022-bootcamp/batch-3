@@ -16,4 +16,7 @@
 
 const path = require('path')
 
+/**
+ * This function helps to fetch the root path
+ */
 module.exports = path.dirname(require.main.filename)

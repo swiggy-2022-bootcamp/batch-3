@@ -22,6 +22,7 @@ const router = express.Router();
 
 const qaPlatformController = require('../controllers/qa-platform.controller');
 
+/* Route to add a new question */
 router.post(
     '/question',
     [ 
@@ -44,6 +45,7 @@ router.post(
     qaPlatformController.addQuestion
 )
 
+/* Route to add an answer to a question */
 router.post(
     '/question/:questionId/answer',
     [      
@@ -76,6 +78,7 @@ router.post(
     qaPlatformController.addAnswer
 )
 
+/* Route to update an answer to a question */
 router.put(
     '/question/:questionId/answer', 
     [
@@ -108,6 +111,7 @@ router.put(
     qaPlatformController.updateAnswer
 )
 
+/* Route to fetch all questions */
 router.get(
     '/question',
     [ 
@@ -128,6 +132,7 @@ router.get(
     qaPlatformController.getAllQuestions
 )
 
+/* Route to fetch a question */ 
 router.get(
     '/question/:questionId',
     [
@@ -150,8 +155,10 @@ router.get(
     qaPlatformController.getQuestion
 )
 
+/* Route to delete a question */
 router.delete('/question/:questionId', authenticate, qaPlatformController.deleteQuestion)
 
+/* Route to upvote an answer */
 router.post(
     '/question/:questionId/answer/:answerId', 
     [
@@ -173,6 +180,7 @@ router.post(
             .isInt({ min: 1 })
     ],
     authenticate, 
-    qaPlatformController.upvoteAnswer)
+    qaPlatformController.upvoteAnswer
+)
 
 module.exports = router;

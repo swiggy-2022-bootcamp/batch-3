@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * IdentityError indicates an error related to user identity management
+ */ 
 class IdentityError extends Error {
     constructor(message, statusCode) {
         super(message);

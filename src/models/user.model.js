@@ -22,12 +22,14 @@ const Schema = mongoose.Schema;
 
 const autoIncrement = require('mongoose-auto-increment')
 
+/**
+ * User model definition
+ */
 const userSchema = new Schema({
     id: { type: Number, unique: true },
     fullName: { type: String, required: true },
     username: { type: String, required: true },
     password: { type: String, required: true },
-    token: { type: String },
     questions: {
         type: [Schema.Types.ObjectId],
         default: [],

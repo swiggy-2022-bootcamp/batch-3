@@ -20,6 +20,9 @@ const Schema = mongoose.Schema;
 
 const autoIncrement = require('mongoose-auto-increment')
 
+/**
+ * Answer model definition
+ */
 const answerSchema = new Schema({
     id: { type: Number },
     answer: { type: String, required: true },

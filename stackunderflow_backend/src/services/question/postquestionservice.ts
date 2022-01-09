@@ -3,42 +3,32 @@ import { findUserByPk } from "../../repositories/user";
 import { postQuestion } from "../../repositories/question";
 import { Questions } from "../../entities/question";
 import { getUserPkFromToken } from "../../utils/common/getUserPkFromToken";
+import { CustomError } from "../../utils/common/CustomError";
 
 class QuestionDetails {
     title: string;
     body: string;
 }
 
-interface ValidateRequestParameters {
+interface PostQuestionParameters {
     token: string;
     questionDetails: QuestionDetails;
 }
 
-interface ProcessRequestParameters {
-    userId: number;
-    questionDetails: QuestionDetails;
-}
-
-export const ValidateRequest = async ({token, questionDetails} : ValidateRequestParameters) :Promise<Users> => {
+export const PostQuestionService = async ({token, questionDetails} : PostQuestionParameters) :Promise<Questions> => {
     const userId: number = getUserPkFromToken(token);
     const title: string = questionDetails.title;
     const body: string = questionDetails.body;
 
-    console.log("ValidateRequest UserId: ", userId);
-
-    const user = await findUserByPk(userId);
-    if (!user) {
-        throw new Error("user not found");
-    }
-
     if (!title || !body) {
-        throw new Error("question details not found")
+        throw new CustomError("question details not found", 400)
     }
 
-    console.log(user);
-    return user;
+    try {
+        const question = await postQuestion(title, body, userId);
+        return question
+    } catch (e) {
+        throw new CustomError("an error occurred while posting question", 500)
+    }
 }
 
-export const ProcessRequest = async ({userId, questionDetails} : ProcessRequestParameters) :Promise<Questions>=> {
-    return await postQuestion(questionDetails.title, questionDetails.body, userId);
-}

@@ -1,5 +1,5 @@
 import { Get, Post, Route } from "tsoa";
-import { ValidateRequest, ProcessRequest } from "../services/question/postquestionservice";
+import { PostQuestionService } from "../services/question/postquestionservice";
 import { getTokenFromHeaders } from "../utils/common/getTokenFromHeader";
 import { PostAnswerService } from "../services/answer/postanswerservice";
 import { getUserPkFromToken } from "../utils/common/getUserPkFromToken";
@@ -19,8 +19,7 @@ export default class QuestionController {
   public async postQuestion(req :any, res :any) {
       try {
         const token = getTokenFromHeaders(req);
-        const user = await ValidateRequest({token, questionDetails: req.body["question"]});
-        const question = await ProcessRequest({userId: user.pk, questionDetails: req.body["question"]});
+        const question = await PostQuestionService({token, questionDetails: req.body["question"]});
         responseHandler(res, {
           message: "Question posted",
           questionId: question.pk

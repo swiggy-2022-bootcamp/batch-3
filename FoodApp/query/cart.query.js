@@ -68,6 +68,7 @@ const removeFromCart = async (payload) => {
         itemsList.splice(itemIndex, 1);
       }
     }
+    
     if (itemsList.length == 0) {
       Cart.findOneAndDelete({ userId: userId });
       return "cart empty";

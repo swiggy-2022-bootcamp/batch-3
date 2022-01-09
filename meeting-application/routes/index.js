@@ -4,6 +4,7 @@ var axios = require('axios')
 var User = require("../models/user");
 var bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+var config = require('../public/javascripts/config')
 
 /* GET home page. */
 router.get('/', async (req, res, next) => {
@@ -28,7 +29,7 @@ router.post('/login', async (req, res, next) => {
   var validpass = await bcrypt.compare(req.body.password, userExist.password);
 
   if(validpass){ 
-    const token = jwt.sign({ userid }, "somesecret");
+    const token = jwt.sign({ userid }, config.JWT_SECRET);
     res.status(201).send({
       "message" : "Logged In Successfully",
       "token" : token

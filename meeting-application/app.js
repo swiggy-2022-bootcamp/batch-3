@@ -4,13 +4,14 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var mongoose = require('mongoose');
+var config = require('./public/javascripts/config')
 
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var meetingRouter = require('./routes/meeting')
 
-let DB_URL = "mongodb+srv://muser:mpass@cluster0.1qtva.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
+let DB_URL = config.DB_URL
 
 var app = express();
 

@@ -4,7 +4,6 @@ var bcrypt = require("bcryptjs");
 var User = require("../models/user");
 var Meeting = require("../models/meetings");
 var luxon = require('luxon');
-const { SystemZone } = require('luxon');
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {

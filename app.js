@@ -6,6 +6,10 @@ var { errorHandler } = require('./middlewares/errorHandler');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var questionRouter = require('./routes/question');
+const swaggerUI = require('swagger-ui-express');
+const YAML = require('yamljs');
+const swaggerDOC = YAML.load('./swagger.yaml');
+
 var app = express();
 
 require('dotenv').config();
@@ -20,4 +24,5 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/question', questionRouter);
 app.use(errorHandler);
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDOC));
 module.exports = app;

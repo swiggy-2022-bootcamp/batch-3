@@ -1,0 +1,84 @@
+swagger: "2.0"
+
+info:
+  title: StackOverFlow Project APIs
+  description: Batch 3 - Case Study Project API documentation
+  version: 1.0
+  contact:
+    email: sachinsom743@gmail.com
+  liscence:
+    name: Apache 2.0
+    url: 'https://www.apache.org/liscences/LIS'
+  servers:
+    -url: http:/localhost:3000
+    description: Local Development Server
+
+schemes: [https, http]
+
+paths:
+  /users/registration:
+    post:
+      summary: Creates a new user
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          schema:
+            type: object
+            required:
+              - name
+              - username
+              - email
+              - password
+            properties:
+              name:
+                type: string
+              username:
+                type: string
+              email:
+                type: string
+              password:
+                type: string
+      responses:
+        '201':
+          description: Created
+        '201':
+          description: Not Acceptable
+        '500':
+          description: Internal Server Error
+
+  /users/login:
+    post:
+      summary: Login User
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        # - in: headers
+        #   name: Authorization
+        #   schema:
+        #     type: string
+        #   required: true
+        - in: body
+          name: body
+          schema:
+            type: object
+            required:
+              - username
+              - password
+            properties:
+              username:
+                type: string
+              password:
+                type: string
+      responses:
+        '201':
+          description: Created
+        '201':
+          description: Not Acceptable
+        '500':
+          description: Internal Server Error

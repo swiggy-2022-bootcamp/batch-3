@@ -1,5 +1,7 @@
 # swiggy-qna
 
+## Had completed the project in my personal repo and transferred my files in the end.
+
 ## Description: 
 
 The application serves as a platform for users to ask and answer questions, and, 

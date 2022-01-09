@@ -18,7 +18,9 @@ const {
   QUESTION_DOWNVOTED_SUCCESS,
   QUESTION_UPDATED_SUCCESS,
   QUESTION_UPDATED_FAILED,
+  QUESTION_FETCHED_SUCCESS,
 } = require("../utils/constants");
+const { OPEN_READWRITE } = require('sqlite3');
 
 
 /**
@@ -76,29 +78,29 @@ router.put("/:question_id",
 /**
  * POST: Route getting all answers (temp)
  */
-router.post("/all",
-  loginRequired,
-  isAuthorized,
-  async (req, res) => {
-  const user = req.user;
-  try {
+// router.post("/all",
+//   loginRequired,
+//   isAuthorized,
+//   async (req, res) => {
+//   const user = req.user;
+//   try {
 
-    const askedQues = await Question.findAll({
-      include: Answer,
-    });
-    const response = {
-      msg: "Successfull Fetch Questions",
-      question: askedQues,
-    };
-    return res.json({
-      response,
-    });
-  }
-  catch (err) {
-    console.log(err)
-    res.json({msg: err.message})
-  }
-});
+//     const askedQues = await Question.findAll({
+//       include: Answer,
+//     });
+//     const response = {
+//       msg: "Successfull Fetch Questions",
+//       question: askedQues,
+//     };
+//     return res.json({
+//       response,
+//     });
+//   }
+//   catch (err) {
+//     console.log(err)
+//     res.json({msg: err.message})
+//   }
+// });
 
 
 
@@ -263,5 +265,48 @@ router.put('/:question_id/downvote',
   }
 })
 
+/**
+ * GET: Route for getting all que asked by a user
+*/
+router.get('/all', isAuthorized, async (req, res, next) => {
+  try {
+    const user = req.user;
+    const questions = await user.getQuestions();
+    return res.status(200).json({
+      message: QUESTION_FETCHED_SUCCESS,
+      questions: questions
+    })
+  }
+  catch(error) {
+    next(error);
+  }
+})
+
+
+
+/**
+ * GET: Route for deleting an answer
+*/
+router.get('/:question_id/answers', isAuthorized, async (req, res, next) => {
+  try {
+    const question_id = req.params.question_id;
+    const questionObj = await Question.findByPk(question_id, {
+      include: Answer
+    });
+    const result = await req.user.hasQuestion(questionObj);
+    if(!result) {
+      const err = new Error('You Do not have access to this question.');
+      err.status = 401;
+      throw(err)
+    }
+    return res.status(200).json({
+      message: 'All Answers Fetched.',
+      question: questionObj
+    })
+  }
+  catch(error) {
+    next(error)
+  }
+})
 
 module.exports = router;

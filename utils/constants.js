@@ -17,5 +17,7 @@ module.exports = {
     QUESTION_VOTED_SUCCESS: 'Question upVoted Successfully',
     QUESTION_DOWNVOTED_SUCCESS: 'Question DownVoted Successfully',
     QUESTION_UPDATED_SUCCESS: 'Question Updated Successfully.',
-    QUESTION_UPDATED_FAILED: 'Question not updated.'
+    QUESTION_UPDATED_FAILED: 'Question not updated.',
+    QUESTION_FETCHED_SUCCESS: 'All Question Fetched Succesfully',
+    QUESTION_FETCHED_FAILED: 'Question Can Not fetched, Something Went Wrong.'
 }

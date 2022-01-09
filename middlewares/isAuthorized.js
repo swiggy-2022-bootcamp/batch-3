@@ -14,6 +14,12 @@ async function isAuthorized (req, res, next) {
     try {
         var decoded = await jwt.verify(token, process.env.JWT_SECRET);
         const user = await User.findOne({ where: { username: decoded.username }});
+        if(user && req.user && user.id != req.user.id) {
+            const err = new Error('User Identification Mismatch.');
+            err.status = 401;
+            next(err);
+            return;
+        }
         if(!req.user) {
             req.user = user;
         }
@@ -21,7 +27,6 @@ async function isAuthorized (req, res, next) {
         return;
     }
     catch(err) {
-        console.log(err.message);
         err.status = 401;
         err.message = USER_AUTHORIZATION_FAILED;
         next(err);

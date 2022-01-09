@@ -61,7 +61,7 @@ export default class QuestionController {
       const questionDetails = await findQuestionByPk(questionId);
       responseHandler(res, {
           question: questionDetails,
-          answers: answers.map((ans) => ({ id: ans.pk, answer: ans.answer }))
+          answers: answers.map((ans) => ({ id: ans.pk, answer: ans.answer, votes: ans.votes }))
         }, 200);
     } catch(e) {
       responseHandler(res, {

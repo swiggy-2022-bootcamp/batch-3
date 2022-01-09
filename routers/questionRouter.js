@@ -12,28 +12,28 @@ const verifyUserInfo = require("../middleware/verifyUserInfo");
  *     summary: Create Question
  *     security:
  *       - BearerAuth: []
- *     Description: Post a new question
+ *     description: Post a new question
  *     produces:
  *       - application/json
  *     responses:
- *       - 200:
- *         summary: Question created successfully
- *       - 401:
- *         summary: Invalid login credentials
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               question:
- *                 type: object
- *                 properties:
- *                   title:
- *                     type: string
- *                   body: 
- *                     type: string
+ *       '200':
+ *         description: Question created successfully
+ *       '401':
+ *         description: Invalid login credentials
+ *     parameters:
+ *       - in: body
+ *         name: body
+ *         required: true
+ *         schema:
+ *           type: object
+ *           properties:
+ *             question:
+ *               type: object
+ *               properties:
+ *                 title:
+ *                   type: string
+ *                 body: 
+ *                   type: string
  */
 router.post('/', verifyUserInfo, (req, res) => {
     const {username} = req.user;
@@ -60,6 +60,15 @@ router.post('/', verifyUserInfo, (req, res) => {
  *     security:
  *       - BearerAuth: []
  *     description: post an answer to a question
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       '201':
+ *          description: created
+ *       '404':
+ *          description: question not found
+ *       '401':
+ *          description: invalid credentials
  *     parameters:
  *       - in: path
  *         name: questionId
@@ -67,27 +76,17 @@ router.post('/', verifyUserInfo, (req, res) => {
  *           type: string
  *         required: true
  *         description: Question id
- *     produces:
- *       - application/json
- *     responses:
- *       - 201:
- *          description: created
- *       - 404:
- *          description: question not found
- *       - 401:
- *          description: invalid credentials
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               question:
- *                 type: object
- *                 properties:
- *                   answer:
- *                     type: string
+ *       - in: body
+ *         name: body
+ *         required: true
+ *         schema:
+ *           type: object
+ *           properties:
+ *             question:
+ *               type: object
+ *               properties:
+ *                 answer:
+ *                   type: string
  */
 router.post('/:questionId/answer', verifyUserInfo, (req, res) => {
     const {questionId} = req.params;
@@ -114,6 +113,17 @@ router.post('/:questionId/answer', verifyUserInfo, (req, res) => {
  *     security:
  *       - BearerAuth: []
  *     description: post an answer to a question
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       '201':
+ *          description: created
+ *       '404':
+ *          description: question not found
+ *       '401':
+ *          description: invalid credentials
+ *       '400':
+ *          description: cannot edit answer if not already answered
  *     parameters:
  *       - in: path
  *         name: questionId
@@ -121,29 +131,17 @@ router.post('/:questionId/answer', verifyUserInfo, (req, res) => {
  *           type: string
  *         required: true
  *         description: Question id
- *     produces:
- *       - application/json
- *     responses:
- *       - 201:
- *          description: created
- *       - 404:
- *          description: question not found
- *       - 401:
- *          description: invalid credentials
- *       - 400:
- *          description: cannot edit answer if not already answered
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               question:
- *                 type: object
- *                 properties:
- *                   answer:
- *                     type: string
+ *       - in: body
+ *         name: body
+ *         required: true
+ *         schema:
+ *           type: object
+ *           properties:
+ *             question:
+ *               type: object
+ *               properties:
+ *                 answer:
+ *                   type: string
  */
 router.put('/:questionId/answer', verifyUserInfo, (req, res) => {
     const {questionId} = req.params;
@@ -173,8 +171,8 @@ router.put('/:questionId/answer', verifyUserInfo, (req, res) => {
  *     produces:
  *       - application/json
  *     responses:
- *       - 200:
- *         summary: list of questions with their answers
+ *       '200':
+ *         description: list of questions with their answers
  */
 router.get('/', (req, res) => {
     questionHandler.getAllQuestionsWithAnswers()

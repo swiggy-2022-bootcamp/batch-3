@@ -1,41 +1,22 @@
 const swaggerJsdoc = require('swagger-jsdoc');
 
 const options = {
+  swagger: '2.0',
   swaggerDefinition: {
-    openapi: '3.0.0',
+    swagger: '2.0',
     info: {
-      title: 'Question Answering app',
+      title: 'Question Answering app 123',
       version: '1.0.0',
+    },
+    securityDefinitions: {
+      BearerAuth: {
+        type: 'apiKey',
+        in: 'header',
+        name: 'Authorization'
+      }
     },
   },
   apis: ['./routers/*.js'],
-  components: {
-    securitySchemes: {
-      BearerAuth: {
-        type: 'apiKey',
-        scheme: 'bearer',
-        in: 'header',
-        bearerFormat: 'JWT',
-      }
-    }
-  },
-  security: [{
-    BearerAuth: []
-  }],
-  authActions: {
-    JWT: {
-      name: "JWT",
-      schema: {
-        type:
-          "apiKey",
-        in: "header",
-        name: "Authorization",
-        description: ""
-      },
-      value: "Bearer "
-    }
-  },
-  swagger: '2.0'
 };
 
 const openapiSpecification = swaggerJsdoc(options);

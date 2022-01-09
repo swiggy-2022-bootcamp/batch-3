@@ -14,24 +14,24 @@ const {userHandler} = require('../handlers');
  *     produces:
  *       - application/json
  *     responses:
- *       - 200:
+ *       "200":
  *         description: User logged in successfully
- *       - 401:
+ *       "401":
  *         description: Unauthorized
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               username:
- *                 type: string
- *               password:
- *                 type: string
- *             required:
- *               - username
- *               - password
+ *     parameters:
+ *       - in: body
+ *         name: "body"
+ *         required: true
+ *         schema:
+ *           type: object
+ *           properties:
+ *             username:
+ *               type: string
+ *             password:
+ *               type: string
+ *           required:
+ *             - username
+ *             - password
  */
 router.post('/login', (req, res) => {
     const {username, password} = req.body;
@@ -58,27 +58,26 @@ router.post('/login', (req, res) => {
  *     produces:
  *       - application/json
  *     responses:
- *       - 200:
+ *       200:
  *         Description: User registered successfully
- *       - 409:
+ *       409:
  *         Description: User with username already exists
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               username: 
- *                 type: string
- *               password:
- *                 type: string
- *               registrationName:
- *                 type: string
- *             required:
- *               - username
- *               - password
- *               - registrationName
+ *     parameters:
+ *       - in: body
+ *         name: body
+ *         schema:
+ *           type: object
+ *           properties:
+ *             username: 
+ *               type: string
+ *             password:
+ *               type: string
+ *             registrationName:
+ *               type: string
+ *           required:
+ *             - username
+ *             - password
+ *             - registrationName
  */
 router.post('/register', (req, res) => {
     const {username, password, registrationName} = req.body;

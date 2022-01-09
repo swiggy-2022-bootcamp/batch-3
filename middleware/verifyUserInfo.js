@@ -9,7 +9,7 @@ module.exports = async (req, res, next) => {
         if(!header) {
             return res.status(401).json({message: "Invalid JWT"});
         }
-        let token = header.split(' ')[1];
+        let token = header;
         let user = await jwtWrapper.verifyToken(token);
         req.user = user;
         next();

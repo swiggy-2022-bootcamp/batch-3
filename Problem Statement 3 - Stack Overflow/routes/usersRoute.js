@@ -1,7 +1,6 @@
 var express = require("express");
 var bcrypt = require("bcryptjs");
 var jwt = require("jsonwebtoken");
-var mongoose = require("mongoose");
 var User = require("../models/userModel");
 var Question = require("../models/questionModel");
 
@@ -41,7 +40,7 @@ router.post("/register", async function (req, res, next) {
 
 // req.body has parameters {username, password}
 router.post("/login", userValidator, function (req, res, next) {
-  const token = jwt.sign({ username: req.body.username }, "");
+  const token = jwt.sign({ username: req.body.username }, "123");
   res
     .header("auth-token", token)
     .status(200)

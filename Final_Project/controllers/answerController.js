@@ -50,6 +50,7 @@ exports.answer = (req, res)=>{
 }
 
 exports.getall = (req, res)=>{
+	if(req.body._id){
 	question_models.QuestionModel.findOne({_id: req.body._id}, (err, question)=> {
 		if (err) {
 			res.send(err);
@@ -63,6 +64,9 @@ exports.getall = (req, res)=>{
 			});
 		}
 	});
+} else {
+	res.json({message: "Please send the correct question id as '_id'"});
+}
 }
 
 exports.upvote = (req, res)=>{

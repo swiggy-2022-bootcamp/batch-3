@@ -50,7 +50,7 @@ const verifyToken = async (req :any, res :any, next :any) => {
         }
     } catch (e) {
         console.log(e);
-        return res.status(401).json({
+        return res.status(500).json({
             error: "an error occurred"
         });
     }

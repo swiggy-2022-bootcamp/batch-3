@@ -10,7 +10,7 @@ var usersRouter = require('./routes/usersRoute');
 var app = express();
 
 // DB Connection
-let DB_URL = "mongodb+srv://aryann:aryanndhir@cluster0.8katt.mongodb.net/project?retryWrites=true&w=majority";
+let DB_URL = "mongodb+srv://aryann:<password>@cluster0.8katt.mongodb.net/project?retryWrites=true&w=majority";
 mongoose.connect(DB_URL, ()=>{
     console.log("DB Connected");
 }) 

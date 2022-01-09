@@ -5,8 +5,8 @@ const { sequelize } = require('../config/database');
 // Constants
 const {
     USER_REGISTERATION_SUCCESS,
-} = require('../utils/constants');
-const { User } = require('../models/user.model');
+} = require('../../utils/constants');
+const { User } = require('../../models/user.model');
 
 /* Dummy User Details */
 const newUser = {

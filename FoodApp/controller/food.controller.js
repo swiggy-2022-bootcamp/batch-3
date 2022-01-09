@@ -9,18 +9,18 @@ async function addFoodItem(req, res) {
       foodCost,
       foodType,
     }
-    const newFoodItem = await foodQuery.createFoodItem(payload);
+    const newFoodItem = await foodQuery.addFoodItem(payload);
     res.status(201).json(newFoodItem);
   } catch (err) {
-    res.json(["Submission Failed", err]);
+    res.json({"error":err});
   }
 }
 
-async function getSingleFoodItem(req, res) {
+async function getFoodItemById(req, res) {
   try {
     let { foodId } = req.params;
     foodId = parseInt(foodId);
-    let foodItem = await foodQuery.foodItemById(foodId);
+    let foodItem = await foodQuery.getFoodItemById(foodId);
     if (foodItem.length == 0) {
       res.status(404).json(`Sorry user with food item ${foodId} not found`);
     }
@@ -30,17 +30,17 @@ async function getSingleFoodItem(req, res) {
   }
 }
 
-async function getAllFoodItems(req, res) {
+async function getFoodItems(req, res) {
   try {
-    let foodItems = await foodQuery.foodItems();
+    let foodItems = await foodQuery.getFoodItems();
     res.status(200).json(foodItems);
   } catch (err) {
-    console.log(err);
+    res.json({"error":err});
   }
 }
 
 module.exports = {
   addFoodItem,
-  getSingleFoodItem,
-  getAllFoodItems,
+  getFoodItemById,
+  getFoodItems,
 };

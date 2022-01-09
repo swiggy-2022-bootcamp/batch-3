@@ -1,10 +1,10 @@
 const User = require("../model/user.model");
 
-exports.users = async () => {
+exports.getUsers = async () => {
   const users = await User.find();
   return users;
 };
-exports.userById = async (userId) => {
+exports.getUserById = async (userId) => {
   const user = await User.find({ userId: userId });
   return user;
 };

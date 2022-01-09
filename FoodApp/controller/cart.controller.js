@@ -1,11 +1,11 @@
 const foodQuery = require("../query/food.query");
 const cartQuery = require("../query/cart.query");
 
-async function getCartItem(req, res) {
+async function getCartItemByUserId(req, res) {
   try {
     let { userId } = req.body;
     userId = parseInt(userId);
-    const cart = await cartQuery.cartbyUserId(userId); //returns cart corresponding to user id in array
+    const cart = await cartQuery.getCartItemByUserId(userId); //returns cart corresponding to user id in array
     if (cart.length == 0) {
       res.status(200).json("you don't have any element in cart");
     } else {
@@ -37,7 +37,7 @@ async function addCartItem(req, res) {
     };
 
     //adding food item to cart
-    const updatedCart = await cartQuery.addToCart(payload);
+    const updatedCart = await cartQuery.addCartItem(payload);
     res.status(201).json(updatedCart);
   } catch (err) {
     console.log(err);
@@ -59,11 +59,11 @@ async function deleteCartItem(req, res) {
       userId,
       foodItem,
     };
-    let updatedCart = await cartQuery.removeFromCart(payload);
+    let updatedCart = await cartQuery.deleteCartItem(payload);
     res.json(updatedCart);
   } catch (err) {
     console.log(err);
   }
 }
 
-module.exports = { getCartItem, addCartItem, deleteCartItem };
+module.exports = { getCartItemByUserId, addCartItem, deleteCartItem };

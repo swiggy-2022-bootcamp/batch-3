@@ -19,7 +19,7 @@ app.use("/api", authRouter);
 app.use("/api/users", userRouter);
 app.use("/api/food", foodRouter);
 app.use("/api/cart", cartRouter);
-app.use("/api/order", orderRouter);
+app.use("/api/orders", orderRouter);
 app.use("/api/review", reviewRouter);
 
 module.exports = app;

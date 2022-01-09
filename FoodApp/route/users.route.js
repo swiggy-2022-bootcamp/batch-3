@@ -1,9 +1,9 @@
 const router = require("express").Router();
 const users = require("../controller/users.controller");
 
-router.get("/", users.getAllUsers);
+router.get("/", users.getUsers);
 
-router.get("/:userId", users.getSingleUser);
+router.get("/:userId", users.getUserById);
 
 router.put("/:userId", users.updateUser);
 

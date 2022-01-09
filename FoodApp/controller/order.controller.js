@@ -3,18 +3,18 @@ const orderQuery = require("../query/order.query");
 
 const COUPON_CODE = "FLAT50";
 
-async function getOrders(req, res) {
+async function getOrdersbyUserId(req, res) {
   try {
     let { userId } = req.body;
     userId = parseInt(userId);
-    const orders = await orderQuery.ordersbyUserId(userId); //returns cart corresponding to user id in array
+    const orders = await orderQuery.getOrdersbyUserId(userId); //returns cart corresponding to user id in array
     if (orders.length == 0) {
       res.status(200).json("you don't have any orders");
     } else {
       res.status(200).json(orders);
     }
   } catch (err) {
-    console.log(err);
+    res.json({error:err})
   }
 }
 
@@ -51,8 +51,8 @@ async function addOrder(req, res) {
       res.status(200).json(order);
     }
   } catch (err) {
-    console.log(err);
+    res.json({error:err})
   }
 }
 
-module.exports = { getOrders, addOrder };
+module.exports = { getOrdersbyUserId, addOrder };

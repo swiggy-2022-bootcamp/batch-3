@@ -1,18 +1,14 @@
 const FoodItem = require("../model/food.model");
 
-exports.foodItems = async () => {
+exports.getFoodItems = async () => {
     const foodItems = await FoodItem.find();
     return foodItems;
 };
-exports.foodItemById = async foodId => {
+exports.getFoodItemById = async foodId => {
     const foodItem = await FoodItem.find({ foodId: foodId });
     return foodItem;
 }
-exports.createFoodItem = async payload => {
+exports.addFoodItem = async payload => {
     const newFoodItem = await FoodItem.create(payload);
     return newFoodItem
 }
-// exports.removeProduct = async id => {
-//     const product = await Product.findByIdAndRemove(id);
-//     return product
-// }

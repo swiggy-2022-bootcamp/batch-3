@@ -1,6 +1,6 @@
 const Cart = require("../model/cart.model");
 
-const addToCart = async (payload) => {
+const addCartItem = async (payload) => {
   let { userId, foodItem } = payload;
   userId = parseInt(userId);
   let cart = await cartbyUserId(userId); //gets cart object in an array
@@ -40,16 +40,16 @@ const addToCart = async (payload) => {
   }
 };
 
-const cartbyUserId = async (userId) => {
+const getCartItemByUserId = async (userId) => {
   userId = parseInt(userId);
   const cart = await Cart.find({ userId: userId });
   return cart;
 };
 
-const removeFromCart = async (payload) => {
+const deleteCartItem = async (payload) => {
   let { userId, foodItem } = payload;
   userId = parseInt(userId);
-  let cart = await cartbyUserId(userId); //gets cart object in an array
+  let cart = await getCartItemByUserId(userId); //gets cart object in an array
   if (cart.length == 0) {
     //cart does not exist
     return "cart does not exist";
@@ -68,7 +68,7 @@ const removeFromCart = async (payload) => {
         itemsList.splice(itemIndex, 1);
       }
     }
-    
+
     if (itemsList.length == 0) {
       Cart.findOneAndDelete({ userId: userId });
       return "cart empty";
@@ -92,4 +92,4 @@ const updateCart = async (payload) => {
   return updatedCart;
 };
 
-module.exports = { addToCart, cartbyUserId, removeFromCart };
+module.exports = { addCartItem, getCartItemByUserId, deleteCartItem };

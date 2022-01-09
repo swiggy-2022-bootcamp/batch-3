@@ -11,7 +11,7 @@ info:
     name: Apache 2.0
     url: 'https://www.apache.org/license/LIS'
   servers:
-    -url: http:/localhost:3000
+    -url: http:/localhost:4000
     description: Local Development Server
 
 schemes: [http, https]

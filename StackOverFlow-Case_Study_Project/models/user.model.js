@@ -10,7 +10,7 @@ class User extends Model {
 
     /* Create Json Web Tokens */
     static async generateJWT ( username ) {
-        const SECRET = process.env.JWT_SECRET;
+        const SECRET = process.env.JWT_SECRET || 'Your Secret';
         const token = await jwt.sign(
             { username: username },
             SECRET,

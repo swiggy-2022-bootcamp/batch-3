@@ -109,7 +109,25 @@ exports.updateOne = (Model,...filteroptions)=>
 
 
   exports.getAll=(Model, popOptions)=>catchAsync(async (req, res, next) => {
-    let query = Model.find();
+    const sortby = {}
+    let filter ={}
+    if(req.query.tags){
+      const tag = req.query.tags
+      filter={
+        tags:{
+          $in:[tag]
+        }
+      }
+    }
+    console.log(filter)
+    let query = Model.find(filter);
+        
+    if (req.query.sortBy) {
+      const parts = req.query.sortBy.split(':')
+      sortby[parts[0]] = parts[1] === 'desc' ? -1 : 1
+      query=query.sort(sortby)
+  }
+ 
     if (popOptions) query = query.populate(popOptions);
     const doc = await query;
 

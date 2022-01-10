@@ -66,18 +66,23 @@ app.get("/api/users/:userId",async(req,res)=>{
 
 
 app.put("/api/users",async (req,res)=>{
+    const userId=parseInt(req.body.id);
     try {    
-        const userId=parseInt(req.body.id);
         const UserById=await User.find({id:userId});
         // console.log(UserById);
         if(Object.keys(UserById).length === 0 )
             {
-                res.status(403).send("Sorry user With "+userId+" not found");        
+               return res.status(403).send("Sorry user With "+userId+" not found");        
             }
         const updatedStudent=await User.updateOne({id:userId},req.body);
-        res.status(200).send(updatedStudent);
+        if(updatedStudent.matchedCount==1)
+        return res.status(200).send("User Updated successfully.");
+        else
+        return res.status(403).send("Sorry user With "+userId+" not found");        
+         
 } catch (e) {
-    res.send(e);
+   return res.status(403).send("Sorry user With "+userId+" not found");        
+       
 }
 })
 

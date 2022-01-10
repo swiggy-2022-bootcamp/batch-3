@@ -6,7 +6,11 @@
   "scripts": {
     "start": "nodemon server.js",
     "start:prod": "SET NODE_ENV=production && nodemon server.js",
-    "lint:fix": "eslint /**/*.js  --fix"
+    "lint:fix": "eslint /**/*.js  --fix",
+    "test": " env-cmd -f ./test.env jest"
+  },
+  "jest": {
+    "testEnvironment": "node"
   },
   "author": "Karan Dev Tyagi",
   "license": "ISC",
@@ -31,6 +35,7 @@
     "xss-clean": "^0.1.1"
   },
   "devDependencies": {
+    "env-cmd": "^10.1.0",
     "eslint": "^8.6.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-prettier": "^8.3.0",
@@ -39,8 +44,10 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.28.0",
+    "jest": "^27.4.7",
     "nodemon": "^2.0.15",
-    "prettier": "^2.5.1"
+    "prettier": "^2.5.1",
+    "supertest": "^6.1.6"
   },
   "engines": {
     "node": ">10.0.0"

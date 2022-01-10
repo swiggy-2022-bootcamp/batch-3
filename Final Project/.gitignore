@@ -8,6 +8,7 @@ package-lock.json
 
 #config
 config.env
+test.env
 .DS_Store
 .env.local
 .env.development.local

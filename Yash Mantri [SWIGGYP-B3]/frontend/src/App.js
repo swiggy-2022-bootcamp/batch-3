@@ -54,7 +54,7 @@ class App extends Component {
 
                 <li className="nav-item">
                   <Link to={"/home"} className="navbar-brand">
-                    Swiggy
+                    Swiggi
                   </Link>
                 </li>
                 <li className="nav-item">
@@ -70,12 +70,17 @@ class App extends Component {
 
                 <li className="nav-item">
                   <Link to={"/"} className="navbar-brand">
-                    Swiggy
+                    Swiggi
                   </Link>
                 </li>
                 <li className="nav-item">
                   <Link to={"/"} className="nav-link">
                     Home
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link to={"/register"} className="nav-link">
+                    Signup
                   </Link>
                 </li>
               </ul>

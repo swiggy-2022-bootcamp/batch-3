@@ -48,7 +48,7 @@ export default class Home extends Component {
                                     <Link to={{
                                         pathname: "/menu/" + cont.id,
                                         state: [{ id: cont.id }]
-                                    }} class="btn btn-dark">Go somewhere</Link>
+                                    }} class="btn btn-dark">Menu</Link>
 
                                 </div>
                             </div>

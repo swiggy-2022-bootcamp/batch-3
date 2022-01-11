@@ -12,7 +12,7 @@ export default class menu extends Component {
 
         return (
             <div class="container">
-                <h1>Welcome to Swiggy </h1>
+                <h1>Welcome to Swiggi </h1>
                 <h2> To view Content please login</h2>
             </div>
         );

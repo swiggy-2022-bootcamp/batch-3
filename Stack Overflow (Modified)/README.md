@@ -37,6 +37,9 @@ userID - reference to userModel
 answerID - reference to answerModel
 ```
 
+## Base URL:
+```http://127.0.0.1:4000```
+
 ## API Endpoints:
 
 ### 1. POST: `/login`
